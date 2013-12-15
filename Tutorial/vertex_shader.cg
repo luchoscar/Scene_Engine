@@ -1,0 +1,22 @@
+
+//vertext output
+struct Vertex_Output
+{
+	float4 position	: POSITION;
+	float4 color	: COLOR;
+};
+
+//vertex shader
+Vertex_Output Test(float4 position	: POSITION,
+							float4 color		: COLOR,
+
+							uniform float4x4 modelViewProj)
+{
+	Vertex_Output OUT;
+
+	OUT.position = mul(modelViewProj, position);
+	OUT.color = color;
+
+	return OUT;
+}
+

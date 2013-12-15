@@ -1,0 +1,9 @@
+
+//fragment shader - vertex color
+void pixelShader(float4 color	: COLOR,
+
+					out float4 outColor : COLOR)
+{
+	outColor = color;
+}
+

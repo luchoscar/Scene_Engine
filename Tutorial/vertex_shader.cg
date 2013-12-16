@@ -7,7 +7,7 @@ struct Vertex_Output
 };
 
 //vertex shader
-Vertex_Output Test(float4 position	: POSITION,
+Vertex_Output VS_program(float4 position	: POSITION,
 							float4 color		: COLOR,
 
 							uniform float4x4 modelViewProj)

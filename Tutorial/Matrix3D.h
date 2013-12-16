@@ -1,3 +1,7 @@
+/************************************************************
+ * Holds matrix multiplication functions and matrix data	*
+ ************************************************************/
+
 #pragma once
 
 class Matrix3D

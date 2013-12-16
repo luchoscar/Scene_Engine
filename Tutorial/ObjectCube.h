@@ -10,7 +10,7 @@ public:
 	ObjectCube();
 	ObjectCube(float x, float y, float size);
 	virtual ~ObjectCube();
-
+	
 	virtual void Draw();
 	virtual void Update();
 

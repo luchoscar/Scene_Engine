@@ -1,3 +1,7 @@
+/********************************
+ * Holds game logic and objects	*
+ ********************************/
+
 #pragma once
 #include "BaseObject.h"
 #include <GL\glut.h>
@@ -10,8 +14,6 @@ using namespace std;
 class Scene
 {
 public:
-	//static Math3D Math;
-	
 	Scene();
 	virtual ~Scene();
 	
@@ -21,9 +23,6 @@ public:
 
 protected:
 	vector<BaseObject*> list;
-
-	//vertex shader file and program name
-	//const char *myVertexProgramFileName, *myVertexProgramName, *myFragmentProgramFileName, *myFragmentProgramName;
 
 	//shader variables
 	CGcontext myCgContext;

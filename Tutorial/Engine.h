@@ -1,3 +1,7 @@
+/****************************************************
+ * Class to control windows events and game loop	*
+ ****************************************************/
+
 #pragma once
 #include "Matrix3D.h"
 

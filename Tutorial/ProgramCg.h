@@ -1,3 +1,7 @@
+/****************************************************************
+ * Base shader class holding shared Cg code between all shaders	*
+ ****************************************************************/
+
 #pragma once
 #include "GL\glut.h"
 #include "Cg\cg.h"

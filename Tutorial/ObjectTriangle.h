@@ -11,8 +11,13 @@ public:
 					float colorR, float colorG, float colorB);
 	virtual ~ObjectTriangle();
 
+	virtual void Init();
+	virtual float* GetVertexBuffer();
+	virtual float* GetIndexBuffer();
+	virtual float* GetColorBuffer();
+
 	virtual void Draw();
-	virtual void Update();
+	virtual void Update(int deltaTime);
 
 protected:
 };

@@ -48,10 +48,10 @@
     <ClInclude Include="Matrix3D.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ObjectCube.h">
+    <ClInclude Include="ProgramCg.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ProgramCg.h">
+    <ClInclude Include="ObjectCube.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -77,10 +77,10 @@
     <ClCompile Include="Matrix3D.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ObjectCube.cpp">
+    <ClCompile Include="ProgramCg.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ProgramCg.cpp">
+    <ClCompile Include="ObjectCube.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

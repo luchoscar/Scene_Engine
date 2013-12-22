@@ -4,10 +4,13 @@
 
 #pragma once
 #include "BaseObject.h"
+//#include <GL/glew.h>
+//#include <GL/wglew.h>
 #include <GL\glut.h>
 #include <CG\cg.h>
 #include <CG\cgGL.h>
 #include <vector>
+#include <time.h> 
 
 using namespace std;
 
@@ -22,6 +25,7 @@ public:
 	virtual void Update();
 
 protected:
+	clock_t t;	//used to calculate delta time
 	vector<BaseObject*> list;
 
 	//shader variables

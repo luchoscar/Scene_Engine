@@ -1,22 +1,23 @@
 #pragma once
-#include "BaseObject.h"
-#include <GL\glut.h>
-#include <CG\cg.h>
-#include <CG\cgGL.h>
-
+#include "baseobject.h"
 class ObjectCube : public BaseObject
 {
 public:
 	ObjectCube();
-	ObjectCube(float x, float y, float size);
+	ObjectCube(float posX, float posY, float posZ, 
+								float rotX, float rotY, float rotZ, 
+								float sizeX, float sizeY, float sizeZ,
+								float colorR, float colorG, float colorB);
 	virtual ~ObjectCube();
-	
-	virtual void Draw();
-	virtual void Update();
 
+	virtual void Init();
+	virtual float* GetVertexBuffer();
+	virtual float* GetIndexBuffer();
+	virtual float* GetColorBuffer();
+
+	virtual void Draw();
+	virtual void Update(int deltaTime);
+	
 protected:
-	float color[3];
-	float position[2];
-	float rotation;
-	float scale;
 };
+

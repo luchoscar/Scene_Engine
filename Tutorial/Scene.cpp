@@ -9,6 +9,7 @@
 #include "StdAfx.h"
 #include "Scene.h"
 #include "ObjectTriangle.h"
+#include "ObjectCube.h"
 #include "Matrix3D.h"
 #include "Engine.h"
 #include <iostream>
@@ -88,13 +89,16 @@ void Scene::Init()
 	//adding default scene objects
 	//camera object should be added in the constructor and as the first object of the list for easy access
 	list.push_back(new ObjectTriangle());
-	list.push_back(new ObjectTriangle(0.5, 0.75, 0.0, 0.0, 0.0, 0.0, 0.5, 0.5, 0.5, 1.0, 0.5, 0.25));
+	list.push_back(new ObjectTriangle(0.5, 1.75, 0.0, 0.0, 0.0, 30.0, 1.5, 1.5, 1.5, 1.0, 0.5, 0.25));
+	list.push_back(new ObjectCube(-1.5, 1.5, -2.0, 0.0, 0.0, 0.0, 2.0, 2.0, 2.0, 1.0, 1.0, 1.0));
+	list.push_back(new ObjectCube(1.5, -0.70, 0.0, 25.0, 30.0, 0.0, 2.0, 2.0, 2.0, 1.0, 1.0, 1.0));
 }
 
 void Scene::Draw()
 {
 	glClearColor(0.1, 0.3, 0.6, 0.0);  /* Blue background */
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	glEnable(GL_DEPTH_TEST); // --> adding this in order to perform depth test??? this was not being applied when called in Engine.cpp
 
 	//bind CG program
 	cgGLBindProgram(myCgVertexProgram);
@@ -106,7 +110,7 @@ void Scene::Draw()
 	cgGLEnableProfile(myCgFragmentProfile);
 	checkForCgError("Enabling fragment profile");
 
-	Matrix3D viewMatrix, MVP, modelViewMatrix, modelMatrix, translateMatrix, rotationMatrix;
+	Matrix3D MVP, viewMatrix, modelViewMatrix, modelMatrix, translateMatrix, rotationMatrix;
 	
 	Matrix3D::BuildLookAtMatrix(0.0, 0.0, 5, 
 								  0.0, 0.0, 0.0,
@@ -114,9 +118,11 @@ void Scene::Draw()
 								  viewMatrix);
 
 	Matrix3D::MakeScaleMatrix(1.0, 1.0, 1.0, modelMatrix);
+	Matrix3D::MakeScaleMatrix(1.0, 1.0, 1.0, translateMatrix);
+	Matrix3D::MakeScaleMatrix(1.0, 1.0, 1.0, rotationMatrix);
 
 	//call each object in the list draw function
-	for (unsigned int i=0; i < list.size(); i++)
+	for (unsigned int i = 0; i < list.size(); i++)
 	{
 		float* tempSpace = list[i]->GetScale();
 		Matrix3D::MakeScaleMatrix(tempSpace[0], tempSpace[1], tempSpace[2], modelMatrix);
@@ -124,14 +130,57 @@ void Scene::Draw()
 		tempSpace = list[i]->GetPosition();
 		Matrix3D::MakeTranslateMatrix(tempSpace[0], tempSpace[1], tempSpace[2], translateMatrix);
 		
+		//calculate rotation on all 3 axis
+		tempSpace = list[i]->GetRotation();
+		for(int r = 0; r < 3; r++)
+		{
+			if (tempSpace[r] != 0.0)
+			{
+				switch(r)
+				{
+				case 0:
+					Matrix3D::MakeRotateMatrix(tempSpace[r], 1.0, 0.0, 0.0, rotationMatrix);
+					break;
+				case 1:
+					Matrix3D::MakeRotateMatrix(tempSpace[r], 0.0, 1.0, 0.0, rotationMatrix);
+					break;
+				case 2:
+					Matrix3D::MakeRotateMatrix(tempSpace[r], 0.0, 0.0, 1.0, rotationMatrix);
+					break;
+				}
+				Matrix3D::MultMatrix(modelMatrix, rotationMatrix, modelMatrix);		
+			}
+		}
+		
 		Matrix3D::MultMatrix(modelMatrix, translateMatrix, modelMatrix);	//calculate world position
-		Matrix3D::MultMatrix(modelViewMatrix, viewMatrix, modelMatrix);
-		Matrix3D::MultMatrix(MVP, Engine::perspective, modelViewMatrix);
+		Matrix3D::MultMatrix(modelViewMatrix, viewMatrix, modelMatrix);		//model - view matrix
+		Matrix3D::MultMatrix(MVP, Engine::perspective, modelViewMatrix);	//model - view - projection matrix
 		
 		cgSetMatrixParameterfr(myCgVertexParam_modelViewProj, MVP());	//pass MVP as pointer to VS 
+		
+		//update shaders
 		cgUpdateProgramParameters(myCgVertexProgram);
 		cgUpdateProgramParameters(myCgFragmentProgram);
+		
+		//draw geometry
 		list[i]->Draw();
+
+		//enable vertex and color buffers
+		//glBindBuffer(GL_ARRAY_BUFFER, *list[i]->GetColorBuffer());
+		//glBufferData(GL_ARRAY_BUFFER, 9 * sizeof(float), list[i]->GetColorBuffer(), GL_STREAM_DRAW);
+		//glColorPointer(3, GL_UNSIGNED_BYTE, 0, 0);
+
+		//glBindBuffer(GL_ARRAY_BUFFER, *list[i]->GetPosition());
+		//glBufferData(GL_ARRAY_BUFFER, 9 * sizeof(float), list[i]->GetPosition(), GL_STREAM_DRAW);
+		//glVertexPointer(3, GL_FLOAT, 0, 0);
+
+		//glEnableClientState(GL_VERTEX_ARRAY);
+		//glEnableClientState(GL_COLOR_ARRAY);
+
+		//glDrawArrays(GL_TRIANGLES, 0, *list[i]->GetPosition());
+
+		//glDisableClientState(GL_COLOR_ARRAY);
+		//glDisableClientState(GL_VERTEX_ARRAY); 
 	}
 
 	//disable CGprofile
@@ -140,10 +189,14 @@ void Scene::Draw()
 
 void Scene::Update()
 {
+	//t = clock();
+	//int deltaTime = clock() - t;
+	int deltaTime = 0;
+
 	//call each object in the list update function
-	for (unsigned int i=0; i<list.size(); i++)
+	for (unsigned int i = 0; i < list.size(); i++)
 	{
-		list[i]->Update();
+		list[i]->Update(deltaTime);
 	}
 }
 

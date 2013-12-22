@@ -13,6 +13,7 @@ static Math3D* Math;
 
 Engine::Engine()
 {
+
 }
 
 Engine::~Engine()
@@ -26,6 +27,7 @@ void Engine::Init(int argc, char* argv[])
 	glutInitWindowSize(450, 350);
 	glutInitDisplayMode(GLUT_RGB | GLUT_DOUBLE | GLUT_DEPTH);
 	glEnable(GL_DEPTH_TEST); 
+
 	glutInit(&argc, argv);
 	glutCreateWindow("Scene Engine");
 

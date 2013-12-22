@@ -8,6 +8,10 @@ BaseObject::BaseObject()
 
 BaseObject::~BaseObject()
 {
+	delete(ib);
+	delete(vb);
+	delete(nb);
+	delete(cb);
 }
 
 float* BaseObject::GetPosition()

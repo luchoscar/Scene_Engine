@@ -17,6 +17,8 @@ using namespace std;
 class Scene
 {
 public:
+	static float deltaTime;
+
 	Scene();
 	virtual ~Scene();
 	

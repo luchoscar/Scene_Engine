@@ -7,6 +7,7 @@
 
 Matrix3D Engine::perspective;
 
+//float deltaTime = 0.0;
 Scene* scene = new Scene();	//eventually expand this to a List<Scene>* to support multiple scenes
 
 static Math3D* Math;

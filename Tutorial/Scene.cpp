@@ -19,6 +19,8 @@ const char *myVertexProgramFileName = "vertex_shader.cg",
 			*myFragmentProgramFileName = "fragment_shader.cg",
 			*myFragmentProgramName = "FS_program";
 
+float Scene::deltaTime;
+
 Scene::Scene(void)
 {
 	//camera object should be added in the constructor and as the first object of the list for easy access
@@ -189,8 +191,12 @@ void Scene::Draw()
 
 void Scene::Update()
 {
-	//t = clock();
-	//int deltaTime = clock() - t;
+	Scene::deltaTime = glutGet(GLUT_ELAPSED_TIME) * 0.001 - Scene::deltaTime;
+	int fps = 1 / Scene::deltaTime;
+	
+	std::cout << "float delta time = " << Scene::deltaTime << std::endl;
+	std::cout << "fps = " << fps << std::endl;
+
 	int deltaTime = 0;
 
 	//call each object in the list update function

@@ -83,6 +83,7 @@
   <ItemGroup>
     <ClInclude Include="BaseObject.h" />
     <ClInclude Include="Engine.h" />
+    <ClInclude Include="FragmentObject.h" />
     <ClInclude Include="Matrix3D.h" />
     <ClInclude Include="ObjectCube.h" />
     <ClInclude Include="ObjectTriangle.h" />
@@ -96,6 +97,7 @@
   <ItemGroup>
     <ClCompile Include="BaseObject.cpp" />
     <ClCompile Include="Engine.cpp" />
+    <ClCompile Include="FragmentObject.cpp" />
     <ClCompile Include="Matrix3D.cpp" />
     <ClCompile Include="ObjectCube.cpp" />
     <ClCompile Include="ObjectTriangle.cpp" />

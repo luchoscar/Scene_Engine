@@ -23,6 +23,7 @@ float Scene::deltaTime;
 
 Scene::Scene(void)
 {
+	//simpleVS = new SimpleVS();
 	//camera object should be added in the constructor and as the first object of the list for easy access
 }
 
@@ -40,16 +41,11 @@ Scene::~Scene(void)
 //initializing scene
 void Scene::Init()
 {
-	//creating CG context
-	myCgContext = cgCreateContext();
-	checkForCgError("creating context");
-	cgGLSetDebugMode(CG_FALSE);
-	cgSetParameterSettingMode(myCgContext, CG_DEFERRED_PARAMETER_SETTING);
-	
+	//create OpenGL context
+	rendererGL.InitContext();
+
 	//creating VS profile
-	myCgVertexProfile = cgGLGetLatestProfile(CG_GL_VERTEX);
-	cgGLSetOptimalOptions(myCgVertexProfile);
-	checkForCgError("selecting vertex profile");
+	rendererGL.InitVertexProfile();
 
 	//creating FS profile
 	myCgFragmentProfile = cgGLGetLatestProfile(CG_GL_FRAGMENT);
@@ -57,25 +53,18 @@ void Scene::Init()
 	checkForCgError("selecting fragment profile");
 
 	//creating VS program
-	myCgVertexProgram = cgCreateProgramFromFile(
-		myCgContext, 
-		CG_SOURCE, 
-		myVertexProgramFileName, //File name of shader program
-		myCgVertexProfile,
-		myVertexProgramName, //Entry function
-		NULL);
-	checkForCgError("Creating program from file");
+	simpleVS.CreateProgram(myVertexProgramFileName, myVertexProgramName);
 
 	//Loads the vertex program into memory
-	cgGLLoadProgram(myCgVertexProgram);
-	checkForCgError("Loading program");
-
+	rendererGL.LoadProgram(simpleVS.GetProgram());
+	
 	//creating FS program
-	myCgVertexParam_modelViewProj = cgGetNamedParameter(myCgVertexProgram, "modelViewProj");
+	myCgVertexParam_modelViewProj = cgGetNamedParameter(simpleVS.GetProgram(), "modelViewProj");
 	checkForCgError("could not get modelViewProj parameter");
 
 	myCgFragmentProgram = cgCreateProgramFromFile(
-		myCgContext, 
+		//myCgContext, 
+		rendererGL.GetContext(),
 		CG_SOURCE, 
 		myFragmentProgramFileName, //File name of shader program
 		myCgFragmentProfile,
@@ -98,17 +87,14 @@ void Scene::Init()
 
 void Scene::Draw()
 {
-	glClearColor(0.1, 0.3, 0.6, 0.0);  /* Blue background */
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	glEnable(GL_DEPTH_TEST); // --> adding this in order to perform depth test??? this was not being applied when called in Engine.cpp
+	rendererGL.ClearGLFlags();
 
 	//bind CG program
-	cgGLBindProgram(myCgVertexProgram);
-	checkForCgError("Binding vertex program");
+	rendererGL.BindProgram(simpleVS.GetProgram());
 
 	//Enable VS & FS profiles
-	cgGLEnableProfile(myCgVertexProfile);
-	checkForCgError("Enabling vertex profile");
+	rendererGL.EnableProfile(rendererGL.GetVertexProfile());
+
 	cgGLEnableProfile(myCgFragmentProfile);
 	checkForCgError("Enabling fragment profile");
 
@@ -161,40 +147,23 @@ void Scene::Draw()
 		cgSetMatrixParameterfr(myCgVertexParam_modelViewProj, MVP());	//pass MVP as pointer to VS 
 		
 		//update shaders
-		cgUpdateProgramParameters(myCgVertexProgram);
+		cgUpdateProgramParameters(simpleVS.GetProgram());
 		cgUpdateProgramParameters(myCgFragmentProgram);
 		
 		//draw geometry
 		list[i]->Draw();
-
-		//enable vertex and color buffers
-		//glBindBuffer(GL_ARRAY_BUFFER, *list[i]->GetColorBuffer());
-		//glBufferData(GL_ARRAY_BUFFER, 9 * sizeof(float), list[i]->GetColorBuffer(), GL_STREAM_DRAW);
-		//glColorPointer(3, GL_UNSIGNED_BYTE, 0, 0);
-
-		//glBindBuffer(GL_ARRAY_BUFFER, *list[i]->GetPosition());
-		//glBufferData(GL_ARRAY_BUFFER, 9 * sizeof(float), list[i]->GetPosition(), GL_STREAM_DRAW);
-		//glVertexPointer(3, GL_FLOAT, 0, 0);
-
-		//glEnableClientState(GL_VERTEX_ARRAY);
-		//glEnableClientState(GL_COLOR_ARRAY);
-
-		//glDrawArrays(GL_TRIANGLES, 0, *list[i]->GetPosition());
-
-		//glDisableClientState(GL_COLOR_ARRAY);
-		//glDisableClientState(GL_VERTEX_ARRAY); 
 	}
 
-	//disable CGprofile
-	cgGLDisableProfile(myCgVertexProfile);
+	//disable Vertex CGprofile
+	rendererGL.DisableProfile(rendererGL.GetVertexProfile());
 }
 
 void Scene::Update()
 {
-	Scene::deltaTime = glutGet(GLUT_ELAPSED_TIME) * 0.001 - Scene::deltaTime;
-	int fps = 1 / Scene::deltaTime;
+	Scene::deltaTime = glutGet(GLUT_ELAPSED_TIME) - Scene::deltaTime;
+	float fps = 1 / Scene::deltaTime * 1000;
 	
-	std::cout << "float delta time = " << Scene::deltaTime << std::endl;
+	std::cout << "float delta time = " << Scene::deltaTime << " miliseconds " << std::endl;
 	std::cout << "fps = " << fps << std::endl;
 
 	int deltaTime = 0;
@@ -218,7 +187,7 @@ void Scene::checkForCgError(const char *situation)
 			"OpenGLVer2", situation, string);
 		if (error == CG_COMPILER_ERROR) 
 		{
-			printf("%s\n", cgGetLastListing(myCgContext));
+			printf("%s\n", cgGetLastListing(rendererGL.GetContext()));
 		}
 		
 		char x;

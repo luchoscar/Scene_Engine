@@ -1,12 +1,15 @@
 #pragma once
 #include "VertexObject.h"
 
-class SimpleVS : VertexObject
+class SimpleVS : public VertexObject
 {
 public:
 	SimpleVS();
 	~SimpleVS();
 
-	virtual void InitShader(const char* fileName, const char* programName);
+	virtual void UpdateParameters() {};
+
+private:
+	CGparameter vertexParam_modelViewProj;
 };
 

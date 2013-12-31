@@ -10,15 +10,28 @@ public:
 	OpenGLRenderer();
 	virtual ~OpenGLRenderer();
 
-	static void Init();
+	void LoadProgram(CGprogram program);
+	static void InitContext();
+	static void InitVertexProfile();
+	static void InitFragmentProfile();
+	static CGcontext GetContext() { return myCgContext; };
+	static CGprofile GetVertexProfile() { return vertexProfile; };
+	static CGprofile GetFragmentProfile() { return fragmentProfile; };
+	static void ClearGLFlags();
+	static void BindProgram(CGprogram _program);
+	static void EnableProfile(CGprofile _profile);
+	static void DisableProfile(CGprofile _profile);
+	static void checkForCgError(const char *situation);
 
 protected:
 	static CGcontext myCgContext;
-	static void InitContext();
-	static void checkForCgError(const char *situation);
+	static CGprofile vertexProfile,
+				fragmentProfile;
 
 private:
 	static bool contextInitialized;
+	static bool vertexProfileInitialized;
+	static bool fragmentProfileInitialized;
 
 };
 

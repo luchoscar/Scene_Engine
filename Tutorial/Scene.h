@@ -11,8 +11,11 @@
 #include <CG\cgGL.h>
 #include <vector>
 #include <time.h> 
+#include "OpenGLRenderer.h"
 
 using namespace std;
+
+#include "SimpleVS.h"
 
 class Scene
 {
@@ -30,12 +33,15 @@ protected:
 	clock_t t;	//used to calculate delta time
 	vector<BaseObject*> list;
 
+	OpenGLRenderer rendererGL;
+
 	//shader variables
 	CGcontext myCgContext;
 
 	CGprofile myCgVertexProfile,
 				myCgFragmentProfile;
 
+	//first shader
 	CGprogram   myCgVertexProgram,
 				myCgFragmentProgram;
 
@@ -43,4 +49,6 @@ protected:
 				myCgFragmentParam_c;
 
 	void checkForCgError(const char *situation);
+
+	SimpleVS simpleVS;
 };

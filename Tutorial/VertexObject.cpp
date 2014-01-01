@@ -21,5 +21,5 @@ void VertexObject::CreateProgram(const char* fileName, const char* functionName)
 		functionName, //Entry function
 		NULL);
 
-	OpenGLRenderer::checkForCgError("Creating program from file");
+	OpenGLRenderer::checkForCgError("Creating vertex program from file");
 }

@@ -39,7 +39,18 @@ void OpenGLRenderer::InitVertexProfile()
 	cgGLSetOptimalOptions(vertexProfile);
 	checkForCgError("selecting vertex profile");
 
-	vertexProfileInitialized= true;
+	vertexProfileInitialized = true;
+}
+
+void OpenGLRenderer::InitFragmentProfile()
+{
+	if (fragmentProfileInitialized) return;
+
+	fragmentProfile = cgGLGetLatestProfile(CG_GL_FRAGMENT);
+	cgGLSetOptimalOptions(fragmentProfile);
+	checkForCgError("selecting fragment profile");
+
+	fragmentProfileInitialized = true;
 }
 
 void OpenGLRenderer::LoadProgram(CGprogram program)

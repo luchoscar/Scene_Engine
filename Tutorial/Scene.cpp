@@ -19,7 +19,7 @@ const char *myVertexProgramFileName = "vertex_shader.cg",
 			*myFragmentProgramFileName = "fragment_shader.cg",
 			*myFragmentProgramName = "FS_program";
 
-float Scene::deltaTime;
+float Scene::deltaTime = 0.0f;
 
 Scene::Scene(void)
 {
@@ -48,9 +48,10 @@ void Scene::Init()
 	rendererGL.InitVertexProfile();
 
 	//creating FS profile
-	myCgFragmentProfile = cgGLGetLatestProfile(CG_GL_FRAGMENT);
-	cgGLSetOptimalOptions(myCgFragmentProfile);
-	checkForCgError("selecting fragment profile");
+	rendererGL.InitFragmentProfile();
+	//myCgFragmentProfile = cgGLGetLatestProfile(CG_GL_FRAGMENT);
+	//cgGLSetOptimalOptions(myCgFragmentProfile);
+	//checkForCgError("selecting fragment profile");
 
 	//creating VS program
 	simpleVS.CreateProgram(myVertexProgramFileName, myVertexProgramName);
@@ -58,16 +59,18 @@ void Scene::Init()
 	//Loads the vertex program into memory
 	rendererGL.LoadProgram(simpleVS.GetProgram());
 	
-	//creating FS program
+	//binding variables
 	myCgVertexParam_modelViewProj = cgGetNamedParameter(simpleVS.GetProgram(), "modelViewProj");
 	checkForCgError("could not get modelViewProj parameter");
 
+	//creating FS program
 	myCgFragmentProgram = cgCreateProgramFromFile(
 		//myCgContext, 
 		rendererGL.GetContext(),
 		CG_SOURCE, 
 		myFragmentProgramFileName, //File name of shader program
-		myCgFragmentProfile,
+		//myCgFragmentProfile,
+		rendererGL.GetFragmentProfile(),
 		myFragmentProgramName, //Entry function
 		NULL);
 	checkForCgError("Creating program from file");
@@ -94,9 +97,10 @@ void Scene::Draw()
 
 	//Enable VS & FS profiles
 	rendererGL.EnableProfile(rendererGL.GetVertexProfile());
-
-	cgGLEnableProfile(myCgFragmentProfile);
-	checkForCgError("Enabling fragment profile");
+	//rendererGL.EnableProfile(myCgFragmentProfile);
+	rendererGL.EnableProfile(rendererGL.GetFragmentProfile());
+	//cgGLEnableProfile(myCgFragmentProfile);
+	//checkForCgError("Enabling fragment profile");
 
 	Matrix3D MVP, viewMatrix, modelViewMatrix, modelMatrix, translateMatrix, rotationMatrix;
 	
@@ -156,12 +160,14 @@ void Scene::Draw()
 
 	//disable Vertex CGprofile
 	rendererGL.DisableProfile(rendererGL.GetVertexProfile());
+	//rendererGL.DisableProfile(myCgFragmentProfile);
+	rendererGL.DisableProfile(rendererGL.GetFragmentProfile());
 }
 
 void Scene::Update()
 {
 	Scene::deltaTime = glutGet(GLUT_ELAPSED_TIME) - Scene::deltaTime;
-	float fps = 1 / Scene::deltaTime * 1000;
+	float fps = 1 / (Scene::deltaTime * 1000);
 	
 	std::cout << "float delta time = " << Scene::deltaTime << " miliseconds " << std::endl;
 	std::cout << "fps = " << fps << std::endl;

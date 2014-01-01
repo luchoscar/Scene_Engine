@@ -89,6 +89,7 @@
     <ClInclude Include="ObjectTriangle.h" />
     <ClInclude Include="OpenGLRenderer.h" />
     <ClInclude Include="Scene.h" />
+    <ClInclude Include="SimpleFS.h" />
     <ClInclude Include="SimpleVS.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
@@ -103,6 +104,7 @@
     <ClCompile Include="ObjectTriangle.cpp" />
     <ClCompile Include="OpenGLRenderer.cpp" />
     <ClCompile Include="Scene.cpp" />
+    <ClCompile Include="SimpleFS.cpp" />
     <ClCompile Include="SimpleVS.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

@@ -195,10 +195,10 @@ void ObjectCube::Draw()
 	glEnd();
 }
 
-void ObjectCube::Update(int deltaTime)
+void ObjectCube::Update()
 {
 	//rotation[0] += 25.0 * deltaTime;
-	rotation[0] += 0.125;
+	//rotation[0] += 0.125;
 }
 
 float* ObjectCube::GetVertexBuffer()

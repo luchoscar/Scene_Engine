@@ -23,8 +23,7 @@ float Scene::deltaTime = 0.0f;
 
 Scene::Scene(void)
 {
-	//simpleVS = new SimpleVS();
-	//camera object should be added in the constructor and as the first object of the list for easy access
+
 }
 
 Scene::~Scene(void)
@@ -49,9 +48,6 @@ void Scene::Init()
 
 	//creating FS profile
 	rendererGL.InitFragmentProfile();
-	//myCgFragmentProfile = cgGLGetLatestProfile(CG_GL_FRAGMENT);
-	//cgGLSetOptimalOptions(myCgFragmentProfile);
-	//checkForCgError("selecting fragment profile");
 
 	//creating VS program
 	simpleVS.CreateProgram(myVertexProgramFileName, myVertexProgramName);
@@ -59,26 +55,14 @@ void Scene::Init()
 	//Loads the vertex program into memory
 	rendererGL.LoadProgram(simpleVS.GetProgram());
 	
-	//binding variables
-	myCgVertexParam_modelViewProj = cgGetNamedParameter(simpleVS.GetProgram(), "modelViewProj");
-	checkForCgError("could not get modelViewProj parameter");
+	//binding VS shader variables
+	simpleVS.LinkParameters();
 
 	//creating FS program
-	myCgFragmentProgram = cgCreateProgramFromFile(
-		//myCgContext, 
-		rendererGL.GetContext(),
-		CG_SOURCE, 
-		myFragmentProgramFileName, //File name of shader program
-		//myCgFragmentProfile,
-		rendererGL.GetFragmentProfile(),
-		myFragmentProgramName, //Entry function
-		NULL);
-	checkForCgError("Creating program from file");
+	simpleFS.CreateProgram(myFragmentProgramFileName, myFragmentProgramName);
 
 	//Loads the fragment program into memory
-	cgGLLoadProgram(myCgFragmentProgram);
-	checkForCgError("Loading program");
-
+	rendererGL.LoadProgram(simpleFS.GetProgram());
 
 	//adding default scene objects
 	//camera object should be added in the constructor and as the first object of the list for easy access
@@ -97,16 +81,13 @@ void Scene::Draw()
 
 	//Enable VS & FS profiles
 	rendererGL.EnableProfile(rendererGL.GetVertexProfile());
-	//rendererGL.EnableProfile(myCgFragmentProfile);
 	rendererGL.EnableProfile(rendererGL.GetFragmentProfile());
-	//cgGLEnableProfile(myCgFragmentProfile);
-	//checkForCgError("Enabling fragment profile");
 
 	Matrix3D MVP, viewMatrix, modelViewMatrix, modelMatrix, translateMatrix, rotationMatrix;
 	
-	Matrix3D::BuildLookAtMatrix(0.0, 0.0, 5, 
-								  0.0, 0.0, 0.0,
-								  0.0, 1.0, 0.0,
+	Matrix3D::BuildLookAtMatrix(0.0, 0.0, 5,		//camera position
+								  0.0, 0.0, 0.0,	//point that camera looks at
+								  0.0, 1.0, 0.0,	//camera up vector
 								  viewMatrix);
 
 	Matrix3D::MakeScaleMatrix(1.0, 1.0, 1.0, modelMatrix);
@@ -140,6 +121,7 @@ void Scene::Draw()
 					Matrix3D::MakeRotateMatrix(tempSpace[r], 0.0, 0.0, 1.0, rotationMatrix);
 					break;
 				}
+
 				Matrix3D::MultMatrix(modelMatrix, rotationMatrix, modelMatrix);		
 			}
 		}
@@ -148,11 +130,12 @@ void Scene::Draw()
 		Matrix3D::MultMatrix(modelViewMatrix, viewMatrix, modelMatrix);		//model - view matrix
 		Matrix3D::MultMatrix(MVP, Engine::perspective, modelViewMatrix);	//model - view - projection matrix
 		
-		cgSetMatrixParameterfr(myCgVertexParam_modelViewProj, MVP());	//pass MVP as pointer to VS 
+		//update VS parameters
+		simpleVS.UpdateModelViewMatrix(MVP()); 
 		
 		//update shaders
-		cgUpdateProgramParameters(simpleVS.GetProgram());
-		cgUpdateProgramParameters(myCgFragmentProgram);
+		simpleVS.UpdateParameters();
+		simpleFS.UpdateParameters();
 		
 		//draw geometry
 		list[i]->Draw();
@@ -160,25 +143,32 @@ void Scene::Draw()
 
 	//disable Vertex CGprofile
 	rendererGL.DisableProfile(rendererGL.GetVertexProfile());
-	//rendererGL.DisableProfile(myCgFragmentProfile);
 	rendererGL.DisableProfile(rendererGL.GetFragmentProfile());
 }
 
+float oldTime;
 void Scene::Update()
 {
-	Scene::deltaTime = glutGet(GLUT_ELAPSED_TIME) - Scene::deltaTime;
-	float fps = 1 / (Scene::deltaTime * 1000);
+	float newTime = glutGet(GLUT_ELAPSED_TIME);
+	std::cout << "delta time = " << newTime << " - " << oldTime << std::endl;
+	//oldTime = glutGet(GLUT_ELAPSED_TIME);
+	//Scene::deltaTime = (glutGet(GLUT_ELAPSED_TIME) - Scene::deltaTime) * 0.001;
+	Scene::deltaTime = (newTime - oldTime) * 0.001;
+	oldTime = newTime;
+	float fps = 1 / (Scene::deltaTime);
 	
-	std::cout << "float delta time = " << Scene::deltaTime << " miliseconds " << std::endl;
+	
+	std::cout << "float delta time = " << Scene::deltaTime << " seconds " << std::endl;
 	std::cout << "fps = " << fps << std::endl;
 
-	int deltaTime = 0;
+	//rotating 4th object
+	list[3]->RotationAroundAxis(50 * Scene::deltaTime, 0.0, 0.0);
 
 	//call each object in the list update function
-	for (unsigned int i = 0; i < list.size(); i++)
-	{
-		list[i]->Update(deltaTime);
-	}
+	//for (unsigned int i = 0; i < list.size(); i++)
+	//{
+	//	list[i]->Update();
+	//}
 }
 
 // return compiler error message when setting up shader programs

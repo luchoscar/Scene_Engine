@@ -28,3 +28,17 @@ float* BaseObject::GetScale()
 {
 	return scale;
 }
+
+void BaseObject::TranslateOnAxis(float xPos, float yPos, float zPos)
+{
+	position[0] += xPos;
+	position[1] += yPos;
+	position[2] += zPos;
+}
+
+void BaseObject::RotationAroundAxis(float xRot, float yRot, float zRot)
+{
+	rotation[0] += xRot;
+	rotation[1] += yRot;
+	rotation[2] += zRot;
+}

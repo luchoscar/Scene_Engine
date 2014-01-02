@@ -17,7 +17,7 @@ void FragmentObject::CreateProgram(const char* fileName, const char* functionNam
 		OpenGLRenderer::GetContext(),
 		CG_SOURCE, 
 		fileName, //File name of shader program
-		OpenGLRenderer::GetVertexProfile(),
+		OpenGLRenderer::GetFragmentProfile(),
 		functionName, //Entry function
 		NULL);
 

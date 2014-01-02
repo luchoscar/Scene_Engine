@@ -104,7 +104,7 @@ void ObjectTriangle::Draw()
 	glEnd();
 }
 
-void ObjectTriangle::Update(int deltaTime)
+void ObjectTriangle::Update()
 {
 
 }

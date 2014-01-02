@@ -6,6 +6,7 @@ public:
 	SimpleFS();
 	~SimpleFS();
 
-	virtual void UpdateParameters() {};
+	virtual void LinkParameters();
+	virtual void UpdateParameters();
 };
 

@@ -13,6 +13,7 @@ public:
 	void CreateProgram(const char* fileName, const char* functionName);
 	CGprogram GetProgram() { return vertexProgram; };
 
+	virtual void LinkParameters() = 0;
 	virtual void UpdateParameters() = 0;
 
 protected:

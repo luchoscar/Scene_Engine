@@ -16,6 +16,7 @@
 using namespace std;
 
 #include "SimpleVS.h"
+#include "SimpleFS.h"
 
 class Scene
 {
@@ -51,4 +52,5 @@ protected:
 	void checkForCgError(const char *situation);
 
 	SimpleVS simpleVS;
+	SimpleFS simpleFS;
 };

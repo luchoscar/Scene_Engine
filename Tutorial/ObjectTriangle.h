@@ -17,7 +17,7 @@ public:
 	virtual float* GetColorBuffer();
 
 	virtual void Draw();
-	virtual void Update(int deltaTime);
+	virtual void Update();
 
 protected:
 };

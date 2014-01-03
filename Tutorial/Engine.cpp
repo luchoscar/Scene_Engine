@@ -5,7 +5,10 @@
 #include "Math3D.h"
 #include <iostream>
 
+//static variables
 Matrix3D Engine::perspective;
+float Engine::deltaTime;
+float Engine::previousTime;
 
 //float deltaTime = 0.0;
 Scene* scene = new Scene();	//eventually expand this to a List<Scene>* to support multiple scenes
@@ -14,7 +17,7 @@ static Math3D* Math;
 
 Engine::Engine()
 {
-
+	previousTime = 0.0;
 }
 
 Engine::~Engine()
@@ -54,8 +57,19 @@ void Engine::Display()
 
 void Engine::Update()
 {
+	// calculate fps & frame time
+	float currentTime = glutGet(GLUT_ELAPSED_TIME);
+	Engine::deltaTime = (currentTime - Engine::previousTime) * 0.001;
+	Engine::previousTime = currentTime;
+	float fps = 1 / (Engine::deltaTime);
+	
+	std::cout << "Fame Time (delta Time = " << Engine::deltaTime << " seconds " << std::endl;
+	std::cout << "Engine fps = " << fps << std::endl;
+	
+	//run scene update
 	scene->Update();
 
+	//update draw buffers
 	glutPostRedisplay();
 }
 

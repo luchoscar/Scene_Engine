@@ -13,6 +13,12 @@ public:
 	float* GetPosition();
 	float* GetRotation();
 	float* GetScale();
+	float* GetColor();
+
+	void SetPosition(float xPos, float yPos, float zPos);
+	void SetRotation(float xRot, float yRot, float zRot);
+	void SetScale(float xScale, float yScale, float zScale);
+	void SetColor(float rColor, float gColor, float bColor);
 
 	void TranslateOnAxis(float xPos, float yPos, float zPos);
 	void RotationAroundAxis(float xRot, float yRot, float zRot);

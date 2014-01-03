@@ -19,8 +19,6 @@ const char *myVertexProgramFileName = "vertex_shader.cg",
 			*myFragmentProgramFileName = "fragment_shader.cg",
 			*myFragmentProgramName = "FS_program";
 
-float Scene::deltaTime = 0.0f;
-
 Scene::Scene(void)
 {
 
@@ -85,7 +83,7 @@ void Scene::Draw()
 
 	Matrix3D MVP, viewMatrix, modelViewMatrix, modelMatrix, translateMatrix, rotationMatrix;
 	
-	Matrix3D::BuildLookAtMatrix(0.0, 0.0, 5,		//camera position
+	Matrix3D::BuildLookAtMatrix(0.0, 0.0, 12.5,		//camera position
 								  0.0, 0.0, 0.0,	//point that camera looks at
 								  0.0, 1.0, 0.0,	//camera up vector
 								  viewMatrix);
@@ -130,7 +128,7 @@ void Scene::Draw()
 		Matrix3D::MultMatrix(modelViewMatrix, viewMatrix, modelMatrix);		//model - view matrix
 		Matrix3D::MultMatrix(MVP, Engine::perspective, modelViewMatrix);	//model - view - projection matrix
 		
-		//update VS parameters
+		//update simpleVS parameters
 		simpleVS.UpdateModelViewMatrix(MVP()); 
 		
 		//update shaders
@@ -146,29 +144,52 @@ void Scene::Draw()
 	rendererGL.DisableProfile(rendererGL.GetFragmentProfile());
 }
 
-float oldTime;
+float boundBox = 5;
+int xDir = 1;
+int yDir = 1;
+int zDir = 1;
 void Scene::Update()
 {
-	float newTime = glutGet(GLUT_ELAPSED_TIME);
-	std::cout << "delta time = " << newTime << " - " << oldTime << std::endl;
-	//oldTime = glutGet(GLUT_ELAPSED_TIME);
-	//Scene::deltaTime = (glutGet(GLUT_ELAPSED_TIME) - Scene::deltaTime) * 0.001;
-	Scene::deltaTime = (newTime - oldTime) * 0.001;
-	oldTime = newTime;
-	float fps = 1 / (Scene::deltaTime);
-	
-	
-	std::cout << "float delta time = " << Scene::deltaTime << " seconds " << std::endl;
-	std::cout << "fps = " << fps << std::endl;
+	//translate 3rd object on x-axis
+	if (list[2]->GetPosition()[0] <= -boundBox) 
+	{
+		list[2]->SetPosition(-boundBox, list[2]->GetPosition()[1], list[2]->GetPosition()[2]);
+		xDir = 1;
+	}
+	else if (list[2]->GetPosition()[0] >= boundBox) 
+	{
+		list[2]->SetPosition(boundBox, list[2]->GetPosition()[1], list[2]->GetPosition()[2]);
+		xDir = -1;
+	}
 
-	//rotating 4th object
-	list[3]->RotationAroundAxis(50 * Scene::deltaTime, 0.0, 0.0);
+	//translate 3rd object on y-axis
+	if (list[2]->GetPosition()[1] <= -boundBox) 
+	{
+		list[2]->SetPosition(list[2]->GetPosition()[0], -boundBox, list[2]->GetPosition()[2]);
+		yDir = 1;
+	}
+	else if (list[2]->GetPosition()[1] >= boundBox) 
+	{
+		list[2]->SetPosition(list[2]->GetPosition()[0], boundBox, list[2]->GetPosition()[2]);
+		yDir = -1;
+	}
 
-	//call each object in the list update function
-	//for (unsigned int i = 0; i < list.size(); i++)
-	//{
-	//	list[i]->Update();
-	//}
+	//translate 3rd object on z-axis
+	if (list[2]->GetPosition()[2] <= -boundBox) 
+	{
+		list[2]->SetPosition(list[2]->GetPosition()[0], list[2]->GetPosition()[1], -boundBox);
+		zDir = 1;
+	}
+	else if (list[2]->GetPosition()[2] >= boundBox) 
+	{
+		list[2]->SetPosition(list[2]->GetPosition()[0], list[2]->GetPosition()[1], boundBox);
+		zDir = -1;
+	}
+	list[2]->TranslateOnAxis(xDir * 5.0 * Engine::deltaTime, yDir * 2.5 * Engine::deltaTime, zDir * 7.5 * Engine::deltaTime);
+
+	//rotating 3rd & 4th object
+	list[2]->RotationAroundAxis(15 * Engine::deltaTime, 20 * Engine::deltaTime, 30 * Engine::deltaTime);
+	list[3]->RotationAroundAxis(50 * Engine::deltaTime, 0.0, 0.0);
 }
 
 // return compiler error message when setting up shader programs

@@ -10,7 +10,6 @@
 #include <CG\cg.h>
 #include <CG\cgGL.h>
 #include <vector>
-#include <time.h> 
 #include "OpenGLRenderer.h"
 
 using namespace std;
@@ -21,8 +20,6 @@ using namespace std;
 class Scene
 {
 public:
-	static float deltaTime;
-
 	Scene();
 	virtual ~Scene();
 	
@@ -31,9 +28,10 @@ public:
 	virtual void Update();
 
 protected:
-	clock_t t;	//used to calculate delta time
+	//List holding all objects in scene
 	vector<BaseObject*> list;
-
+	
+	//object holding OpenGL code
 	OpenGLRenderer rendererGL;
 
 	//shader variables

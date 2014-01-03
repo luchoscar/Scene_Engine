@@ -8,7 +8,7 @@
 class Engine
 {
 public:
-	//static float deltaTime;
+	static float deltaTime;
 	
 	Engine();
 	~Engine();
@@ -24,4 +24,5 @@ public:
 	static Matrix3D perspective;
 
 protected:
+	static float previousTime;	//time for previous frame
 };

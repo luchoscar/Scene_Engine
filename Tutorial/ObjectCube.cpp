@@ -53,7 +53,7 @@ ObjectCube::ObjectCube(float posX, float posY, float posZ,
 
 void ObjectCube::Init()
 {
-	//vertex buffer
+	//vertex buffer - 8 vertices - x, y, z
 	vb = new float[24];
 
 	//front top left corner
@@ -144,13 +144,19 @@ void ObjectCube::Draw()
 	//glBegin(GL_QUADS);
 	glBegin(GL_TRIANGLES);
 		glColor3f(cb[0], cb[1], cb[2]);
+		glTexCoord2f(0.0, 0.0);
 		glVertex3f(vb[0], vb[1], vb[2]);
+		glTexCoord2f(1.0, 0.0);
 		glVertex3f(vb[3], vb[4], vb[5]);
+		glTexCoord2f(1.0, 1.0);
 		glVertex3f(vb[6], vb[7], vb[8]);
 	glEnd(); 
 	glBegin(GL_TRIANGLES);
+		glTexCoord2f(1.0, 1.0);
 		glVertex3f(vb[6], vb[7], vb[8]);
+		glTexCoord2f(0.0, 1.0);
 		glVertex3f(vb[9], vb[10], vb[11]);
+		glTexCoord2f(0.0, 0.0);
 		glVertex3f(vb[0], vb[1], vb[2]);
 	glEnd();
 

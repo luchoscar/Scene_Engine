@@ -1,0 +1,15 @@
+//fragment shader - texture
+
+void FS_program(float2 texCoord : TEXCOORD0,
+				float4 color	: TEXCOORD1,
+
+				out float4 outColor	: COLOR,
+				
+				uniform sampler2D decalMap)
+{
+	
+	float3 decalColor = tex2D(decalMap, texCoord).xyz;
+
+	outColor = color * (float4(decalColor, 1.0));
+}
+

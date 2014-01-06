@@ -14,7 +14,7 @@ public:
 	CGprogram GetProgram() { return fragmentProgram; };
 
 	virtual void LinkParameters() = 0;
-	virtual void UpdateParameters() = 0;
+	void UpdateParameters() { cgUpdateProgramParameters(fragmentProgram); };
 
 protected:
 	CGprogram fragmentProgram;

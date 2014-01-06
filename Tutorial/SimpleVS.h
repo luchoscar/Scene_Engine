@@ -7,13 +7,9 @@ public:
 	SimpleVS();
 	~SimpleVS();
 
-	void UpdateModelViewMatrix(float* MVP);
-	CGparameter GetModelViewProjMatrix() { return vertexParam_modelViewProj; };
-
 	virtual void LinkParameters();
-	virtual void UpdateParameters();
 
 private:
-	CGparameter vertexParam_modelViewProj;
+	
 };
 

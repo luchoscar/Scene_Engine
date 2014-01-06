@@ -25,6 +25,9 @@
     <None Include="fragment_shader.cg">
       <Filter>Shaders</Filter>
     </None>
+    <None Include="textureFragment.cg">
+      <Filter>Shaders</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -66,6 +69,9 @@
     <ClInclude Include="SimpleFS.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="TextureFS.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -105,6 +111,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="SimpleFS.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="TextureFS.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

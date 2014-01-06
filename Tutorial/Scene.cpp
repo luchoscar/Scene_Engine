@@ -14,7 +14,7 @@
 #include "Engine.h"
 #include <iostream>
 
-//SOIL Image library
+//SOIL Image library - SOIL commands to be moved to OpenGLRenderer class
 #include "..\Simple OpenGL Image Library\src\SOIL.h"
 #pragma comment(lib, "..\\Simple OpenGL Image Library\\projects\\VC9\\Debug\\SOIL.lib")
 
@@ -46,6 +46,7 @@ void Scene::Init()
 	//create OpenGL context
 	rendererGL.InitContext();
 
+	//testing SOIL works correctly - need to change float[3] tp float[5] so vertices store UV coordinates
 	int width, height;
 	unsigned char* image =
 		SOIL_load_image("Images/bricks_diffuse.bmp", &width, &height, 0, SOIL_LOAD_RGB);
@@ -81,7 +82,6 @@ void Scene::Init()
 	list.push_back(new ObjectCube(1.5, -0.70, 0.0, 25.0, 30.0, 0.0, 2.0, 2.0, 2.0, 1.0, 1.0, 1.0));
 }
 
-float cameraAnim = 0.0;
 void Scene::Draw()
 {
 	rendererGL.ClearGLFlags();
@@ -93,17 +93,12 @@ void Scene::Draw()
 	rendererGL.EnableProfile(rendererGL.GetVertexProfile());
 	rendererGL.EnableProfile(rendererGL.GetFragmentProfile());
 
-	Matrix3D MVP, viewMatrix, modelViewMatrix, modelMatrix, translateMatrix, rotationMatrix, cameraAnimMatrix;
+	Matrix3D MVP, viewMatrix, modelViewMatrix, modelMatrix, translateMatrix, rotationMatrix;
 	
 	Matrix3D::BuildLookAtMatrix(0.0, 0.0, -12.5,		//camera position
 								  0.0, 0.0, 0.0,	//point that camera looks at
 								  0.0, 1.0, 0.0,	//camera up vector
 								  viewMatrix);
-	//animate camera to orbit origin y-axis
-	cameraAnim += 20 * Engine::deltaTime; 
-	if (cameraAnim >= 360) cameraAnim = 0.0;
-	Matrix3D::MakeRotateMatrix(cameraAnim, 0.0, 1, 0.0, cameraAnimMatrix);
-	Matrix3D::MultMatrix(viewMatrix, viewMatrix, cameraAnimMatrix);
 
 	//create identity matrices
 	Matrix3D::MakeScaleMatrix(1.0, 1.0, 1.0, modelMatrix);

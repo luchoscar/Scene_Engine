@@ -141,12 +141,17 @@ ObjectCube::~ObjectCube(void)
 void ObjectCube::Draw()
 {
 	//front face
-	glBegin(GL_QUADS);
+	//glBegin(GL_QUADS);
+	glBegin(GL_TRIANGLES);
 		glColor3f(cb[0], cb[1], cb[2]);
 		glVertex3f(vb[0], vb[1], vb[2]);
 		glVertex3f(vb[3], vb[4], vb[5]);
 		glVertex3f(vb[6], vb[7], vb[8]);
+	glEnd(); 
+	glBegin(GL_TRIANGLES);
+		glVertex3f(vb[6], vb[7], vb[8]);
 		glVertex3f(vb[9], vb[10], vb[11]);
+		glVertex3f(vb[0], vb[1], vb[2]);
 	glEnd();
 
 	//back face

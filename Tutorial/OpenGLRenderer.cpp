@@ -28,6 +28,9 @@ void OpenGLRenderer::InitContext()
 	cgGLSetDebugMode(CG_FALSE);
 	cgSetParameterSettingMode(myCgContext, CG_DEFERRED_PARAMETER_SETTING);
 
+	glEnable(GL_DEPTH_TEST); 
+	glEnable(GL_CULL_FACE);
+
 	OpenGLRenderer::contextInitialized = true;
 }
 
@@ -63,7 +66,6 @@ void OpenGLRenderer::ClearGLFlags()
 {
 	glClearColor(0.1, 0.3, 0.6, 0.0);  /* Blue background */
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	glEnable(GL_DEPTH_TEST); // --> adding this in order to perform depth test??? this was not being applied when called in Engine.cpp
 }
 
 void OpenGLRenderer::BindProgram(CGprogram _program)

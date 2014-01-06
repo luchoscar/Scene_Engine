@@ -14,6 +14,11 @@
 #include "Engine.h"
 #include <iostream>
 
+//SOIL Image library
+#include "..\Simple OpenGL Image Library\src\SOIL.h"
+#pragma comment(lib, "..\\Simple OpenGL Image Library\\projects\\VC9\\Debug\\SOIL.lib")
+
+
 const char *myVertexProgramFileName = "vertex_shader.cg",
 			*myVertexProgramName = "VS_program",
 			*myFragmentProgramFileName = "fragment_shader.cg",
@@ -41,6 +46,12 @@ void Scene::Init()
 	//create OpenGL context
 	rendererGL.InitContext();
 
+	int width, height;
+	unsigned char* image =
+		SOIL_load_image("Images/bricks_diffuse.bmp", &width, &height, 0, SOIL_LOAD_RGB);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB,
+		GL_UNSIGNED_BYTE, image);
+
 	//creating VS profile
 	rendererGL.InitVertexProfile();
 
@@ -65,11 +76,12 @@ void Scene::Init()
 	//adding default scene objects
 	//camera object should be added in the constructor and as the first object of the list for easy access
 	list.push_back(new ObjectTriangle());
-	list.push_back(new ObjectTriangle(0.5, 1.75, 0.0, 0.0, 0.0, 30.0, 1.5, 1.5, 1.5, 1.0, 0.5, 0.25));
-	list.push_back(new ObjectCube(-1.5, 1.5, -2.0, 0.0, 0.0, 0.0, 2.0, 2.0, 2.0, 1.0, 1.0, 1.0));
+	list.push_back(new ObjectTriangle(-1.5, 1.75, 0.0, 0.0, 0.0, 0.0, 3.0, 3.0, 3.0, 0.75, 0.25, 0.5));
+	list.push_back(new ObjectCube(-1.5, 1.5, -2.0, 0.0, 0.0, 0.0, 2.0, 2.0, 2.0, 1.0, 0.5, 0.0));
 	list.push_back(new ObjectCube(1.5, -0.70, 0.0, 25.0, 30.0, 0.0, 2.0, 2.0, 2.0, 1.0, 1.0, 1.0));
 }
 
+float cameraAnim = 0.0;
 void Scene::Draw()
 {
 	rendererGL.ClearGLFlags();
@@ -81,13 +93,19 @@ void Scene::Draw()
 	rendererGL.EnableProfile(rendererGL.GetVertexProfile());
 	rendererGL.EnableProfile(rendererGL.GetFragmentProfile());
 
-	Matrix3D MVP, viewMatrix, modelViewMatrix, modelMatrix, translateMatrix, rotationMatrix;
+	Matrix3D MVP, viewMatrix, modelViewMatrix, modelMatrix, translateMatrix, rotationMatrix, cameraAnimMatrix;
 	
-	Matrix3D::BuildLookAtMatrix(0.0, 0.0, 12.5,		//camera position
+	Matrix3D::BuildLookAtMatrix(0.0, 0.0, -12.5,		//camera position
 								  0.0, 0.0, 0.0,	//point that camera looks at
 								  0.0, 1.0, 0.0,	//camera up vector
 								  viewMatrix);
+	//animate camera to orbit origin y-axis
+	cameraAnim += 20 * Engine::deltaTime; 
+	if (cameraAnim >= 360) cameraAnim = 0.0;
+	Matrix3D::MakeRotateMatrix(cameraAnim, 0.0, 1, 0.0, cameraAnimMatrix);
+	Matrix3D::MultMatrix(viewMatrix, viewMatrix, cameraAnimMatrix);
 
+	//create identity matrices
 	Matrix3D::MakeScaleMatrix(1.0, 1.0, 1.0, modelMatrix);
 	Matrix3D::MakeScaleMatrix(1.0, 1.0, 1.0, translateMatrix);
 	Matrix3D::MakeScaleMatrix(1.0, 1.0, 1.0, rotationMatrix);
@@ -188,8 +206,9 @@ void Scene::Update()
 	list[2]->TranslateOnAxis(xDir * 5.0 * Engine::deltaTime, yDir * 2.5 * Engine::deltaTime, zDir * 7.5 * Engine::deltaTime);
 
 	//rotating 3rd & 4th object
+	list[1]->RotationAroundAxis(0.0, 25 * Engine::deltaTime, 0.0); 
 	list[2]->RotationAroundAxis(15 * Engine::deltaTime, 20 * Engine::deltaTime, 30 * Engine::deltaTime);
-	list[3]->RotationAroundAxis(50 * Engine::deltaTime, 0.0, 0.0);
+	list[3]->RotationAroundAxis(0.0, 50 * Engine::deltaTime, 0.0);
 }
 
 // return compiler error message when setting up shader programs

@@ -72,17 +72,17 @@ void ObjectTriangle::Init()
 
 	//color buffer
 	cb = new float[9];
-	cb[0] = 0.0;
+	cb[0] = color[0];
 	cb[1] = color[1];
 	cb[2] = color[2];
 
 	cb[3] = color[0];
-	cb[4] = 0.0;
+	cb[4] = color[1];
 	cb[5] = color[2];
 
 	cb[6] = color[0];
 	cb[7] = color[1];
-	cb[8] = 0.0;
+	cb[8] = color[2];
 }
 
 ObjectTriangle::~ObjectTriangle(void)

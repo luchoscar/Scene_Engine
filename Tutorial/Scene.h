@@ -16,6 +16,7 @@ using namespace std;
 
 #include "SimpleVS.h"
 #include "SimpleFS.h"
+#include "TextureFS.h"
 
 class Scene
 {
@@ -44,11 +45,9 @@ protected:
 	CGprogram   myCgVertexProgram,
 				myCgFragmentProgram;
 
-	CGparameter myCgVertexParam_modelViewProj,
-				myCgFragmentParam_c;
-
 	void checkForCgError(const char *situation);
 
 	SimpleVS simpleVS;
 	SimpleFS simpleFS;
+	TextureFS textureFS;
 };

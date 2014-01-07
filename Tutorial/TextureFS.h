@@ -6,7 +6,9 @@ public:
 	TextureFS();
 	virtual ~TextureFS();
 
-	virtual void LinkParameters() { };
+	void LoadTexture();
+
+	virtual void LinkParameters();
 
 private:
 	CGparameter decalMap;

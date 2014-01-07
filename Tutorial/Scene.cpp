@@ -18,12 +18,6 @@
 #include "..\Simple OpenGL Image Library\src\SOIL.h"
 #pragma comment(lib, "..\\Simple OpenGL Image Library\\projects\\VC9\\Debug\\SOIL.lib")
 
-
-const char *myVertexProgramFileName = "vertex_shader.cg",
-			*myVertexProgramName = "VS_program",
-			*myFragmentProgramFileName = "fragment_shader.cg",
-			*myFragmentProgramName = "FS_program";
-
 Scene::Scene(void)
 {
 
@@ -46,13 +40,6 @@ void Scene::Init()
 	//create OpenGL context
 	rendererGL.InitContext();
 
-	//testing SOIL works correctly - need to change float[3] tp float[5] so vertices store UV coordinates
-	int width, height;
-	unsigned char* image =
-		SOIL_load_image("Images/bricks_diffuse.bmp", &width, &height, 0, SOIL_LOAD_RGB);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB,
-		GL_UNSIGNED_BYTE, image);
-
 	//creating VS profile
 	rendererGL.InitVertexProfile();
 
@@ -60,7 +47,7 @@ void Scene::Init()
 	rendererGL.InitFragmentProfile();
 
 	//creating VS program
-	simpleVS.CreateProgram(myVertexProgramFileName, myVertexProgramName);
+	simpleVS.CreateProgram("vertex_shader.cg", "VS_program");
 
 	//Loads the vertex program into memory
 	rendererGL.LoadProgram(simpleVS.GetProgram());
@@ -69,10 +56,26 @@ void Scene::Init()
 	simpleVS.LinkParameters();
 
 	//creating FS program
-	simpleFS.CreateProgram(myFragmentProgramFileName, myFragmentProgramName);
+	simpleFS.CreateProgram("fragment_shader.cg", "FS_program");
 
 	//Loads the fragment program into memory
 	rendererGL.LoadProgram(simpleFS.GetProgram());
+
+	//create FS program
+	textureFS.CreateProgram("textureFragment.cg", "FS_program");
+
+	//Loads the fragment program into memory
+	rendererGL.LoadProgram(textureFS.GetProgram());
+
+	//binding FS shader variables
+	textureFS.LinkParameters();
+	
+	//testing SOIL works correctly - need to change float[3] tp float[5] so vertices store UV coordinates
+	int width, height;
+	unsigned char* image =
+		SOIL_load_image("Images/bricks_diffuse.bmp", &width, &height, 0, SOIL_LOAD_RGB);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB,
+		GL_UNSIGNED_BYTE, image);
 
 	//adding default scene objects
 	//camera object should be added in the constructor and as the first object of the list for easy access
@@ -86,12 +89,15 @@ void Scene::Draw()
 {
 	rendererGL.ClearGLFlags();
 
-	//bind CG program
-	rendererGL.BindProgram(simpleVS.GetProgram());
+	////bind CG program
+	//rendererGL.BindProgram(simpleVS.GetProgram());
+	//rendererGL.BindProgram(simpleFS.GetProgram());
 
-	//Enable VS & FS profiles
-	rendererGL.EnableProfile(rendererGL.GetVertexProfile());
-	rendererGL.EnableProfile(rendererGL.GetFragmentProfile());
+	////Enable VS & FS profiles
+	//rendererGL.EnableProfile(rendererGL.GetVertexProfile());
+
+	////Loads the fragment program into memory
+	//rendererGL.EnableProfile(rendererGL.GetFragmentProfile());
 
 	Matrix3D MVP, viewMatrix, modelViewMatrix, modelMatrix, translateMatrix, rotationMatrix;
 	
@@ -141,6 +147,16 @@ void Scene::Draw()
 		Matrix3D::MultMatrix(modelViewMatrix, viewMatrix, modelMatrix);		//model - view matrix
 		Matrix3D::MultMatrix(MVP, Engine::perspective, modelViewMatrix);	//model - view - projection matrix
 		
+		//bind CG program
+		rendererGL.BindProgram(simpleVS.GetProgram());
+		rendererGL.BindProgram(simpleFS.GetProgram());
+
+		//Enable VS & FS profiles
+		rendererGL.EnableProfile(rendererGL.GetVertexProfile());
+
+		//Loads the fragment program into memory
+		rendererGL.EnableProfile(rendererGL.GetFragmentProfile());
+
 		//update simpleVS parameters
 		simpleVS.UpdateModelViewMatrix(MVP()); 
 		
@@ -150,11 +166,15 @@ void Scene::Draw()
 		
 		//draw geometry
 		list[i]->Draw();
+
+		//disable Vertex CGprofile
+		rendererGL.DisableProfile(rendererGL.GetVertexProfile());
+		rendererGL.DisableProfile(rendererGL.GetFragmentProfile());
 	}
 
-	//disable Vertex CGprofile
-	rendererGL.DisableProfile(rendererGL.GetVertexProfile());
-	rendererGL.DisableProfile(rendererGL.GetFragmentProfile());
+	////disable Vertex CGprofile
+	//rendererGL.DisableProfile(rendererGL.GetVertexProfile());
+	//rendererGL.DisableProfile(rendererGL.GetFragmentProfile());
 }
 
 float boundBox = 5;

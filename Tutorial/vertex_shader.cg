@@ -4,11 +4,13 @@ struct Vertex_Output
 {
 	float4 position	: POSITION;
 	float4 color	: COLOR;
+	float2 texCoord	: TEXCOORD0;
 };
 
 //vertex shader
 Vertex_Output VS_program(float4 position	: POSITION,
-							float4 color		: COLOR,
+							float4 color	: COLOR,
+							float2 texCoord : TEXCOORD0,
 
 							uniform float4x4 modelViewProj)
 {
@@ -16,6 +18,7 @@ Vertex_Output VS_program(float4 position	: POSITION,
 
 	OUT.position = mul(modelViewProj, position);
 	OUT.color = color;
+	OUT.texCoord = texCoord;
 
 	return OUT;
 }

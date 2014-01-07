@@ -163,27 +163,39 @@ void ObjectCube::Draw()
 	//back face
 	glBegin(GL_QUADS);
 		glColor3f(cb[3], cb[4], cb[5]);
+		glTexCoord2f(0.0, 0.0);
 		glVertex3f(vb[12], vb[13], vb[14]);
+		glTexCoord2f(0.0, 1.0);
 		glVertex3f(vb[15], vb[16], vb[17]);
+		glTexCoord2f(1.0, 1.0); 
 		glVertex3f(vb[18], vb[19], vb[20]);
+		glTexCoord2f(1.0, 0.0); 
 		glVertex3f(vb[21], vb[22], vb[23]);
 	glEnd();
 
 	//top face
 	glBegin(GL_QUADS);
 		glColor3f(cb[6], cb[7], cb[8]);
+		glTexCoord2f(0.0, 0.0); 
 		glVertex3f(vb[9], vb[10], vb[11]);
+		glTexCoord2f(0.0, 1.0); 
 		glVertex3f(vb[12], vb[13], vb[14]);
+		glTexCoord2f(1.0, 1.0); 
 		glVertex3f(vb[21], vb[22], vb[23]);
+		glTexCoord2f(1.0, 0.0); 
 		glVertex3f(vb[0], vb[1], vb[2]);
 	glEnd();
 
 	//bottom face
 	glBegin(GL_QUADS);
 		glColor3f(cb[9], cb[10], cb[11]);
+		glTexCoord2f(0.0, 0.0); 
 		glVertex3f(vb[3], vb[4], vb[5]);
+		glTexCoord2f(0.0, 1.0); 
 		glVertex3f(vb[18], vb[19], vb[20]);
+		glTexCoord2f(1.0, 1.0); 
 		glVertex3f(vb[15], vb[16], vb[17]);
+		glTexCoord2f(1.0, 0.0); 
 		glVertex3f(vb[6], vb[7], vb[8]);
 	glEnd();
 

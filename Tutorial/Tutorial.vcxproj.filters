@@ -72,6 +72,9 @@
     <ClInclude Include="TextureFS.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="wBitmap.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">

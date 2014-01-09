@@ -7,6 +7,7 @@ public:
 	virtual ~TextureFS();
 
 	void LoadTexture();
+	void SetTextureParameter(GLuint textureParam);
 
 	virtual void LinkParameters();
 

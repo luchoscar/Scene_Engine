@@ -98,6 +98,7 @@
     <ClInclude Include="targetver.h" />
     <ClInclude Include="TextureFS.h" />
     <ClInclude Include="VertexObject.h" />
+    <ClInclude Include="wBitmap.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BaseObject.cpp" />

@@ -5,11 +5,11 @@ void FS_program(float2 texCoord : TEXCOORD0,
 
 				out float4 outColor	: COLOR,
 				
-				uniform sampler2D decalMap)
+				uniform sampler2D decalMap : TEX0)
 {
 	
 	float3 decalColor = tex2D(decalMap, texCoord).xyz;
 
-	outColor = color * (float4(decalColor, 1.0));
+	outColor = (float4(decalColor, 1.0));
 }
 

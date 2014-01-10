@@ -14,6 +14,7 @@
 #include "Engine.h"
 #include <iostream>
 #include "wBitmap.h"
+#include "TextureManager.h"
 
 //SOIL Image library - SOIL commands to be moved to OpenGLRenderer class
 #include "..\Simple OpenGL Image Library\src\SOIL.h"
@@ -38,7 +39,7 @@ Scene::~Scene(void)
 const int numTextures = 2;
 char *textureFileName[numTextures];
 GLuint textureId[numTextures];
-
+TextureManager textureManager;
 //initializing scene
 void Scene::Init()
 {
@@ -78,8 +79,10 @@ void Scene::Init()
 		);
 
 	wBitmap* bitmap = wLoadBitmap("../Images/bricks_diffuse.bmp");
+	textureManager.setTextureinList("../Images/bricks_diffuse.bmp");
+	textureManager.setTextureinMap("../Images/bricks_diffuse.bmp");
 
-	glBindTexture(GL_TEXTURE_2D, textureId[1]);
+	glBindTexture(GL_TEXTURE_2D, textureManager.getTextureId("../Images/bricks_diffuse.bmp"));
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB8, 256, 256, 0, GL_RGB, GL_UNSIGNED_BYTE, bitmap->pixels);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 
@@ -149,25 +152,32 @@ void Scene::Draw()
 		Matrix3D::MultMatrix(modelViewMatrix, viewMatrix, modelMatrix);		//model - view matrix
 		Matrix3D::MultMatrix(MVP, Engine::perspective, modelViewMatrix);	//model - view - projection matrix
 		
+		bool oddVal = i % 2;
 		//bind CG program
 		rendererGL.BindProgram(simpleVS.GetProgram());
-		//rendererGL.BindProgram(simpleFS.GetProgram());
-		rendererGL.BindProgram(textureFS.GetProgram());
+		
+		if (oddVal)
+			rendererGL.BindProgram(simpleFS.GetProgram());
+		else
+			rendererGL.BindProgram(textureFS.GetProgram());
 
 		//Enable VS & FS profiles
 		rendererGL.EnableProfile(rendererGL.GetVertexProfile());
-
-		//Loads the fragment program into memory
 		rendererGL.EnableProfile(rendererGL.GetFragmentProfile());
 
 		//update simpleVS parameters
 		simpleVS.UpdateModelViewMatrix(MVP()); 
-		textureFS.SetTextureParameter(textureId[0]);
+		
+		if (!oddVal)
+			textureFS.SetTextureParameter(textureId[0]);
 
 		//update shaders
 		simpleVS.UpdateParameters();
-		//simpleFS.UpdateParameters();
-		textureFS.UpdateParameters();
+		
+		if (oddVal)
+			simpleFS.UpdateParameters();
+		else
+			textureFS.UpdateParameters();
 
 		//draw geometry
 		list[i]->Draw();
@@ -176,10 +186,6 @@ void Scene::Draw()
 		rendererGL.DisableProfile(rendererGL.GetVertexProfile());
 		rendererGL.DisableProfile(rendererGL.GetFragmentProfile());
 	}
-
-	////disable Vertex CGprofile
-	//rendererGL.DisableProfile(rendererGL.GetVertexProfile());
-	//rendererGL.DisableProfile(rendererGL.GetFragmentProfile());
 }
 
 float boundBox = 5;

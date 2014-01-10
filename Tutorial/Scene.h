@@ -48,7 +48,6 @@ protected:
 	void checkForCgError(const char *situation);
 
 	SimpleVS simpleVS;
-	//SimpleFS simpleFS;
-	TextureFS simpleFS;
+	SimpleFS simpleFS;
 	TextureFS textureFS;
 };

@@ -94,12 +94,16 @@ void ObjectTriangle::Draw()
 {
 	glBegin(GL_TRIANGLES);
 		glColor3f(cb[0], cb[1], cb[2]);
+		
+		glTexCoord2f(0.0, 0.0);
 		glVertex3f(vb[0], vb[1], vb[2]);
 
 		glColor3f(cb[3], cb[4], cb[5]);
+		glTexCoord2f(0.0, 1.0); 
 		glVertex3f(vb[3], vb[4], vb[5]);
 
 		glColor3f(cb[6], cb[7], cb[8]);
+		glTexCoord2f(1.0, 0.5); 
 		glVertex3f(vb[6], vb[7], vb[8]);
 	glEnd();
 }

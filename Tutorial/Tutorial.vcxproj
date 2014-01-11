@@ -91,7 +91,8 @@
     <ClInclude Include="ObjectCube.h" />
     <ClInclude Include="ObjectTriangle.h" />
     <ClInclude Include="OpenGLRenderer.h" />
-    <ClInclude Include="Scene.h" />
+    <ClInclude Include="TextureColorScene.h" />
+    <ClInclude Include="SceneBase.h" />
     <ClInclude Include="SimpleFS.h" />
     <ClInclude Include="SimpleVS.h" />
     <ClInclude Include="stdafx.h" />
@@ -109,7 +110,8 @@
     <ClCompile Include="ObjectCube.cpp" />
     <ClCompile Include="ObjectTriangle.cpp" />
     <ClCompile Include="OpenGLRenderer.cpp" />
-    <ClCompile Include="Scene.cpp" />
+    <ClCompile Include="TextureColorScene.cpp" />
+    <ClCompile Include="SceneBase.cpp" />
     <ClCompile Include="SimpleFS.cpp" />
     <ClCompile Include="SimpleVS.cpp" />
     <ClCompile Include="stdafx.cpp">

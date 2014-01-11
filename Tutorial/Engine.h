@@ -4,6 +4,7 @@
 
 #pragma once
 #include "Matrix3D.h"
+#include "SceneBase.h"
 
 class Engine
 {
@@ -23,6 +24,6 @@ public:
 	static void Resize(int width, int height);
 	static Matrix3D perspective;
 
-protected:
+private:
 	static float previousTime;	//time for previous frame
 };

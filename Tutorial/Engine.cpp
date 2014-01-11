@@ -1,7 +1,7 @@
 #include "StdAfx.h"
 #include "Engine.h"
 #include <GL/glut.h>
-#include "Scene.h"
+#include "TextureColorScene.h"
 #include "Math3D.h"
 #include <iostream>
 
@@ -10,8 +10,7 @@ Matrix3D Engine::perspective;
 float Engine::deltaTime;
 float Engine::previousTime;
 
-//float deltaTime = 0.0;
-Scene* scene = new Scene();	//eventually expand this to a List<Scene>* to support multiple scenes
+SceneBase* scene = new TextureColorScene();	
 
 static Math3D* Math;
 

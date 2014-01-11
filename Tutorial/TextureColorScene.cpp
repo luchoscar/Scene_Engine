@@ -7,24 +7,22 @@
  ****************************************************************************/
 
 #include "StdAfx.h"
-#include "Scene.h"
+#include "TextureColorScene.h"
 #include "ObjectTriangle.h"
 #include "ObjectCube.h"
 #include "Matrix3D.h"
 #include "Engine.h"
-#include <iostream>
-#include "wBitmap.h"
 
 //SOIL Image library - SOIL commands to be moved to OpenGLRenderer class
 #include "..\Simple OpenGL Image Library\src\SOIL.h"
 #pragma comment(lib, "..\\Simple OpenGL Image Library\\projects\\VC9\\Debug\\SOIL.lib")
 
-Scene::Scene(void)
+TextureColorScene::TextureColorScene(void)
 {
 
 }
 
-Scene::~Scene(void)
+TextureColorScene::~TextureColorScene(void)
 {
 	//Delete all objects in list
 	for (unsigned int i=0; i<list.size(); i++)
@@ -36,7 +34,7 @@ Scene::~Scene(void)
 }
 
 //initializing scene
-void Scene::Init()
+void TextureColorScene::Init()
 {
 	//create OpenGL context
 	rendererGL.InitContext();
@@ -74,7 +72,7 @@ void Scene::Init()
 	list.push_back(new ObjectCube(1.5, -0.70, 0.0, 25.0, 30.0, 0.0, 2.0, 2.0, 2.0, 1.0, 1.0, 1.0));
 }
 
-void Scene::Draw()
+void TextureColorScene::Draw()
 {
 	rendererGL.ClearGLFlags();
 
@@ -168,7 +166,7 @@ float boundBox = 5;
 int xDir = 1;
 int yDir = 1;
 int zDir = 1;
-void Scene::Update()
+void TextureColorScene::Update()
 {
 	//translate 3rd object on x-axis
 	if (list[2]->GetPosition()[0] <= -boundBox) 
@@ -211,26 +209,4 @@ void Scene::Update()
 	list[1]->RotationAroundAxis(0.0, 25 * Engine::deltaTime, 0.0); 
 	list[2]->RotationAroundAxis(15 * Engine::deltaTime, 20 * Engine::deltaTime, 30 * Engine::deltaTime);
 	list[3]->RotationAroundAxis(0.0, 50 * Engine::deltaTime, 0.0);
-}
-
-// return compiler error message when setting up shader programs
-void Scene::checkForCgError(const char *situation)
-{
-	CGerror error;
-	const char *string = cgGetLastErrorString(&error);
-
-	if (error != CG_NO_ERROR) 
-	{
-		printf("%s: %s: %s\n",
-			"OpenGLVer2", situation, string);
-		if (error == CG_COMPILER_ERROR) 
-		{
-			printf("%s\n", cgGetLastListing(rendererGL.GetContext()));
-		}
-		
-		char x;
-		std::cin >> x;
-
-		exit(1);
-	}
 }

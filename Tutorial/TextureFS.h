@@ -8,7 +8,7 @@ public:
 
 	void LoadTexture();
 	void SetTextureParameter(GLuint textureParam);
-
+	
 	virtual void LinkParameters();
 
 private:

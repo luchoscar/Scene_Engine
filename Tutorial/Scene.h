@@ -11,12 +11,12 @@
 #include <CG\cgGL.h>
 #include <vector>
 #include "OpenGLRenderer.h"
-
-using namespace std;
-
 #include "SimpleVS.h"
 #include "SimpleFS.h"
 #include "TextureFS.h"
+#include "TextureManager.h"
+
+using namespace std;
 
 class Scene
 {
@@ -50,4 +50,6 @@ protected:
 	SimpleVS simpleVS;
 	SimpleFS simpleFS;
 	TextureFS textureFS;
+
+	TextureManager textureManager;
 };

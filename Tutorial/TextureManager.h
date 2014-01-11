@@ -7,23 +7,30 @@
 #include <CG\cgGL.h>
 #include <vector>
 #include <map>
+#include "wBitmap.h"
 
 class TextureManager
 {
 public:
 	TextureManager();
+	TextureManager(int totalTextures);
 	~TextureManager();
 
-	int setTextureinList(const char* texturePath);
-	const char* setTextureinMap(const char* texturePath);
-
-	GLuint getTextureId(const char* texturePath); 
-	GLuint getTextureId(int idx);
+	void Init(int In_textures);
+	void setBmpTextureinMap(char* texturePath);
 	
+	GLuint getTextureId(const char* texturePath); 
 
 private:
 	int textureCount;
 	std::map<const char*, GLuint> textureDic;
-	std::vector<GLuint> textureIds;
+	//std::vector<GLuint> textureIds;
+
+	int totalTextures;
+	GLuint* texturesIds;
+	wBitmap* bitmap;
+	int textureCounter;
+
+	void FreeMemory();
 };
 

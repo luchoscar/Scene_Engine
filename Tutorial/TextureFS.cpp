@@ -30,4 +30,4 @@ void TextureFS::SetTextureParameter(GLuint textureParam)
 
 	cgGLSetTextureParameter(decalMap, textureParam);
 	OpenGLRenderer::checkForCgError("setting decal 2D texture");
-};
+}

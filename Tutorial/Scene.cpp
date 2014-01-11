@@ -14,7 +14,6 @@
 #include "Engine.h"
 #include <iostream>
 #include "wBitmap.h"
-#include "TextureManager.h"
 
 //SOIL Image library - SOIL commands to be moved to OpenGLRenderer class
 #include "..\Simple OpenGL Image Library\src\SOIL.h"
@@ -36,10 +35,6 @@ Scene::~Scene(void)
 	list.clear();
 }
 
-const int numTextures = 2;
-char *textureFileName[numTextures];
-GLuint textureId[numTextures];
-TextureManager textureManager;
 //initializing scene
 void Scene::Init()
 {
@@ -67,31 +62,10 @@ void Scene::Init()
 	rendererGL.LoadProgram(textureFS.GetProgram());
 	textureFS.LinkParameters();
 	
-	//testing SOIL - need to change float[3] tp float[5] so vertices store UV coordinates
-	glPixelStorei(GL_UNPACK_ALIGNMENT, 4); /* Tightly packed texture data. */
-	glGenTextures(numTextures, textureId);
-	textureId[0] = SOIL_load_OGL_texture
-		(
-		"../Images/bricks_diffuse.bmp",
-		SOIL_LOAD_AUTO,
-		SOIL_CREATE_NEW_ID,
-		SOIL_FLAG_INVERT_Y
-		);
-
-	wBitmap* bitmap = wLoadBitmap("../Images/bricks_diffuse.bmp");
-	textureManager.setTextureinList("../Images/bricks_diffuse.bmp");
-	textureManager.setTextureinMap("../Images/bricks_diffuse.bmp");
-
-	glBindTexture(GL_TEXTURE_2D, textureManager.getTextureId("../Images/bricks_diffuse.bmp"));
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB8, 256, 256, 0, GL_RGB, GL_UNSIGNED_BYTE, bitmap->pixels);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-
-	wFreeBitmap(bitmap);
+	//loading bmp
+	textureManager.Init(1);
+	textureManager.setBmpTextureinMap("../Images/bricks_diffuse.bmp");
 	
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-
-	textureFS.SetTextureParameter(textureId[1]);
-
 	//adding default scene objects
 	//camera object should be added in the constructor and as the first object of the list for easy access
 	list.push_back(new ObjectTriangle());
@@ -169,7 +143,9 @@ void Scene::Draw()
 		simpleVS.UpdateModelViewMatrix(MVP()); 
 		
 		if (!oddVal)
-			textureFS.SetTextureParameter(textureId[0]);
+		{
+			textureFS.SetTextureParameter(textureManager.getTextureId("../Images/bricks_diffuse.bmp"));
+		}
 
 		//update shaders
 		simpleVS.UpdateParameters();
@@ -257,185 +233,4 @@ void Scene::checkForCgError(const char *situation)
 
 		exit(1);
 	}
-}
-
-///*** code to read a .bmp image *****************************************************/
-#include <math.h>
-
-#define	MAX_EXP 14
-
-int power(int base, int exp) {
-	int val, i;
-
-	if (exp == 0)
-		return 1;
-
-	val = base;
-	for (i = 1; i < exp; i++) {
-		val *= base;
-	}
-	return val;
-}
-
-// returns a pointer to the loaded bitmap
-// only supports 24-bit (and 32-bit?) images
-wBitmap* wLoadBitmap(char *filename)
-{
-	FILE *bmpFile;
-	wBitmap *bmp;
-	int i;
-	int fileLineSize, memLineSize, fileScanLines, memScanLines, dataSize;
-	int pad, generic;
-	BYTE *line;
-
-	bmp = (wBitmap*)malloc(sizeof(wBitmap));
-	memset(bmp, 0, sizeof(wBitmap));
-	bmp->name = filename;
-
-	bmpFile = fopen(filename, "rb");
-	if (bmpFile)
-	{
-		printf("Loading bitmap %s\n", filename);
-
-		fread(&bmp->Header, sizeof(bmp->Header), 1, bmpFile);
-		fread(&bmp->Info, sizeof(bmp->Info), 1, bmpFile);
-
-		// only supports 24-bit+ color bitmaps
-		if (bmp->Info.biBitCount < 24)
-		{
-			printf("cannot load %s:  bitmap is less than 24-bit color\n", filename);
-			free(bmp);
-			return NULL;
-		}
-		if (bmp->Info.biCompression)
-		{
-			printf("cannot load %s:  bitmap is compressed\n", filename);
-			free(bmp);
-			return NULL;
-		}
-
-		fileLineSize = bmp->Info.biWidth*bmp->Info.biBitCount / 8;
-		pad = 4 - fileLineSize % 4;
-		if (pad == 4)
-			pad = 0;
-		fileScanLines = bmp->Info.biHeight;
-
-		// check to make sure that image is 2^x * 2^y
-		// image in memory can be 2^x * 2^y even if disk file isn't, but there will be blank pixels
-		for (i = 1; i <= MAX_EXP; i++)
-		{
-			generic = (int)power(2, i);
-			if (generic >= bmp->Info.biWidth)
-			{
-				bmp->Info.biWidth = generic;
-				break;
-			}
-		}
-		if (i > MAX_EXP)
-		{
-			printf("cannot load %s:  bitmap is too large\n", filename);
-			free(bmp);
-			return NULL;
-		}
-		for (i = 1; i <= MAX_EXP; i++)
-		{
-			generic = power(2, i);
-			if (generic >= bmp->Info.biHeight)
-			{
-				bmp->Info.biHeight = generic;
-				break;
-			}
-		}
-		if (i > MAX_EXP)
-		{
-			printf("cannot load %s:  bitmap is too large\n", filename);
-			free(bmp);
-			return NULL;
-		}
-
-		memLineSize = bmp->Info.biWidth*bmp->Info.biBitCount / 8;
-		memScanLines = bmp->Info.biHeight;
-		dataSize = memLineSize*memScanLines;
-		bmp->pixels = (BYTE*)malloc(dataSize);
-		memset(bmp->pixels, 0, dataSize);
-
-		// end 2^n check
-		/*		printf("image is %i by %i", fileLineSize*8/bmp->Info.biBitCount, fileScanLines);
-		if ( fileLineSize != memLineSize || fileScanLines != memScanLines )
-		printf(", expanded to %i by %i", memLineSize*8/bmp->Info.biBitCount, memScanLines);
-		printf("\n");
-		*/
-		// bmps are stored last line first
-		fseek(bmpFile, bmp->Header.bfOffBits, 0);
-		line = bmp->pixels + (fileScanLines - 1)*memLineSize;
-		for (i = 0; i < fileScanLines; i++)
-		{
-			fread(line, fileLineSize, 1, bmpFile);
-			// lines are padded to be 32-bit divisible
-			if (pad)
-				fread(&generic, pad, 1, bmpFile);
-			line -= memLineSize;
-		}
-
-		// need to switch red and blue for opengl
-		if (TRUE)
-		{
-			for (i = 0; i < fileScanLines*memLineSize; i += 3)
-			{
-				generic = bmp->pixels[i];
-				bmp->pixels[i] = bmp->pixels[i + 2];
-				bmp->pixels[i + 2] = generic;
-			}
-		}
-		return bmp;
-	}
-	else
-	{
-		printf("cannot load %s:  no such file or file I/O error\n", filename);
-		return NULL;
-	}
-}
-
-void wSaveBitmap(char *filename, wBitmap *bmp)
-{
-	FILE *bmpFile;
-	int i, LineSize, ScanLines, pad, generic = 0;
-	BYTE *line;
-
-	if (!bmp)
-	{
-		printf("Error: cannot write null bitmap to file \"%s\"\n", filename);
-		return;
-	}
-
-	bmpFile = fopen(filename, "wb");
-	if (bmpFile)
-	{
-		fwrite(&bmp->Header, sizeof(bmp->Header), 1, bmpFile);
-		fwrite(&bmp->Info, sizeof(bmp->Info), 1, bmpFile);
-
-		LineSize = bmp->Info.biWidth*bmp->Info.biBitCount / 8;
-		pad = 4 - LineSize % 4;
-		if (pad == 4)
-			pad = 0;
-		ScanLines = bmp->Info.biHeight;
-		line = bmp->pixels + (ScanLines - 1)*LineSize;
-		for (i = 0; i < ScanLines; i++) {
-			fwrite(line, LineSize, 1, bmpFile);
-			if (pad)
-				fwrite(&generic, pad, 1, bmpFile);
-			line -= LineSize;
-		}
-		fclose(bmpFile);
-	}
-	else
-	{
-		printf("cannot open bitmap file for writing");
-	}
-}
-
-void wFreeBitmap(wBitmap* bitmap)
-{
-	free(bitmap->pixels);
-	free(bitmap);
 }

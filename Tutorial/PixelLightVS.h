@@ -9,10 +9,19 @@ public:
 	PixelLightVS();
 	~PixelLightVS();
 
-	virtual void LinkParameters() = 0;
-protected:
-	CGprogram vertexProgram, lightPosition, cameraPosition;
+	void UpdateModelViewMatrix(float* MVP);
+	void UpdateInverseModelViewMatrix(float* MVP);
+	void UpdateLightPosition(float* lightPos);
+	void UpdateCameraPosition(float* camPos);
 
-	CGparameter vertexParam_modelViewProj;
+	virtual void LinkParameters();
+
+protected:
+	CGprogram vertexProgram;
+
+	CGparameter modelViewProj,
+				inverseModelToWorld,
+				lightPosition,
+				cameraPosition;
 };
 

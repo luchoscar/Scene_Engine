@@ -14,26 +14,29 @@ VS_Out vertexPixelLight(float3 position : POSITION,
 
 						uniform float4x4 modelViewProj,
 						uniform float4x4 inverseModelToWorld,
-						uniform float3 lightPos,
-						uniform float3 eyePos)
+						uniform float3 lightPosition,
+						uniform float3 cameraPosition)
 {
 	VS_Out OUT;
 
-	lightPos = mul(inverseModelToWorld, float4(lightPos, 1)).xyz;
-	lightPos = normalize(lightPos - position);
+	//instead of using inverseModelToWorld matrix on light and camera position, we can use ModelToWorld matrix on vertex
+	//and perform calculations on world space rather than object space
 
-	eyePos = mul(inverseModelToWorld, float4(lightPos, 1)).xyz;
-	eyePos = normalize(eyePos - position);
+	lightPosition = mul(inverseModelToWorld, float4(lightPosition, 1)).xyz;
+	lightPosition = normalize(lightPosition - position);
+
+	cameraPosition = mul(inverseModelToWorld, float4(lightPos, 1)).xyz;
+	cameraPosition = normalize(cameraPosition - position);
 
 	float4 vertexPosition = float4(position, 1);
-	vertexPosition = mul(modelViewProj, newPosition);
+	vertexPosition = mul(modelViewProj, position);
 
 	OUT.position	= vertexPosition;
 	OUT.color		= color;
 	OUT.texCoord	= texCoord;
 	OUT.normal		= normalize(normal);	//just in case
-	OUT.lightDir	= lightPos;
-	OUT.eyeDir		= eyePos;
+	OUT.lightDir	= lightPosition;
+	OUT.eyeDir		= cameraPosition;
 
 	return OUT;	
 }

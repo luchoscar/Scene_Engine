@@ -23,3 +23,13 @@ void VertexObject::CreateProgram(const char* fileName, const char* functionName)
 
 	OpenGLRenderer::checkForCgError("Creating vertex program from file");
 }
+
+CGprogram VertexObject::GetProgram()
+{ 
+	return vertexProgram; 
+}
+
+void VertexObject::UpdateParameters()
+{ 
+	cgUpdateProgramParameters(vertexProgram); 
+}

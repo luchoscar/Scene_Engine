@@ -13,6 +13,11 @@ SimpleVS::~SimpleVS()
 
 void SimpleVS::LinkParameters()
 {
-	vertexParam_modelViewProj = cgGetNamedParameter(vertexProgram, "modelViewProj");
+	modelViewProj = cgGetNamedParameter(vertexProgram, "modelViewProj");
 	OpenGLRenderer::checkForCgError("could not get modelViewProj parameter");
+}
+
+void SimpleVS::UpdateModelViewMatrix(float* MVP)
+{
+	cgSetMatrixParameterfr(modelViewProj, MVP);
 }

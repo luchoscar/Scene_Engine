@@ -93,6 +93,7 @@
     <ClInclude Include="ObjectCube.h" />
     <ClInclude Include="ObjectTriangle.h" />
     <ClInclude Include="OpenGLRenderer.h" />
+    <ClInclude Include="PixelLightFS.h" />
     <ClInclude Include="PixelLightScene.h" />
     <ClInclude Include="PixelLightVS.h" />
     <ClInclude Include="TextureColorScene.h" />
@@ -114,6 +115,7 @@
     <ClCompile Include="ObjectCube.cpp" />
     <ClCompile Include="ObjectTriangle.cpp" />
     <ClCompile Include="OpenGLRenderer.cpp" />
+    <ClCompile Include="PixelLightFS.cpp" />
     <ClCompile Include="PixelLightScene.cpp" />
     <ClCompile Include="PixelLightVS.cpp" />
     <ClCompile Include="TextureColorScene.cpp" />

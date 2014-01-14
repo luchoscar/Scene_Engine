@@ -1,5 +1,9 @@
 #pragma once
+
 #include "SceneBase.h"
+#include "PixelLightVS.h"
+#include "PixelLightFS.h"
+
 class PixelLightScene :
 	public SceneBase
 {
@@ -12,5 +16,7 @@ public:
 	virtual void Update() {};
 
 private:
+	PixelLightVS pixelLightVS;
+	PixelLightFS pixelLightFS;
 };
 

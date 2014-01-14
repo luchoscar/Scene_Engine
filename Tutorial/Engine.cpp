@@ -2,7 +2,6 @@
 #include "Engine.h"
 #include <GL/glut.h>
 #include "TextureColorScene.h"
-//#include "Math3D.h"
 #include <iostream>
 
 //static variables
@@ -11,8 +10,6 @@ float Engine::deltaTime;
 float Engine::previousTime;
 
 SceneBase* scene = new TextureColorScene();	
-
-//static Math3D* Math;
 
 Engine::Engine()
 {

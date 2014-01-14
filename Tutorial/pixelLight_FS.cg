@@ -9,5 +9,13 @@ void fragmentPixelLight(float3 color	: COLOR;
 						uniform sampler2D decalMap,
 						uniform sampler2D normalMap,)
 {
-	
+	// per vertex light first
+
+	// diffuse light
+	float diffInt = dot(normal, lightDir);
+	float3 decal = tex2D(decalMap, texCoord).xyz;
+
+	float3 diffLight = diffInt * decal;
+
+	outColor = float4(diffLight, 1);
 }

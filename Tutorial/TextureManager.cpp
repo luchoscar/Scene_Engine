@@ -63,8 +63,8 @@ void TextureManager::setBmpTextureinMap(char* texturePath)
 
 		textureDic.insert(std::pair<const char*, GLuint>(texturePath, texturesIds[textureCounter]));
 	}
-
-	std::cout << "Texture already in map" << std::endl;
+	else
+		std::cout << "Texture already in map" << std::endl;
 }
 
 ///*** code to read a .bmp image *****************************************************/

@@ -3,6 +3,7 @@
 #include <GL\glut.h>
 #include <CG\cg.h>
 #include <CG\cgGL.h>
+#include "TextureManager.h"
 
 class OpenGLRenderer
 {
@@ -22,7 +23,7 @@ public:
 	static void EnableProfile(CGprofile _profile);
 	static void DisableProfile(CGprofile _profile);
 	static void checkForCgError(const char *situation);
-
+	
 protected:
 	static CGcontext myCgContext;
 	static CGprofile vertexProfile,
@@ -32,6 +33,5 @@ private:
 	static bool contextInitialized;
 	static bool vertexProfileInitialized;
 	static bool fragmentProfileInitialized;
-
 };
 

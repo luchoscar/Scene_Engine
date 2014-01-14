@@ -1,0 +1,39 @@
+struct VS_Out {
+  float4 position	: POSITION;
+  float3 color		: COLOR;
+  float2 texCoord	: TEXCOORD0;
+  float3 normal		: TEXCOORD1;
+  float3 lightDir	: TEXCOORD2;
+  float3 eyeDir		: TEXCOORD3;
+};
+
+VS_Out vertexPixelLight(float3 position : POSITION,
+						float3 normal   : NORMAL,
+						float3 color    : COLOR,
+						float2 texCoord : TEXCOORD0,
+
+						uniform float4x4 modelViewProj,
+						uniform float4x4 inverseModelToWorld,
+						uniform float3 lightPos,
+						uniform float3 eyePos)
+{
+	VS_Out OUT;
+
+	lightPos = mul(inverseModelToWorld, float4(lightPos, 1)).xyz;
+	lightPos = normalize(lightPos - position);
+
+	eyePos = mul(inverseModelToWorld, float4(lightPos, 1)).xyz;
+	eyePos = normalize(eyePos - position);
+
+	float4 vertexPosition = float4(position, 1);
+	vertexPosition = mul(modelViewProj, newPosition);
+
+	OUT.position	= vertexPosition;
+	OUT.color		= color;
+	OUT.texCoord	= texCoord;
+	OUT.normal		= normalize(normal);	//just in case
+	OUT.lightDir	= lightPos;
+	OUT.eyeDir		= eyePos;
+
+	return OUT;	
+}

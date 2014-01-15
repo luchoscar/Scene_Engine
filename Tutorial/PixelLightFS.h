@@ -9,7 +9,9 @@ public:
 	PixelLightFS();
 	~PixelLightFS();
 
-	virtual void LinkParameters() {}
+	virtual void LinkParameters();
+	void SetDecalMap(GLuint textureParam);
+	void SetNormalMap(GLuint textureParam);
 
 private:
 	CGparameter decalMap,

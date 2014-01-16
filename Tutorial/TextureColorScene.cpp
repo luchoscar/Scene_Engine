@@ -10,8 +10,6 @@
 #include "TextureColorScene.h"
 #include "ObjectTriangle.h"
 #include "ObjectCube.h"
-#include "Matrix3D.h"
-#include "Engine.h"
 
 //SOIL Image library - SOIL commands to be moved to OpenGLRenderer class
 #include "..\Simple OpenGL Image Library\src\SOIL.h"
@@ -24,13 +22,7 @@ TextureColorScene::TextureColorScene(void)
 
 TextureColorScene::~TextureColorScene(void)
 {
-	//Delete all objects in list
-	for (unsigned int i=0; i<list.size(); i++)
-	{
-		delete list[i];
-	}
-
-	list.clear();
+	
 }
 
 //initializing scene

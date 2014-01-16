@@ -5,6 +5,8 @@
 #include "TextureManager.h"
 #include <vector>
 #include <iostream>
+#include "Engine.h"
+#include "Matrix3D.h"
 
 using namespace std; 
 

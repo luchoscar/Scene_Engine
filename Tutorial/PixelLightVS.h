@@ -10,16 +10,20 @@ public:
 	~PixelLightVS();
 
 	void UpdateModelViewMatrix(float* MVP);
-	void UpdateInverseModelViewMatrix(float* MVP);
+	void UpdateMatrixModelWorld(float* MVP);
+	void UpdateMatrixViewProj(float* MVP);
 	void UpdateLightPosition(float* lightPos);
-	void UpdateCameraPosition(float* camPos);
+	//void UpdateInverseModelViewMatrix(float* MVP);
+	//void UpdateCameraPosition(float* camPos);
 
 	virtual void LinkParameters();
 
 protected:
-	CGprogram vertexProgram;
+	//CGprogram vertexProgram;
 
-	CGparameter modelViewProj,
+	CGparameter matrixModelWorld,
+				matrixViewProj,
+				modelViewProj,
 				inverseModelToWorld,
 				lightPosition,
 				cameraPosition;

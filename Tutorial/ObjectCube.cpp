@@ -4,6 +4,7 @@
 #include <math.h>
 #include <iostream>
 #include <string>
+#include "Matrix3D.h"
 
 ObjectCube::ObjectCube() : BaseObject()
 {
@@ -140,10 +141,15 @@ ObjectCube::~ObjectCube(void)
 //calculate triangle based on XY-scale 
 void ObjectCube::Draw()
 {
+	float normal[3];
 	//front face
-	//glBegin(GL_QUADS);
+	Matrix3D::CalculateNormal(vb[6], vb[7], vb[8],
+								vb[3], vb[4], vb[5], 
+								vb[0], vb[1], vb[2], 
+								normal);
 	glBegin(GL_TRIANGLES);
 		glColor3f(cb[0], cb[1], cb[2]);
+		glNormal3fv(normal);
 		glTexCoord2f(0.0, 0.0);
 		glVertex3f(vb[0], vb[1], vb[2]);
 		glTexCoord2f(1.0, 0.0);
@@ -152,6 +158,7 @@ void ObjectCube::Draw()
 		glVertex3f(vb[6], vb[7], vb[8]);
 	glEnd(); 
 	glBegin(GL_TRIANGLES);
+		glNormal3fv(normal);
 		glTexCoord2f(1.0, 1.0);
 		glVertex3f(vb[6], vb[7], vb[8]);
 		glTexCoord2f(0.0, 1.0);
@@ -161,8 +168,13 @@ void ObjectCube::Draw()
 	glEnd();
 
 	//back face
+	Matrix3D::CalculateNormal(vb[18], vb[19], vb[20],
+								vb[15], vb[16], vb[17],
+								vb[12], vb[13], vb[14], 
+								normal); 
 	glBegin(GL_QUADS);
 		glColor3f(cb[3], cb[4], cb[5]);
+		glNormal3fv(normal);
 		glTexCoord2f(0.0, 0.0);
 		glVertex3f(vb[12], vb[13], vb[14]);
 		glTexCoord2f(0.0, 1.0);
@@ -174,8 +186,13 @@ void ObjectCube::Draw()
 	glEnd();
 
 	//top face
+	Matrix3D::CalculateNormal(vb[21], vb[22], vb[23], 
+								vb[12], vb[13], vb[14],
+								vb[9], vb[10], vb[11],
+								normal);
 	glBegin(GL_QUADS);
 		glColor3f(cb[6], cb[7], cb[8]);
+		glNormal3fv(normal);
 		glTexCoord2f(0.0, 0.0); 
 		glVertex3f(vb[9], vb[10], vb[11]);
 		glTexCoord2f(0.0, 1.0); 
@@ -187,8 +204,13 @@ void ObjectCube::Draw()
 	glEnd();
 
 	//bottom face
+	Matrix3D::CalculateNormal(vb[15], vb[16], vb[17], 
+								vb[18], vb[19], vb[20],
+								vb[3], vb[4], vb[5],
+								normal);
 	glBegin(GL_QUADS);
 		glColor3f(cb[9], cb[10], cb[11]);
+		glNormal3fv(normal);
 		glTexCoord2f(0.0, 0.0); 
 		glVertex3f(vb[3], vb[4], vb[5]);
 		glTexCoord2f(0.0, 1.0); 
@@ -200,8 +222,13 @@ void ObjectCube::Draw()
 	glEnd();
 
 	//right face
+	Matrix3D::CalculateNormal(vb[6], vb[7], vb[8],
+								vb[9], vb[10], vb[11],
+								vb[12], vb[13], vb[14], 
+								normal);
 	glBegin(GL_QUADS);
 		glColor3f(cb[12], cb[13], cb[14]);
+		glNormal3fv(normal);
 		glTexCoord2f(0.0, 0.0); 
 		glVertex3f(vb[12], vb[13], vb[14]);
 		glTexCoord2f(0.0, 1.0); 
@@ -213,8 +240,13 @@ void ObjectCube::Draw()
 	glEnd();
 
 	//left face
+	Matrix3D::CalculateNormal(vb[18], vb[19], vb[20], 
+								vb[21], vb[22], vb[23],
+								vb[0], vb[1], vb[2],
+								normal);
 	glBegin(GL_QUADS);
 		glColor3f(cb[15], cb[16], cb[17]);
+		glNormal3fv(normal);
 		glTexCoord2f(0.0, 0.0); 
 		glVertex3f(vb[0], vb[1], vb[2]);
 		glTexCoord2f(0.0, 1.0); 

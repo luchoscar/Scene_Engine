@@ -3,16 +3,20 @@
 #include <GL/glut.h>
 #include "TextureColorScene.h"
 #include <iostream>
+#include "PixelLightScene.h"
 
 //static variables
 Matrix3D Engine::perspective;
 float Engine::deltaTime;
 float Engine::previousTime;
 
-SceneBase* scene = new TextureColorScene();	
+SceneBase* scene;
 
 Engine::Engine()
 {
+	//scene = new TextureColorScene();
+	scene = new PixelLightScene();
+	
 	previousTime = 0.0;
 }
 

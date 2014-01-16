@@ -27,8 +27,7 @@ public:
 protected:
 	static CGcontext myCgContext;
 	static CGprofile vertexProfile,
-				fragmentProfile;
-
+					fragmentProfile;
 private:
 	static bool contextInitialized;
 	static bool vertexProfileInitialized;

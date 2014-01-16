@@ -28,10 +28,10 @@
     <None Include="textureFragment.cg">
       <Filter>Shaders</Filter>
     </None>
-    <None Include="pixelLight_FS.cg">
+    <None Include="vertex_pixelLight.cg">
       <Filter>Shaders</Filter>
     </None>
-    <None Include="pixelLight_VS.cg">
+    <None Include="fragment_pixelLight.cg">
       <Filter>Shaders</Filter>
     </None>
   </ItemGroup>

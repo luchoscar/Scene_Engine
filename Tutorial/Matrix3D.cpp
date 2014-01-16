@@ -342,3 +342,16 @@ void Matrix3D::BuildLookAtMatrix(double eyex, double eyey, double eyez,
 
 	m[3*4+0] = 0.0;   m[3*4+1] = 0.0;  m[3*4+2] = 0.0;  m[3*4+3] = 1.0;
 }
+
+void Matrix3D::CalculateNormal(float p1X, float p1Y, float p1Z,
+								float p2X, float p2Y, float p2Z,
+								float p3X, float p3Y, float p3Z,
+								float* normal)
+{
+	float vect1[3] = { p1X - p2X, p1Y - p2Y, p1Z - p2Z };
+	float vect2[3] = { p3X - p2X, p3Y - p2Y, p3Z - p2Z };
+
+	normal[0] = vect1[1] * vect2[2] - vect1[2] * vect2[1];
+	normal[1] = vect1[2] * vect2[0] - vect1[0] * vect2[2];
+	normal[2] = vect1[0] * vect2[1] - vect1[1] * vect2[0];
+}

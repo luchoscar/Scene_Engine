@@ -8,11 +8,10 @@ SceneBase::SceneBase()
 
 SceneBase::~SceneBase()
 {
-	BaseObject* scene;
-	for (int i = 0; i < list.size(); i++)
+	//Delete all objects in list
+	for (unsigned int i = 0; i<list.size(); i++)
 	{
-		scene = list[i];
-		delete(scene);
+		delete list[i];
 	}
 
 	list.clear();

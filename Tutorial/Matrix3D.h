@@ -32,4 +32,8 @@ public:
 								  double upx, double upy, double upz,
 								  Matrix3D& m);
 
+	static void CalculateNormal(float p1X, float p1Y, float p1Z, 
+									float p2X, float p2Y, float p2Z,
+									float p3X, float p3Y, float p3Z,
+									float* normal);
 };

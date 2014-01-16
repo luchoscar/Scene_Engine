@@ -79,8 +79,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <None Include="fragment_shader.cg" />
-    <None Include="pixelLight_FS.cg" />
-    <None Include="pixelLight_VS.cg" />
+    <None Include="fragment_pixelLight.cg" />
+    <None Include="vertex_pixelLight.cg" />
     <None Include="ReadMe.txt" />
     <None Include="textureFragment.cg" />
     <None Include="vertex_shader.cg" />

@@ -98,40 +98,107 @@ void ObjectCube::Init()
 	vb[23] = -0.5;
 
 	//index buffer
-	ib = new float[3];
+	ib = new int[24];
+	
+	//front face
+	ib[0] = 0;
+	ib[1] = 1;
+	ib[2] = 2;
+	ib[3] = 3;
+
+	//back face
+	ib[4] = 4;
+	ib[5] = 5;
+	ib[6] = 6;
+	ib[7] = 7;
+
+	//top face
+	ib[8] = 0;
+	ib[9] = 3;
+	ib[10] = 4;
+	ib[11] = 7;
+
+	//bottom face
+	ib[12] = 1;
+	ib[13] = 6;
+	ib[14] = 5;
+	ib[15] = 2;
+
+	//left face
+	ib[16] = 0;
+	ib[17] = 7;
+	ib[18] = 6;
+	ib[19] = 1;
+
+	//right face
+	ib[20] = 3;
+	ib[21] = 2;
+	ib[22] = 5;
+	ib[23] = 4;
+
+	//normal buffer
+	nb = new float[18];
+	float normal[3];
+
+	//front face
+	Matrix3D::CalculateNormal(vb[6], vb[7], vb[8],
+								vb[3], vb[4], vb[5],
+								vb[0], vb[1], vb[2],
+								normal);
+	nb[0] = normal[0];
+	nb[1] = normal[1];
+	nb[2] = normal[2];
+
+	//back face
+	Matrix3D::CalculateNormal(vb[18], vb[19], vb[20],
+								vb[15], vb[16], vb[17],
+								vb[12], vb[13], vb[14],
+								normal);
+	nb[3] = normal[0];
+	nb[4] = normal[1];
+	nb[5] = normal[2];
+
+	//top face
+	Matrix3D::CalculateNormal(vb[21], vb[22], vb[23],
+								vb[12], vb[13], vb[14],
+								vb[9], vb[10], vb[11],
+								normal);
+	nb[6] = normal[0];
+	nb[7] = normal[1];
+	nb[8] = normal[2];
+
+	//bottom face
+	Matrix3D::CalculateNormal(vb[15], vb[16], vb[17],
+								vb[18], vb[19], vb[20],
+								vb[3], vb[4], vb[5],
+								normal);
+	nb[9] = normal[0];
+	nb[10] = normal[1];
+	nb[11] = normal[2];
+
+	//left face
+	Matrix3D::CalculateNormal(vb[18], vb[19], vb[20],
+								vb[21], vb[22], vb[23],
+								vb[0], vb[1], vb[2],
+								normal);
+	nb[12] = normal[0];
+	nb[13] = normal[1];
+	nb[14] = normal[2];
+
+	//right face
+	Matrix3D::CalculateNormal(vb[6], vb[7], vb[8],
+								vb[9], vb[10], vb[11],
+								vb[12], vb[13], vb[14],
+								normal);
+	nb[15] = normal[0];
+	nb[16] = normal[1];
+	nb[17] = normal[2];
 
 	//color buffer
-	cb = new float[18];
-
-	//front
+	cb = new float[3];
 	cb[0] = color[0];
 	cb[1] = color[1];
 	cb[2] = color[2];
-
-	//back
-	cb[3] = 0.0;
-	cb[4] = color[1];
-	cb[5] = color[2];
-
-	//top
-	cb[6] = color[0];
-	cb[7] = 0.0;
-	cb[8] = color[2];
-
-	//bottom
-	cb[9] = color[0];
-	cb[10] = color[1];
-	cb[11] = 0.0;
-
-	//right
-	cb[12] = color[0];
-	cb[13] = 0.0;
-	cb[14] = 0.0;
-
-	//left
-	cb[15] = 0.0;
-	cb[16] = color[1];
-	cb[17] = 0.0;
 }
 
 ObjectCube::~ObjectCube(void)
@@ -147,7 +214,7 @@ void ObjectCube::Draw()
 								vb[3], vb[4], vb[5], 
 								vb[0], vb[1], vb[2], 
 								normal);
-	glBegin(GL_TRIANGLES);
+	glBegin(GL_QUADS);
 		glColor3f(cb[0], cb[1], cb[2]);
 		glNormal3fv(normal);
 		glTexCoord2f(0.0, 0.0);
@@ -156,15 +223,8 @@ void ObjectCube::Draw()
 		glVertex3f(vb[3], vb[4], vb[5]);
 		glTexCoord2f(1.0, 1.0);
 		glVertex3f(vb[6], vb[7], vb[8]);
-	glEnd(); 
-	glBegin(GL_TRIANGLES);
-		glNormal3fv(normal);
-		glTexCoord2f(1.0, 1.0);
-		glVertex3f(vb[6], vb[7], vb[8]);
 		glTexCoord2f(0.0, 1.0);
 		glVertex3f(vb[9], vb[10], vb[11]);
-		glTexCoord2f(0.0, 0.0);
-		glVertex3f(vb[0], vb[1], vb[2]);
 	glEnd();
 
 	//back face
@@ -173,7 +233,7 @@ void ObjectCube::Draw()
 								vb[12], vb[13], vb[14], 
 								normal); 
 	glBegin(GL_QUADS);
-		glColor3f(cb[3], cb[4], cb[5]);
+		glColor3f(cb[0], cb[1], cb[2]);
 		glNormal3fv(normal);
 		glTexCoord2f(0.0, 0.0);
 		glVertex3f(vb[12], vb[13], vb[14]);
@@ -191,7 +251,7 @@ void ObjectCube::Draw()
 								vb[9], vb[10], vb[11],
 								normal);
 	glBegin(GL_QUADS);
-		glColor3f(cb[6], cb[7], cb[8]);
+		glColor3f(cb[0], cb[1], cb[2]);
 		glNormal3fv(normal);
 		glTexCoord2f(0.0, 0.0); 
 		glVertex3f(vb[9], vb[10], vb[11]);
@@ -209,7 +269,7 @@ void ObjectCube::Draw()
 								vb[3], vb[4], vb[5],
 								normal);
 	glBegin(GL_QUADS);
-		glColor3f(cb[9], cb[10], cb[11]);
+		glColor3f(cb[0], cb[1], cb[2]);
 		glNormal3fv(normal);
 		glTexCoord2f(0.0, 0.0); 
 		glVertex3f(vb[3], vb[4], vb[5]);
@@ -227,7 +287,7 @@ void ObjectCube::Draw()
 								vb[12], vb[13], vb[14], 
 								normal);
 	glBegin(GL_QUADS);
-		glColor3f(cb[12], cb[13], cb[14]);
+		glColor3f(cb[0], cb[1], cb[2]);
 		glNormal3fv(normal);
 		glTexCoord2f(0.0, 0.0); 
 		glVertex3f(vb[12], vb[13], vb[14]);
@@ -245,7 +305,7 @@ void ObjectCube::Draw()
 								vb[0], vb[1], vb[2],
 								normal);
 	glBegin(GL_QUADS);
-		glColor3f(cb[15], cb[16], cb[17]);
+		glColor3f(cb[0], cb[1], cb[2]);
 		glNormal3fv(normal);
 		glTexCoord2f(0.0, 0.0); 
 		glVertex3f(vb[0], vb[1], vb[2]);
@@ -260,8 +320,6 @@ void ObjectCube::Draw()
 
 void ObjectCube::Update()
 {
-	//rotation[0] += 25.0 * deltaTime;
-	//rotation[0] += 0.125;
 }
 
 float* ObjectCube::GetVertexBuffer()
@@ -269,7 +327,7 @@ float* ObjectCube::GetVertexBuffer()
 	return vb;
 }
 
-float* ObjectCube::GetIndexBuffer()
+int* ObjectCube::GetIndexBuffer()
 {
 	return ib;
 }

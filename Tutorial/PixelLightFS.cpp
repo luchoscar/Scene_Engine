@@ -22,12 +22,14 @@ void PixelLightFS::LinkParameters()
 
 void PixelLightFS::SetDecalMap(GLuint textureParam)
 {
+	glBindTexture(GL_TEXTURE_2D, textureParam);
 	cgGLSetTextureParameter(decalMap, textureParam);
 	OpenGLRenderer::checkForCgError("setting decal 2D texture");
 }
 
 void PixelLightFS::SetNormalMap(GLuint textureParam)
 {
+	glBindTexture(GL_TEXTURE_2D, textureParam);
 	cgGLSetTextureParameter(normalMap, textureParam);
 	OpenGLRenderer::checkForCgError("setting decal 2D texture");
 }

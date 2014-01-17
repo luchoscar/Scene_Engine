@@ -12,7 +12,7 @@ public:
 
 	virtual void Init();
 	virtual float* GetVertexBuffer();
-	virtual float* GetIndexBuffer();
+	virtual int* GetIndexBuffer();
 	virtual float* GetColorBuffer();
 
 	virtual void Draw();

@@ -3,7 +3,7 @@
 #include "ObjectCube.h"
 
 float lightPos[3] = { 10.0f, 10.0f, 0.0f };
-float lightRad = 1;
+float lightRad = 1.0;
 float angleLightRot = 0.0;
 float anfleDelta = 20.0f;
 
@@ -46,7 +46,7 @@ void PixelLightScene::Init()
 	//loading bmp
 	textureManager.Init(2);
 	textureManager.setBmpTextureinMap("../Images/bricks_diffuse.bmp");
-	//textureManager.setBmpTextureinMap("../Images/bricks_normal.bmp");
+	textureManager.setBmpTextureinMap("../Images/bricks_normal.bmp");
 }
 
 void PixelLightScene::Draw()
@@ -110,7 +110,11 @@ void PixelLightScene::Draw()
 		pixelLightVS.UpdateMatrixModelWorld(modelToWorld());
 		pixelLightVS.UpdateMatrixViewProj(viewProjection());
 		pixelLightVS.UpdateLightPosition(lightPos);
-		pixelLightFS.SetDecalMap(textureManager.getTextureId("../Images/bricks_diffuse.bmp"));
+		
+		if (i == 0)
+			pixelLightFS.SetDecalMap(textureManager.getTextureId("../Images/bricks_diffuse.bmp"));
+		else
+			pixelLightFS.SetDecalMap(textureManager.getTextureId("../Images/bricks_normal.bmp"));
 
 		//update shaders
 		pixelLightVS.UpdateParameters();
@@ -132,7 +136,7 @@ void PixelLightScene::Update()
 		angleLightRot = 0.0f;
 
 	lightPos[0] = sin(angleLightRot) * lightRad;
-	lightPos[1] = lightRad;
+	lightPos[1] = sin(angleLightRot * 2.0) * lightRad;
 	lightPos[2] = cos(angleLightRot) * lightRad;
 
 	list[1]->SetPosition(lightPos[0], lightPos[1], lightPos[2]);

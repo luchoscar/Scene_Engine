@@ -10,7 +10,7 @@ void FS_PixelLight(float3 color	: COLOR,
 						uniform sampler2D normalMap)
 {
 	//calculate diffuse vertex light intensity 
-	float diffInt = max(dot(normal, normalize(lightDir)), 0.25);
+	float diffInt = max(dot(normal, normalize(lightDir)), 0.35);
 	float3 decalColor = tex2D(decalMap, texCoord).xyz * diffInt;
 
 	outColor = (float4(decalColor, 1.0));

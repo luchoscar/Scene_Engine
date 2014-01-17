@@ -65,7 +65,7 @@ void ObjectTriangle::Init()
 	vb[8] =  0.0;
 
 	//index buffer
-	ib = new float[3];
+	ib = new int[3];
 	ib[0] = 0;
 	ib[1] = 1;
 	ib[2] = 2;
@@ -118,7 +118,7 @@ float* ObjectTriangle::GetVertexBuffer()
 	return vb;
 }
 
-float* ObjectTriangle::GetIndexBuffer()
+int* ObjectTriangle::GetIndexBuffer()
 {
 	return ib;
 }

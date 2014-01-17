@@ -64,7 +64,7 @@ void OpenGLRenderer::LoadProgram(CGprogram program)
 
 void OpenGLRenderer::ClearGLFlags()
 {
-	glClearColor(0.1, 0.3, 0.6, 0.0);  /* Blue background */
+	glClearColor(0.6, 0.3, 0.25, 0.0); 
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 

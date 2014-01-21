@@ -1,9 +1,10 @@
 #include "StdAfx.h"
 #include "Engine.h"
+//#include <GL/glew.h>
 #include <GL/glut.h>
 #include "TextureColorScene.h"
 #include <iostream>
-#include "PixelLightScene.h"
+#include "PixelVertexScene.h"
 
 //static variables
 Matrix3D Engine::perspective;
@@ -15,7 +16,7 @@ SceneBase* scene;
 Engine::Engine()
 {
 	//scene = new TextureColorScene();
-	scene = new PixelLightScene();
+	scene = new PixelVertexScene();
 	
 	previousTime = 0.0;
 }
@@ -34,6 +35,7 @@ void Engine::Init(int argc, char* argv[])
 
 	glutInit(&argc, argv);
 	glutCreateWindow("Scene Engine");
+	//glewInit();
 
 	//Set up callback functions
 	glutDisplayFunc(Display);

@@ -2,12 +2,12 @@
 
 #include "VertexObject.h"
 
-class PixelLightVS :
+class VertexLightVS :
 	public VertexObject
 {
 public:
-	PixelLightVS();
-	~PixelLightVS();
+	VertexLightVS();
+	~VertexLightVS();
 
 	void UpdateModelViewMatrix(float* MVP);
 	void UpdateMatrixModelWorld(float* MVP);
@@ -25,7 +25,7 @@ protected:
 				matrixViewProj,
 				modelViewProj,
 				inverseModelToWorld,
-				lightPosition,
+				lightPosition, 
 				cameraPosition;
 };
 

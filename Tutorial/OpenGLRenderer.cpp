@@ -98,9 +98,6 @@ void OpenGLRenderer::checkForCgError(const char *situation)
 		{
 			printf("%s\n", cgGetLastListing(myCgContext));
 		}
-		
-		char x;
-		std::cin >> x;
 
 		exit(1);
 	}

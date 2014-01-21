@@ -195,10 +195,20 @@ void ObjectCube::Init()
 	nb[17] = normal[2];
 
 	//color buffer
-	cb = new float[3];
-	cb[0] = color[0];
-	cb[1] = color[1];
-	cb[2] = color[2];
+	cb = new float[32];
+	for (int i = 0; i < 32; i += 4)
+	{
+		cb[i + 0] = color[0];
+		cb[i + 1] = color[1];
+		cb[i + 2] = color[2];
+		cb[i + 3] = 1.0f;
+	}
+
+	//glGenBuffers(1, vb);
+
+	//glBindBuffer(GL_ARRAY_BUFFER, vb);
+	//glBufferData(GL_ARRAY_BUFFER, sizeof(vb), vb, GL_STATIC_DRAW);
+	//glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
 ObjectCube::~ObjectCube(void)

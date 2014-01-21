@@ -1,5 +1,7 @@
 #pragma once
+
 #include "baseobject.h"
+
 class ObjectCube : public BaseObject
 {
 public:
@@ -16,6 +18,7 @@ public:
 	virtual float* GetColorBuffer();
 
 	virtual void Draw();
+	virtual void DrawBuffers() {};
 	virtual void Update();
 	
 protected:

@@ -18,5 +18,4 @@ public:
 
 protected:
 	CGprogram vertexProgram;
-
 };

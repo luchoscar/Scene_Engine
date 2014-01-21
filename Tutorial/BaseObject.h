@@ -4,6 +4,8 @@
 
 #pragma once
 
+//#include <GL/glew.h>
+
 class BaseObject
 {
 public:
@@ -29,6 +31,7 @@ public:
 	virtual float* GetColorBuffer() = 0;
 
 	virtual void Draw() = 0;
+	virtual void DrawBuffers() = 0;
 	virtual void Update() = 0;
 
 protected:

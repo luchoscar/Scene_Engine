@@ -1,17 +1,17 @@
 #include "stdafx.h"
-#include "PixelLightVS.h"
+#include "VertexLightVS.h"
 #include "OpenGLRenderer.h"
 
-PixelLightVS::PixelLightVS()
+VertexLightVS::VertexLightVS()
 {
 }
 
 
-PixelLightVS::~PixelLightVS()
+VertexLightVS::~VertexLightVS()
 {
 }
 
-void PixelLightVS::LinkParameters()
+void VertexLightVS::LinkParameters()
 {
 	matrixModelWorld = cgGetNamedParameter(vertexProgram, "matrixModelWorld");
 	OpenGLRenderer::checkForCgError("could not get matrixModelWorld parameter");
@@ -24,41 +24,39 @@ void PixelLightVS::LinkParameters()
 
 	lightPosition = cgGetNamedParameter(vertexProgram, "lightPosition");
 	OpenGLRenderer::checkForCgError("could not get lightPosition parameter");
-	
-	//inverseModelToWorld = cgGetNamedParameter(vertexProgram, "inverseModelToWorld");
-	//OpenGLRenderer::checkForCgError("could not get inverseModelToWorld parameter");
-	
-	//cameraPosition = cgGetNamedParameter(vertexProgram, "cameraPosition");
-	//OpenGLRenderer::checkForCgError("could not get eyePos parameter");
 }
 
-void PixelLightVS::UpdateModelViewMatrix(float* MVP)
+void VertexLightVS::UpdateModelViewMatrix(float* MVP)
 {
 	cgSetMatrixParameterfr(modelViewProj, MVP);
+	OpenGLRenderer::checkForCgError("setting model view projection matrix");
 }
 
-void PixelLightVS::UpdateMatrixModelWorld(float* MVP)
+void VertexLightVS::UpdateMatrixModelWorld(float* MVP)
 {
 	cgSetMatrixParameterfr(matrixModelWorld, MVP);
+	OpenGLRenderer::checkForCgError("setting model to world matrix");
 }
 
-void PixelLightVS::UpdateMatrixViewProj(float* MVP)
+void VertexLightVS::UpdateMatrixViewProj(float* MVP)
 {
 	cgSetMatrixParameterfr(matrixViewProj, MVP);
+	OpenGLRenderer::checkForCgError("setting view projection matrix");
 }
 
-void PixelLightVS::UpdateLightPosition(float* lightPos)
+void VertexLightVS::UpdateLightPosition(float* lightPos)
 {
 	cgGLSetParameter3fv(lightPosition, lightPos);
+	OpenGLRenderer::checkForCgError("setting light position");
 }
 
-//void PixelLightVS::UpdateInverseModelViewMatrix(float* MVP)
+//void VertexLightVS::UpdateInverseModelViewMatrix(float* MVP)
 //{
 //	cgSetMatrixParameterfr(inverseModelToWorld, MVP);
 //}
 //
 //
-//void PixelLightVS::UpdateCameraPosition(float* camPos)
+//void VertexLightVS::UpdateCameraPosition(float* camPos)
 //{
 //	cgGLSetParameter3fv(cameraPosition, camPos);
 //}

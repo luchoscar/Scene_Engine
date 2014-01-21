@@ -10,7 +10,7 @@ struct Vertex_Output
 };
 
 //vertex shader
-Vertex_Output VS_pixelLight(float4 position	: POSITION,
+Vertex_Output VS_vertexLight(float4 position	: POSITION,
 							float3 normal	: NORMAL,
 							float4 color	: COLOR,
 							float2 texCoord : TEXCOORD0,

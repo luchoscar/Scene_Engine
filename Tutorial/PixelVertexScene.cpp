@@ -1,5 +1,5 @@
 #include "stdafx.h"
-#include "PixelLightScene.h"
+#include "PixelVertexScene.h"
 #include "ObjectCube.h"
 
 float lightPos[3] = { 10.0f, 10.0f, 0.0f };
@@ -7,18 +7,18 @@ float lightRad = 1.0;
 float angleLightRot = 0.0;
 float anfleDelta = 20.0f;
 
-PixelLightScene::PixelLightScene()
+PixelVertexScene::PixelVertexScene()
 {
 
 }
 
 
-PixelLightScene::~PixelLightScene()
+PixelVertexScene::~PixelVertexScene()
 {
 
 }
 
-void PixelLightScene::Init() 
+void PixelVertexScene::Init() 
 {
 	//create OpenGL context
 	rendererGL.InitContext();
@@ -30,17 +30,22 @@ void PixelLightScene::Init()
 	rendererGL.InitFragmentProfile();
 
 	//creating VS program
-	pixelLightVS.CreateProgram("vertex_pixelLight.cg", "VS_pixelLight");
-	rendererGL.LoadProgram(pixelLightVS.GetProgram());
-	pixelLightVS.LinkParameters();
+	vertexLightVS.CreateProgram("vertex_vertexLight.cg", "VS_vertexLight");
+	rendererGL.LoadProgram(vertexLightVS.GetProgram());
+	vertexLightVS.LinkParameters();
 
 	//creating FS program
-	pixelLightFS.CreateProgram("fragment_pixelLight.cg", "FS_PixelLight");
-	rendererGL.LoadProgram(pixelLightFS.GetProgram());
-	pixelLightFS.LinkParameters();
+	vertexLightFS.CreateProgram("fragment_vertexLight.cg", "FS_vertexLight");
+	rendererGL.LoadProgram(vertexLightFS.GetProgram());
+	vertexLightFS.LinkParameters();
+
+	//set light color
+	float color[3] = { 0.1, 1.0, 0.1 };
+
+	vertexLightFS.UpdateLightColor(color);
 
 	//list.push_back(new ObjectCube(0.0f, 0.0f, 0.0f, 30.0f, 30.0f, 30.0f, 1.0f, 1.0f, 1.0f, 0.5f, 0.5f, 0.5f));
-	list.push_back(new ObjectCube(0.0f, 0.0f, 0.0f, 30.0f, 45.0f, 15.0f, 1.0f, 1.0f, 1.0f, 0.5f, 0.5f, 0.5f));
+	list.push_back(new ObjectCube(0.0f, 0.0f, 0.0f, 30.0f, 45.0f, 15.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.1f, 0.1f));
 	list.push_back(new ObjectCube(0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.25f, 0.25f, 0.25f, 0.5f, 0.5f, 0.5f));
 
 	//loading bmp
@@ -49,7 +54,7 @@ void PixelLightScene::Init()
 	textureManager.setBmpTextureinMap("../Images/bricks_normal.bmp");
 }
 
-void PixelLightScene::Draw()
+void PixelVertexScene::Draw()
 {
 	rendererGL.ClearGLFlags();
 
@@ -97,8 +102,8 @@ void PixelLightScene::Draw()
 		Matrix3D::MultMatrix(viewProjection, Engine::perspective, viewMatrix);	//model - view - projection matrix
 		
 		//bind CG program
-		rendererGL.BindProgram(pixelLightVS.GetProgram());
-		rendererGL.BindProgram(pixelLightFS.GetProgram());
+		rendererGL.BindProgram(vertexLightVS.GetProgram());
+		rendererGL.BindProgram(vertexLightFS.GetProgram());
 		
 		//Enable VS & FS profiles
 		rendererGL.EnableProfile(rendererGL.GetVertexProfile());
@@ -106,19 +111,19 @@ void PixelLightScene::Draw()
 
 		//update shaders parameters
 		
-		pixelLightVS.UpdateModelViewMatrix(MVP());
-		pixelLightVS.UpdateMatrixModelWorld(modelToWorld());
-		pixelLightVS.UpdateMatrixViewProj(viewProjection());
-		pixelLightVS.UpdateLightPosition(lightPos);
+		vertexLightVS.UpdateModelViewMatrix(MVP());
+		vertexLightVS.UpdateMatrixModelWorld(modelToWorld());
+		vertexLightVS.UpdateMatrixViewProj(viewProjection());
+		vertexLightVS.UpdateLightPosition(lightPos);
 		
 		if (i == 0)
-			pixelLightFS.SetDecalMap(textureManager.getTextureId("../Images/bricks_diffuse.bmp"));
+			vertexLightFS.SetDecalMap(textureManager.getTextureId("../Images/bricks_diffuse.bmp"));
 		else
-			pixelLightFS.SetDecalMap(textureManager.getTextureId("../Images/bricks_normal.bmp"));
+			vertexLightFS.SetDecalMap(textureManager.getTextureId("../Images/bricks_normal.bmp"));
 
 		//update shaders
-		pixelLightVS.UpdateParameters();
-		pixelLightFS.UpdateParameters();
+		vertexLightVS.UpdateParameters();
+		vertexLightFS.UpdateParameters();
 		
 		list[i]->Draw();
 
@@ -128,7 +133,7 @@ void PixelLightScene::Draw()
 	}
 }
 
-void PixelLightScene::Update()
+void PixelVertexScene::Update()
 {
 	angleLightRot += Engine::deltaTime * (anfleDelta * 3.1416 / 180);
 

@@ -1,10 +1,11 @@
 #include "StdAfx.h"
 #include "Engine.h"
-//#include <GL/glew.h>
-#include <GL/glut.h>
 #include "TextureColorScene.h"
 #include <iostream>
 #include "PixelVertexScene.h"
+
+//GLEW library
+//#pragma comment(lib, "C:\\Program Files (x86)\\NVIDIA Corporation\\Cg\\examples\\OpenGL\\glew\\Debug\\Win32\\glew.lib")
 
 //static variables
 Matrix3D Engine::perspective;
@@ -35,13 +36,18 @@ void Engine::Init(int argc, char* argv[])
 
 	glutInit(&argc, argv);
 	glutCreateWindow("Scene Engine");
-	//glewInit();
 
 	//Set up callback functions
 	glutDisplayFunc(Display);
 	glutReshapeFunc(Resize);
 	glutIdleFunc(Update);
 	glutKeyboardFunc(Keyboard);
+
+	/* Initialize OpenGL entry points. */
+	//if (glewInit() != GLEW_OK || !GLEW_VERSION_1_3 || !GLEW_EXT_texture_compression_s3tc) {
+	//	fprintf(stderr, "%s: failed to initialize GLEW, OpenGL 1.3 and GL_EXT_texture_compression_s3tc required.\n", "Tutorial");
+	//	exit(1);
+	//}
 
 	scene->Init();
 }

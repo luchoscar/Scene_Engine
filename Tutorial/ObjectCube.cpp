@@ -1,6 +1,5 @@
 #include "StdAfx.h"
 #include "ObjectCube.h"
-#include <GL/glut.h>
 #include <math.h>
 #include <iostream>
 #include <string>

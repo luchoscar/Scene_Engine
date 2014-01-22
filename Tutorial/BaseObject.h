@@ -4,8 +4,6 @@
 
 #pragma once
 
-//#include <GL/glew.h>
-
 class BaseObject
 {
 public:

@@ -29,8 +29,7 @@ Vertex_Output VS_vertexLight(float4 position	: POSITION,
 	OUT.texCoord = texCoord;
 	OUT.normal = mul(matrixModelWorld, float4(normal, 1)).xyz;
 	OUT.lightDir = lightPosition - vertexPosWorld;
-	//OUT.lightDir = vertexPosWorld - lightPosition;
-
+	
 	return OUT;
 }
 

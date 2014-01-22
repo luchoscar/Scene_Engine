@@ -49,14 +49,3 @@ void VertexLightVS::UpdateLightPosition(float* lightPos)
 	cgGLSetParameter3fv(lightPosition, lightPos);
 	OpenGLRenderer::checkForCgError("setting light position");
 }
-
-//void VertexLightVS::UpdateInverseModelViewMatrix(float* MVP)
-//{
-//	cgSetMatrixParameterfr(inverseModelToWorld, MVP);
-//}
-//
-//
-//void VertexLightVS::UpdateCameraPosition(float* camPos)
-//{
-//	cgGLSetParameter3fv(cameraPosition, camPos);
-//}

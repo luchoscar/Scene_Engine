@@ -2,12 +2,14 @@
 
 #include "StdAfx.h"
 #include <iostream>
-#include <GL\glut.h>
 #include <CG\cg.h>
 #include <CG\cgGL.h>
 #include <vector>
 #include <map>
 #include "wBitmap.h"
+
+#include "..\Simple OpenGL Image Library\src\SOIL.h"
+#pragma comment(lib, "..\\Simple OpenGL Image Library\\projects\\VC9\\Debug\\SOIL.lib")
 
 class TextureManager
 {
@@ -24,7 +26,6 @@ public:
 private:
 	int textureCount;
 	std::map<const char*, GLuint> textureDic;
-	//std::vector<GLuint> textureIds;
 
 	int totalTextures;
 	GLuint* texturesIds;

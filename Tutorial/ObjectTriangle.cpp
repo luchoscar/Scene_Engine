@@ -1,6 +1,5 @@
 #include "StdAfx.h"
 #include "ObjectTriangle.h"
-#include <GL/glut.h>
 #include <math.h>
 
 ObjectTriangle::ObjectTriangle() : BaseObject()

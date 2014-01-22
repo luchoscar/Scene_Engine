@@ -1,6 +1,6 @@
 #pragma once
 
-#include <GL\glut.h>
+#include "stdafx.h"
 #include <CG\cg.h>
 #include <CG\cgGL.h>
 #include "TextureManager.h"

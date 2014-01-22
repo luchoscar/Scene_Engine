@@ -1,6 +1,5 @@
 #pragma once
 
-#include <GL\glut.h>
 #include <CG\cg.h>
 #include <CG\cgGL.h>
 

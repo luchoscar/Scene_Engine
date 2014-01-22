@@ -44,7 +44,6 @@ void PixelVertexScene::Init()
 
 	vertexLightFS.UpdateLightColor(color);
 
-	//list.push_back(new ObjectCube(0.0f, 0.0f, 0.0f, 30.0f, 30.0f, 30.0f, 1.0f, 1.0f, 1.0f, 0.5f, 0.5f, 0.5f));
 	list.push_back(new ObjectCube(0.0f, 0.0f, 0.0f, 30.0f, 45.0f, 15.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.1f, 0.1f));
 	list.push_back(new ObjectCube(0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.25f, 0.25f, 0.25f, 0.5f, 0.5f, 0.5f));
 

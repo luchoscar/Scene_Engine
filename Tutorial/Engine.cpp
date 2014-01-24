@@ -1,4 +1,8 @@
 #include "StdAfx.h"
+#include <GL/glew.h>
+#include <GL/wglew.h>
+#include <GL\glut.h>
+#include <CG\cg.h>
 #include "Engine.h"
 #include "TextureColorScene.h"
 #include <iostream>
@@ -44,10 +48,10 @@ void Engine::Init(int argc, char* argv[])
 	glutKeyboardFunc(Keyboard);
 
 	/* Initialize OpenGL entry points. */
-	//if (glewInit() != GLEW_OK || !GLEW_VERSION_1_3 || !GLEW_EXT_texture_compression_s3tc) {
-	//	fprintf(stderr, "%s: failed to initialize GLEW, OpenGL 1.3 and GL_EXT_texture_compression_s3tc required.\n", "Tutorial");
-	//	exit(1);
-	//}
+	if (glewInit()!=GLEW_OK || !GLEW_VERSION_1_3 || !GLEW_EXT_texture_compression_s3tc) {
+		fprintf(stderr, "%s: failed to initialize GLEW, OpenGL 1.3 and GL_EXT_texture_compression_s3tc required.\n", "Scene Engine");
+		exit(1);
+	}
 
 	scene->Init();
 }

@@ -3,9 +3,7 @@
  ****************************************************/
 
 #pragma once
-//#include <GL/glew.h>
-//#include <GL/wglew.h>
-//#include <GL/glut.h>
+
 #include "Matrix3D.h"
 #include "SceneBase.h"
 

@@ -4,6 +4,7 @@
 #include <iostream>
 #include <string>
 #include "Matrix3D.h"
+#include <GL/glut.h>
 
 ObjectCube::ObjectCube() : BaseObject()
 {

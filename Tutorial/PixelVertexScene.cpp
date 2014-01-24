@@ -40,12 +40,14 @@ void PixelVertexScene::Init()
 	vertexLightFS.LinkParameters();
 
 	//set light color
-	float color[3] = { 0.1, 1.0, 0.1 };
-
+	float color[3] = { 1.0, 1.0, 1.0 };
 	vertexLightFS.UpdateLightColor(color);
 
-	list.push_back(new ObjectCube(0.0f, 0.0f, 0.0f, 30.0f, 45.0f, 15.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.1f, 0.1f));
+	//list.push_back(new ObjectCube(0.0f, 0.0f, 0.0f, 30.0f, 45.0f, 15.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.1f, 0.1f));
+	list.push_back(new ObjectCube(0.0f, 0.0f, 0.0f, 30.0f, 45.0f, 15.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f));
 	list.push_back(new ObjectCube(0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.25f, 0.25f, 0.25f, 0.5f, 0.5f, 0.5f));
+	list.push_back(new ObjectCube(0.5f, 0.0f, 0.0f, 30.0f, 45.0f, 15.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f));
+	list.push_back(new ObjectCube(-0.5f, 0.0f, 0.0f, 30.0f, 45.0f, 15.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f));
 
 	//loading bmp
 	textureManager.Init(2);
@@ -115,7 +117,7 @@ void PixelVertexScene::Draw()
 		vertexLightVS.UpdateMatrixViewProj(viewProjection());
 		vertexLightVS.UpdateLightPosition(lightPos);
 		
-		if (i == 0)
+		if (i != 1)
 			vertexLightFS.SetDecalMap(textureManager.getTextureId("../Images/bricks_diffuse.bmp"));
 		else
 			vertexLightFS.SetDecalMap(textureManager.getTextureId("../Images/bricks_normal.bmp"));

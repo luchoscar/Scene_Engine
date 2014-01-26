@@ -1,24 +1,25 @@
 #include "stdafx.h"
-#include "PixelVertexScene.h"
+#include "SceneBuffers.h"
 #include "ObjectCube.h"
 
-float lightPos[3] = { 10.0f, 10.0f, 0.0f };
-float lightRad = 1.0;
-float angleLightRot = 0.0;
-float anfleDelta = 20.0f;
-
-PixelVertexScene::PixelVertexScene()
+SceneBuffers::SceneBuffers()
 {
+	lightPos[0] = 10.0f;
+	lightPos[1] = 10.0f;
+	lightPos[2] = 0.0f;
 
+	lightRad = 1.0;
+	angleLightRot = 0.0;
+	anfleDelta = 20.0f;
 }
 
 
-PixelVertexScene::~PixelVertexScene()
+SceneBuffers::~SceneBuffers()
 {
-
 }
 
-void PixelVertexScene::Init() 
+
+void SceneBuffers::Init()
 {
 	//create OpenGL context
 	rendererGL.InitContext();
@@ -43,25 +44,22 @@ void PixelVertexScene::Init()
 	float color[3] = { 1.0, 1.0, 1.0 };
 	vertexLightFS.UpdateLightColor(color);
 
-	//list.push_back(new ObjectCube(0.0f, 0.0f, 0.0f, 30.0f, 45.0f, 15.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.1f, 0.1f));
 	list.push_back(new ObjectCube(0.0f, 0.0f, 0.0f, 30.0f, 45.0f, 15.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f));
 	list.push_back(new ObjectCube(0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.25f, 0.25f, 0.25f, 0.5f, 0.5f, 0.5f));
-	list.push_back(new ObjectCube(0.5f, 0.0f, 0.0f, 30.0f, 45.0f, 15.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f));
-	list.push_back(new ObjectCube(-0.5f, 0.0f, 0.0f, 30.0f, 45.0f, 15.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f));
-
+	
 	//loading bmp
 	textureManager.Init(2);
 	textureManager.setBmpTextureinMap("../Images/bricks_diffuse.bmp");
 	textureManager.setBmpTextureinMap("../Images/bricks_normal.bmp");
 }
 
-void PixelVertexScene::Draw()
+void SceneBuffers::Draw()
 {
 	rendererGL.ClearGLFlags();
 
 	Matrix3D MVP, viewMatrix, modelViewMatrix, modelMatrix, rotationMatrix,
-				translateMatrix, rotationMatrixX, rotationMatrixY, rotationMatrixZ,
-				modelToWorld, viewProjection;
+		translateMatrix, rotationMatrixX, rotationMatrixY, rotationMatrixZ,
+		modelToWorld, viewProjection;
 
 	Matrix3D::BuildLookAtMatrix(0.0, 1.0, -5.0,	//camera position
 								0.0, 0.0, 0.0,	//point that camera looks at
@@ -94,29 +92,29 @@ void PixelVertexScene::Draw()
 		Matrix3D::MultMatrix(rotationMatrix, rotationMatrix, rotationMatrixZ);
 
 		Matrix3D::MultMatrix(modelMatrix, rotationMatrix, modelMatrix);
-		
+
 		Matrix3D::MultMatrix(modelMatrix, translateMatrix, modelMatrix);	//calculate world position
 		Matrix3D::MultMatrix(modelToWorld, translateMatrix, modelMatrix);	//calculate world position
-		
+
 		Matrix3D::MultMatrix(modelViewMatrix, viewMatrix, modelMatrix);		//model - view matrix
 		Matrix3D::MultMatrix(MVP, Engine::perspective, modelViewMatrix);	//model - view - projection matrix
 		Matrix3D::MultMatrix(viewProjection, Engine::perspective, viewMatrix);	//model - view - projection matrix
-		
+
 		//bind CG program
 		rendererGL.BindProgram(vertexLightVS.GetProgram());
 		rendererGL.BindProgram(vertexLightFS.GetProgram());
-		
+
 		//Enable VS & FS profiles
 		rendererGL.EnableProfile(rendererGL.GetVertexProfile());
 		rendererGL.EnableProfile(rendererGL.GetFragmentProfile());
 
 		//update shaders parameters
-		
+
 		vertexLightVS.UpdateModelViewMatrix(MVP());
 		vertexLightVS.UpdateMatrixModelWorld(modelToWorld());
 		vertexLightVS.UpdateMatrixViewProj(viewProjection());
 		vertexLightVS.UpdateLightPosition(lightPos);
-		
+
 		if (i != 1)
 			vertexLightFS.SetDecalMap(textureManager.getTextureId("../Images/bricks_diffuse.bmp"));
 		else
@@ -125,8 +123,8 @@ void PixelVertexScene::Draw()
 		//update shaders
 		vertexLightVS.UpdateParameters();
 		vertexLightFS.UpdateParameters();
-		
-		list[i]->Draw();
+
+		list[i]->DrawBuffers();
 
 		//disable Vertex CGprofile
 		rendererGL.DisableProfile(rendererGL.GetVertexProfile());
@@ -134,7 +132,7 @@ void PixelVertexScene::Draw()
 	}
 }
 
-void PixelVertexScene::Update()
+void SceneBuffers::Update()
 {
 	angleLightRot += Engine::deltaTime * (anfleDelta * 3.1416 / 180);
 

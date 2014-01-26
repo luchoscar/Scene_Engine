@@ -3,15 +3,13 @@
 #include "SceneBase.h"
 #include "VertexLightVS.h"
 #include "VertexLightFS.h"
-#include "SimpleVS.h"
-#include "SimpleFS.h"
 
-class PixelVertexScene :
+class SceneBuffers :
 	public SceneBase
 {
 public:
-	PixelVertexScene();
-	virtual ~PixelVertexScene();
+	SceneBuffers();
+	virtual ~SceneBuffers();
 
 	virtual void Init();
 	virtual void Draw();
@@ -20,5 +18,11 @@ public:
 private:
 	VertexLightVS vertexLightVS;
 	VertexLightFS vertexLightFS;
+
+	//light variables
+	float lightPos[3];
+	float lightRad;
+	float angleLightRot;
+	float anfleDelta;
 };
 

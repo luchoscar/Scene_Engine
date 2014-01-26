@@ -29,7 +29,7 @@ void OpenGLRenderer::InitContext()
 	cgSetParameterSettingMode(myCgContext, CG_DEFERRED_PARAMETER_SETTING);
 
 	glEnable(GL_DEPTH_TEST); 
-	glEnable(GL_CULL_FACE);
+	//glEnable(GL_CULL_FACE);
 
 	OpenGLRenderer::contextInitialized = true;
 }

@@ -4,7 +4,7 @@
 #include <iostream>
 #include <string>
 #include "Matrix3D.h"
-#include <GL/glut.h>
+//#include <GL/glut.h>
 
 ObjectCube::ObjectCube() : BaseObject()
 {
@@ -55,8 +55,9 @@ ObjectCube::ObjectCube(float posX, float posY, float posZ,
 void ObjectCube::Init()
 {
 	//vertex buffer - 8 vertices - x, y, z
-	vb = new float[24];
+	vb = new float[72];
 
+	//front face
 	//front top left corner
 	vb[0] = -0.5;
 	vb[1] =  0.5;
@@ -77,6 +78,7 @@ void ObjectCube::Init()
 	vb[10] =  0.5;
 	vb[11] =  0.5;
 
+	//back face
 	//back top right corner
 	vb[12] =  0.5;
 	vb[13] =  0.5;
@@ -96,6 +98,74 @@ void ObjectCube::Init()
 	vb[21] = -0.5;
 	vb[22] =  0.5;
 	vb[23] = -0.5;
+
+	//top face
+	vb[24] = 0.5;
+	vb[25] = 0.5;
+	vb[26] = 0.5;
+
+	vb[27] = 0.5;
+	vb[28] = 0.5;
+	vb[29] = -0.5;
+
+	vb[30] = -0.5;
+	vb[31] = 0.5;
+	vb[32] = -0.5;
+
+	vb[33] = -0.5;
+	vb[34] = 0.5;
+	vb[35] = 0.5;
+
+	//bottom face
+	vb[36] = -0.5;
+	vb[37] = -0.5;
+	vb[38] = 0.5;
+
+	vb[39] = -0.5;
+	vb[40] = -0.5;
+	vb[41] = -0.5;
+
+	vb[42] = 0.5;
+	vb[43] = -0.5;
+	vb[44] = -0.5;
+
+	vb[45] = 0.5;
+	vb[46] = -0.5;
+	vb[47] = 0.5;
+
+	//left face
+	vb[48] = -0.5;
+	vb[49] = 0.5;
+	vb[50] = 0.5;
+
+	vb[51] = -0.5;
+	vb[52] = 0.5;
+	vb[53] = -0.5;
+
+	vb[54] = -0.5;
+	vb[55] = -0.5;
+	vb[56] = -0.5;
+
+	vb[57] = -0.5;
+	vb[58] = -0.5;
+	vb[59] = 0.5;
+
+	//right face
+	vb[60] = 0.5;
+	vb[61] = 0.5;
+	vb[62] = 0.5;
+
+	vb[63] = 0.5;
+	vb[64] = -0.5;
+	vb[65] = 0.5;
+
+	vb[66] = 0.5;
+	vb[67] = -0.5;
+	vb[68] = -0.5;
+
+	vb[69] = 0.5;
+	vb[70] = 0.5;
+	vb[71] = -0.5;
 
 	//index buffer
 	ib = new int[24];
@@ -195,20 +265,13 @@ void ObjectCube::Init()
 	nb[17] = normal[2];
 
 	//color buffer
-	cb = new float[32];
-	for (int i = 0; i < 32; i += 4)
+	cb = new float[24];
+	for (int i = 0; i < 24; i += 3)
 	{
 		cb[i + 0] = color[0];
 		cb[i + 1] = color[1];
 		cb[i + 2] = color[2];
-		cb[i + 3] = 1.0f;
 	}
-
-	//glGenBuffers(1, vb);
-
-	//glBindBuffer(GL_ARRAY_BUFFER, vb);
-	//glBufferData(GL_ARRAY_BUFFER, sizeof(vb), vb, GL_STATIC_DRAW);
-	//glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
 ObjectCube::~ObjectCube(void)
@@ -345,4 +408,18 @@ int* ObjectCube::GetIndexBuffer()
 float* ObjectCube::GetColorBuffer()
 {
 	return cb;
+}
+
+void ObjectCube::DrawBuffers()
+{
+	glEnableClientState(GL_VERTEX_ARRAY);
+	//glEnableClientState(GL_INDEX_ARRAY);
+
+	glVertexPointer(3, GL_FLOAT, 0, vb);
+	//glIndexPointer(GL_INT, 0, ib);
+
+	glDrawArrays(GL_QUADS, 0, 72);
+
+	//glDisableClientState(GL_INDEX_ARRAY);
+	glDisableClientState(GL_VERTEX_ARRAY);
 }

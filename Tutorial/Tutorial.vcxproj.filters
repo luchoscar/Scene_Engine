@@ -84,16 +84,19 @@
     <ClInclude Include="SceneBase.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="TextureColorScene.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="PixelVertexScene.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="VertexLightVS.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="VertexLightFS.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneTextureColor.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneVertexLight.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneBuffers.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -143,16 +146,19 @@
     <ClCompile Include="SceneBase.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="TextureColorScene.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="PixelLightVS.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="PixelLightFS.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="PixelVertexScene.cpp">
+    <ClCompile Include="SceneTextureColor.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneVertexLight.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneBuffers.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

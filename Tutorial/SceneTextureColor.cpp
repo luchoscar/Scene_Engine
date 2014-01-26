@@ -7,7 +7,7 @@
  ****************************************************************************/
 
 #include "StdAfx.h"
-#include "TextureColorScene.h"
+#include "SceneTextureColor.h"
 #include "ObjectTriangle.h"
 #include "ObjectCube.h"
 
@@ -15,18 +15,18 @@
 #include "..\Simple OpenGL Image Library\src\SOIL.h"
 #pragma comment(lib, "..\\Simple OpenGL Image Library\\projects\\VC9\\Debug\\SOIL.lib")
 
-TextureColorScene::TextureColorScene(void)
+SceneTextureColor::SceneTextureColor(void)
 {
 
 }
 
-TextureColorScene::~TextureColorScene(void)
+SceneTextureColor::~SceneTextureColor(void)
 {
 	
 }
 
 //initializing scene
-void TextureColorScene::Init()
+void SceneTextureColor::Init()
 {
 	//create OpenGL context
 	rendererGL.InitContext();
@@ -64,7 +64,7 @@ void TextureColorScene::Init()
 	list.push_back(new ObjectCube(1.5, -0.70, 0.0, 25.0, 30.0, 0.0, 2.0, 2.0, 2.0, 1.0, 1.0, 1.0));
 }
 
-void TextureColorScene::Draw()
+void SceneTextureColor::Draw()
 {
 	rendererGL.ClearGLFlags();
 
@@ -158,7 +158,7 @@ float boundBox = 5;
 int xDir = 1;
 int yDir = 1;
 int zDir = 1;
-void TextureColorScene::Update()
+void SceneTextureColor::Update()
 {
 	//translate 3rd object on x-axis
 	if (list[2]->GetPosition()[0] <= -boundBox) 

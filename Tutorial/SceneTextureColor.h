@@ -11,11 +11,11 @@
 
 using namespace std;
 
-class TextureColorScene : public SceneBase
+class SceneTextureColor : public SceneBase
 {
 public:
-	TextureColorScene();
-	virtual ~TextureColorScene();
+	SceneTextureColor();
+	virtual ~SceneTextureColor();
 	
 	virtual void Init();
 	virtual void Draw();

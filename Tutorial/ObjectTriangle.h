@@ -17,7 +17,7 @@ public:
 	virtual float* GetColorBuffer();
 
 	virtual void Draw();
-	virtual void DrawBuffers() {};	
+	virtual void DrawBuffers();	
 	virtual void Update();
 
 protected:

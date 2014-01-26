@@ -1,15 +1,13 @@
 #include "StdAfx.h"
-#include <GL/glew.h>
-#include <GL/wglew.h>
-#include <GL\glut.h>
+//#include <GL/glew.h>
+//#include <GL/wglew.h>
+//#include <GL\glut.h>
 #include <CG\cg.h>
 #include "Engine.h"
-#include "TextureColorScene.h"
 #include <iostream>
-#include "PixelVertexScene.h"
-
-//GLEW library
-//#pragma comment(lib, "C:\\Program Files (x86)\\NVIDIA Corporation\\Cg\\examples\\OpenGL\\glew\\Debug\\Win32\\glew.lib")
+#include "SceneTextureColor.h"
+#include "SceneVertexLight.h"
+#include "SceneBuffers.h"
 
 //static variables
 Matrix3D Engine::perspective;
@@ -20,9 +18,10 @@ SceneBase* scene;
 
 Engine::Engine()
 {
-	//scene = new TextureColorScene();
-	scene = new PixelVertexScene();
-	
+	//scene = new SceneTextureColor();
+	//scene = new SceneVertexLight();
+	scene = new SceneBuffers();
+
 	previousTime = 0.0;
 }
 
@@ -89,19 +88,16 @@ void Engine::Keyboard(unsigned char c, int x, int y)
 {
 	switch (c)
 	{
-	case 'w':
-		glutPostRedisplay();
-		break;
-	case 'a':
-		break;
-	case 's':
-		break;
-	case 'd':
-		break;
-	case ' ':
-		{
-		}
-		break;
+	//case 'q':
+	//	delete scene;
+	//	scene = new SceneTextureColor();
+	//	scene->Init();
+	//	break;
+	//case 'w':
+	//	delete scene;
+	//	scene = new SceneVertexLight();
+	//	scene->Init();
+	//	break;
 	case 27:
 		exit(1);
 		break;

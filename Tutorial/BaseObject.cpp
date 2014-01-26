@@ -4,14 +4,22 @@
 
 BaseObject::BaseObject()
 {
+	ib = NULL;
+	vb = NULL;
+	nb = NULL;
+	cb = NULL;
 }
 
 BaseObject::~BaseObject()
 {
-	delete(ib);
-	delete(vb);
-	delete(nb);
-	delete(cb);
+	if (ib != NULL)
+		delete(ib);
+	if (vb != NULL)
+		delete(vb);
+	if (nb != NULL)
+		delete(nb);
+	if (cb != NULL)
+		delete(cb);
 }
 
 float* BaseObject::GetPosition()

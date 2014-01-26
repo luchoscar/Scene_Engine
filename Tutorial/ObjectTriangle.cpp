@@ -1,7 +1,7 @@
 #include "StdAfx.h"
 #include "ObjectTriangle.h"
 #include <math.h>
-#include <GL/glut.h>
+//#include <GL/glut.h>
 
 ObjectTriangle::ObjectTriangle() : BaseObject()
 {
@@ -126,4 +126,15 @@ int* ObjectTriangle::GetIndexBuffer()
 float* ObjectTriangle::GetColorBuffer()
 {
 	return cb;
+}
+
+void ObjectTriangle::DrawBuffers() 
+{
+	glEnableClientState(GL_VERTEX_ARRAY);
+
+	glVertexPointer(3, GL_FLOAT, 0, vb);
+
+	glDrawArrays(GL_TRIANGLES, 0, 9);
+
+	glDisableClientState(GL_VERTEX_ARRAY);
 }

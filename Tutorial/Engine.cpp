@@ -19,8 +19,8 @@ SceneBase* scene;
 Engine::Engine()
 {
 	//scene = new SceneTextureColor();
-	//scene = new SceneVertexLight();
-	scene = new SceneBuffers();
+	scene = new SceneVertexLight();
+	//scene = new SceneBuffers();
 
 	previousTime = 0.0;
 }

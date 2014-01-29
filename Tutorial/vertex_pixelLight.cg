@@ -1,0 +1,38 @@
+//vertext output
+struct Vertex_Output
+{
+	float4 position : POSITION;
+	float4 color	: COLOR;
+	float2 texCoord : TEXCOORD0;
+	float3x3 TBN	: TEXCOORD1;
+	float3 lightDir : TEXCOORD2;
+};
+
+//vertex shader
+Vertex_Output VS_pixelLight(float4 position : POSITION,
+							float3 normal	: NORMAL,
+							float4 color	: COLOR,
+							float2 texCoord : TEXCOORD0,
+							
+							uniform float3	 tangent,
+							uniform float3	 bitangent,
+							uniform float3	 lightPosition,
+							uniform float4x4 matrixModelWorld,
+							uniform float4x4 matrixViewProj,
+							uniform float4x4 modelViewProj)
+{
+	Vertex_Output OUT;
+
+	float3 vertexPosWorld = mul(matrixModelWorld, position).xyz;
+	float3 T = mul(matrixModelWorld, float4(tangent, 1)).xyz;
+	float3 B = mul(matrixModelWorld, float4(bitangent, 1)).xyz;
+	float3 N = mul(matrixModelWorld, float4(normal, 1)).xyz;
+
+	OUT.position = mul(matrixViewProj, float4(vertexPosWorld, 1));
+	OUT.color = color;
+	OUT.texCoord = texCoord;
+	OUT.TBN = transpose(float3x3(T, B, N));
+	OUT.lightDir = normalize(lightPosition - vertexPosWorld);
+
+	return OUT;
+}

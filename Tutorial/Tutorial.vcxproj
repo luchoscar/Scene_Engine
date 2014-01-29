@@ -78,8 +78,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <None Include="fragment_pixelLight.cg" />
     <None Include="fragment_shader.cg" />
     <None Include="fragment_vertexLight.cg" />
+    <None Include="vertex_pixelLight.cg" />
     <None Include="vertex_vertexLight.cg" />
     <None Include="ReadMe.txt" />
     <None Include="textureFragment.cg" />
@@ -91,8 +93,11 @@
     <ClInclude Include="FragmentObject.h" />
     <ClInclude Include="Matrix3D.h" />
     <ClInclude Include="ObjectCube.h" />
+    <ClInclude Include="ObjectPlane.h" />
     <ClInclude Include="ObjectTriangle.h" />
     <ClInclude Include="OpenGLRenderer.h" />
+    <ClInclude Include="PerPixelLightVS.h" />
+    <ClInclude Include="PerPixelLightFS.h" />
     <ClInclude Include="SceneBuffers.h" />
     <ClInclude Include="VertexLightFS.h" />
     <ClInclude Include="SceneVertexLight.h" />
@@ -114,12 +119,15 @@
     <ClCompile Include="FragmentObject.cpp" />
     <ClCompile Include="Matrix3D.cpp" />
     <ClCompile Include="ObjectCube.cpp" />
+    <ClCompile Include="ObjectPlane.cpp" />
     <ClCompile Include="ObjectTriangle.cpp" />
     <ClCompile Include="OpenGLRenderer.cpp" />
-    <ClCompile Include="PixelLightFS.cpp" />
+    <ClCompile Include="PerPixelLightVS.cpp" />
+    <ClCompile Include="PerPixelLightFS.cpp" />
+    <ClCompile Include="VertexLightFS.cpp" />
     <ClCompile Include="SceneBuffers.cpp" />
     <ClCompile Include="SceneVertexLight.cpp" />
-    <ClCompile Include="PixelLightVS.cpp" />
+    <ClCompile Include="VertexLightVS.cpp" />
     <ClCompile Include="SceneTextureColor.cpp" />
     <ClCompile Include="SceneBase.cpp" />
     <ClCompile Include="SimpleFS.cpp" />

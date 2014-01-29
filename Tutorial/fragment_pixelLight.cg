@@ -1,0 +1,24 @@
+void FS_pixelLight(float3 color	: COLOR,
+						float2 texCoord	: TEXCOORD0,
+						float3 TBN	: TEXCOORD1,
+						float3 lightDir	: TEXCOORD2,
+						
+						out float4 outColor : COLOR,
+
+						uniform sampler2D decalMap,
+						uniform sampler2D normalMap,
+						uniform float3	  lightColor)
+{
+	//calculate normal
+	float3 normal = (tex2D(_BumpMap, i.packUV.zw).xyz *2.0 - 1.0);
+	normal = normalize(normal);
+	normal = normalize(mul(TBN, normal));
+
+	//calculate diffuse vertex light intensity 
+	float diffInt = max(dot(normal, lightDir), 0.1);
+	float3 decalColor = tex2D(decalMap, texCoord).xyz;
+
+	floar3 diffuseLight = diffInt * decalColor;
+
+	outColor = float4((diffuseLight), 1.0);
+}

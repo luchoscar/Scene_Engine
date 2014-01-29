@@ -34,6 +34,12 @@
     <None Include="vertex_vertexLight.cg">
       <Filter>Shaders</Filter>
     </None>
+    <None Include="fragment_pixelLight.cg">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="vertex_pixelLight.cg">
+      <Filter>Shaders</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -99,6 +105,15 @@
     <ClInclude Include="SceneBuffers.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="PerPixelLightFS.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PerPixelLightVS.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ObjectPlane.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -146,12 +161,6 @@
     <ClCompile Include="SceneBase.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="PixelLightVS.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="PixelLightFS.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="SceneTextureColor.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -159,6 +168,21 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="SceneBuffers.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="VertexLightFS.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="VertexLightVS.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="PerPixelLightFS.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="PerPixelLightVS.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ObjectPlane.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

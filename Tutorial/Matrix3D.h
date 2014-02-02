@@ -10,6 +10,8 @@ private:
 	float matrix[16];
 
 public:
+	static const double myPi;
+
 	Matrix3D(void) { memset(matrix, 0, sizeof(matrix)); }
 
 	//Overload [] so it can be used like an array

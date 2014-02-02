@@ -30,6 +30,18 @@ void SceneVertexLight::Init()
 	//creating FS profile
 	rendererGL.InitFragmentProfile();
 
+	/*** light object shader ***/
+	//creating VS program
+	simpleVS.CreateProgram("vertex_shader.cg", "VS_program");
+	rendererGL.LoadProgram(simpleVS.GetProgram());
+	simpleVS.LinkParameters();
+
+	//creating FS program
+	simpleFS.CreateProgram("fragment_shader.cg", "FS_program");
+	rendererGL.LoadProgram(simpleFS.GetProgram());
+	simpleFS.LinkParameters();
+
+	/***room objects shader ***/
 	//creating VS program
 	vertexLightVS.CreateProgram("vertex_vertexLight.cg", "VS_vertexLight");
 	rendererGL.LoadProgram(vertexLightVS.GetProgram());

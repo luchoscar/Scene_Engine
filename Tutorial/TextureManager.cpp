@@ -1,5 +1,7 @@
 #include "stdafx.h"
 #include "TextureManager.h"
+#include "OpenGLRenderer.h"
+
 #include "..\Simple OpenGL Image Library\src\SOIL.h"
 #pragma comment(lib, "..\\Simple OpenGL Image Library\\projects\\VC9\\Debug\\SOIL.lib")
 

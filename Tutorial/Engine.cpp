@@ -8,6 +8,7 @@
 #include "SceneTextureColor.h"
 #include "SceneVertexLight.h"
 #include "SceneBuffers.h"
+#include "ScenePerPixelLight.h"
 
 //static variables
 Matrix3D Engine::perspective;
@@ -19,8 +20,9 @@ SceneBase* scene;
 Engine::Engine()
 {
 	//scene = new SceneTextureColor();
-	scene = new SceneVertexLight();
+	//scene = new SceneVertexLight();
 	//scene = new SceneBuffers();
+	scene = new ScenePerPixelLight();
 
 	previousTime = 0.0;
 }
@@ -88,16 +90,6 @@ void Engine::Keyboard(unsigned char c, int x, int y)
 {
 	switch (c)
 	{
-	//case 'q':
-	//	delete scene;
-	//	scene = new SceneTextureColor();
-	//	scene->Init();
-	//	break;
-	//case 'w':
-	//	delete scene;
-	//	scene = new SceneVertexLight();
-	//	scene->Init();
-	//	break;
 	case 27:
 		exit(1);
 		break;
@@ -108,7 +100,7 @@ void Engine::Resize(int width, int height)
 {
 	float aspectRatio = (float)width / (float)height;
 	Matrix3D::BuildPerspectiveMatrix(65, aspectRatio, 1.0, 1000.0, Engine::perspective);
-
+	
 	glViewport(0, 0, width, height);
 }
 

@@ -85,6 +85,12 @@ void OpenGLRenderer::DisableProfile(CGprofile _profile)
 	cgGLDisableProfile(_profile);
 }
 
+void OpenGLRenderer::EnableTexture(CGparameter texture)
+{
+	cgGLEnableTextureParameter(texture);
+	OpenGLRenderer::checkForCgError("enable texture");
+}
+
 void OpenGLRenderer::checkForCgError(const char *situation)
 {
 	CGerror error;
@@ -98,6 +104,9 @@ void OpenGLRenderer::checkForCgError(const char *situation)
 		{
 			printf("%s\n", cgGetLastListing(myCgContext));
 		}
+
+		char x;
+		x << std::cin.get();
 
 		exit(1);
 	}

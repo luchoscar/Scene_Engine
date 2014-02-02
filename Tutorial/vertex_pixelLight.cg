@@ -6,6 +6,7 @@ struct Vertex_Output
 	float2 texCoord : TEXCOORD0;
 	float3x3 TBN	: TEXCOORD1;
 	float3 lightDir : TEXCOORD2;
+	float3 cameraDir : TEXCOORD2;
 };
 
 //vertex shader
@@ -17,13 +18,16 @@ Vertex_Output VS_pixelLight(float4 position : POSITION,
 							uniform float3	 tangent,
 							uniform float3	 bitangent,
 							uniform float3	 lightPosition,
+							uniform float3	 cameraPosition,
 							uniform float4x4 matrixModelWorld,
-							uniform float4x4 matrixViewProj,
-							uniform float4x4 modelViewProj)
+							uniform float4x4 matrixViewProj)
 {
 	Vertex_Output OUT;
 
+	cameraPosition = float3(0.0, 0.0, -1.5);
+
 	float3 vertexPosWorld = mul(matrixModelWorld, position).xyz;
+	
 	float3 T = mul(matrixModelWorld, float4(tangent, 1)).xyz;
 	float3 B = mul(matrixModelWorld, float4(bitangent, 1)).xyz;
 	float3 N = mul(matrixModelWorld, float4(normal, 1)).xyz;
@@ -33,6 +37,7 @@ Vertex_Output VS_pixelLight(float4 position : POSITION,
 	OUT.texCoord = texCoord;
 	OUT.TBN = transpose(float3x3(T, B, N));
 	OUT.lightDir = normalize(lightPosition - vertexPosWorld);
+	OUT.cameraDir = normalize(cameraPosition - vertexPosWorld);
 
 	return OUT;
 }

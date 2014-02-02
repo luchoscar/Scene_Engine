@@ -54,19 +54,19 @@ void ObjectPlane::Init()
 {
 	vb = new float[12];
 	vb[0]  = -0.5f;
-	vb[1]  = -0.5f;
+	vb[1]  =  0.0f;
 	vb[2]  =  0.5f;
 
 	vb[3]  =  0.5f;
-	vb[4]  = -0.5f;
+	vb[4]  =  0.0f;
 	vb[5]  =  0.5f;
 
 	vb[6]  =  0.5f;
-	vb[7]  = -0.5f;
+	vb[7]  =  0.0f;
 	vb[8]  = -0.5f;
 
 	vb[9]  = -0.5f;
-	vb[10] = -0.5f;
+	vb[10] = 0.0f;
 	vb[11] = -0.5f;
 
 	nb = new float[3];

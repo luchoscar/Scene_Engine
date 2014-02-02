@@ -25,11 +25,11 @@ void PerPixelLightVS::LinkParameters()
 	matrixViewProj = cgGetNamedParameter(vertexProgram, "matrixViewProj");
 	OpenGLRenderer::checkForCgError("could not get matrixViewProj parameter");
 
-	modelViewProj = cgGetNamedParameter(vertexProgram, "modelViewProj");
-	OpenGLRenderer::checkForCgError("could not get modelViewProj parameter");
-
 	lightPosition = cgGetNamedParameter(vertexProgram, "lightPosition");
 	OpenGLRenderer::checkForCgError("could not get lightPosition parameter");
+
+	cameraPosition = cgGetNamedParameter(vertexProgram, "cameraPosition");
+	OpenGLRenderer::checkForCgError("could not get cameraPosition parameter");
 }
 
 void PerPixelLightVS::UpdateTangent(float* tan)
@@ -44,21 +44,15 @@ void PerPixelLightVS::UpdateBitangent(float* bitan)
 	OpenGLRenderer::checkForCgError("setting bitangent");
 }
 
-void PerPixelLightVS::UpdateModelViewMatrix(float* MVP)
+void PerPixelLightVS::UpdateMatrixModelWorld(float* World)
 {
-	cgSetMatrixParameterfr(modelViewProj, MVP);
-	OpenGLRenderer::checkForCgError("setting model view projection matrix");
-}
-
-void PerPixelLightVS::UpdateMatrixModelWorld(float* MVP)
-{
-	cgSetMatrixParameterfr(matrixModelWorld, MVP);
+	cgSetMatrixParameterfr(matrixModelWorld, World);
 	OpenGLRenderer::checkForCgError("setting model to world matrix");
 }
 
-void PerPixelLightVS::UpdateMatrixViewProj(float* MVP)
+void PerPixelLightVS::UpdateMatrixViewProj(float* ViewProj)
 {
-	cgSetMatrixParameterfr(matrixViewProj, MVP);
+	cgSetMatrixParameterfr(matrixViewProj, ViewProj);
 	OpenGLRenderer::checkForCgError("setting view projection matrix");
 }
 
@@ -66,4 +60,10 @@ void PerPixelLightVS::UpdateLightPosition(float* lightPos)
 {
 	cgGLSetParameter3fv(lightPosition, lightPos);
 	OpenGLRenderer::checkForCgError("setting light position");
+}
+
+void PerPixelLightVS::UpdateCameraPosition(float* camPos)
+{
+	cgGLSetParameter3fv(cameraPosition, camPos);
+	OpenGLRenderer::checkForCgError("setting camera position");
 }

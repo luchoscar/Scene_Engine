@@ -3,7 +3,7 @@
 #include <math.h>
 #include <assert.h>     
 
-static const double myPi = 3.14159265358979323846;
+const double Matrix3D::myPi = 3.14159265358979323846;
 
 void Matrix3D::BuildPerspectiveMatrix(double fieldOfView, double aspectRatio, double zNear, double zFar, Matrix3D& m)
 {

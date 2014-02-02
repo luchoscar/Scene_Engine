@@ -23,7 +23,8 @@ public:
 	static void EnableProfile(CGprofile _profile);
 	static void DisableProfile(CGprofile _profile);
 	static void checkForCgError(const char *situation);
-	
+	static void EnableTexture(CGparameter texture);
+
 protected:
 	static CGcontext myCgContext;
 	static CGprofile vertexProfile,

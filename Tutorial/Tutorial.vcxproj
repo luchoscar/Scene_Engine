@@ -99,6 +99,7 @@
     <ClInclude Include="PerPixelLightVS.h" />
     <ClInclude Include="PerPixelLightFS.h" />
     <ClInclude Include="SceneBuffers.h" />
+    <ClInclude Include="ScenePerPixelLight.h" />
     <ClInclude Include="VertexLightFS.h" />
     <ClInclude Include="SceneVertexLight.h" />
     <ClInclude Include="VertexLightVS.h" />
@@ -124,6 +125,7 @@
     <ClCompile Include="OpenGLRenderer.cpp" />
     <ClCompile Include="PerPixelLightVS.cpp" />
     <ClCompile Include="PerPixelLightFS.cpp" />
+    <ClCompile Include="ScenePerPixelLight.cpp" />
     <ClCompile Include="VertexLightFS.cpp" />
     <ClCompile Include="SceneBuffers.cpp" />
     <ClCompile Include="SceneVertexLight.cpp" />

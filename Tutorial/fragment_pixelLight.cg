@@ -11,7 +11,8 @@ void FS_pixelLight(float3 color	: COLOR,
 						uniform float3	  lightColor)
 {
 	//calculate normal
-	float3 normal = normalize(tex2D(_BumpMap, i.packUV.zw).xyz *2.0 - 1.0);
+	float3 normal = normalize(tex2D(_BumpMap, texCoord).xyz *2.0 - 1.0);]
+
 	normal = normalize(mul(TBN, normal));
 
 	//calculate diffuse vertex light intensity 
@@ -24,6 +25,7 @@ void FS_pixelLight(float3 color	: COLOR,
 	float3 decalColor = tex2D(decalMap, texCoord).xyz;
 
 	floar3 diffuseLight = diffInt * decalColor;
+
 	float3 specLight = specInt * decalColor;
 
 	float3 lightColor = (diffuseLight + specLight);

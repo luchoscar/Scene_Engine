@@ -36,7 +36,8 @@ Vertex_Output VS_pixelLight(float4 position : POSITION,
 	OUT.color = color;
 	OUT.texCoord = texCoord;
 	OUT.TBN = transpose(float3x3(T, B, N));
-	OUT.lightDir = normalize(lightPosition - vertexPosWorld);
+	//OUT.lightDir = normalize(lightPosition - vertexPosWorld);
+	OUT.lightDir = normalize(lightPosition);
 	OUT.cameraDir = normalize(cameraPosition - vertexPosWorld);
 
 	return OUT;

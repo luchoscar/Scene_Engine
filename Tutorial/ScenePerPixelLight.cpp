@@ -50,7 +50,7 @@ void ScenePerPixelLight::Init()
 	//initializig light variables
 	cameraPosition[0] = 0.0;
 	cameraPosition[1] = 0.0;
-	cameraPosition[2] = -1.5;
+	cameraPosition[2] = -3.5;
 
 	lightAngle = 0.0f;
 	lightAngleDelta = 10.0f * Matrix3D::myPi / 180.0f;
@@ -64,29 +64,29 @@ void ScenePerPixelLight::Init()
 
 	//loading room
 	//back wall
-	list.push_back(new ObjectPlane(0.0f, 0.0f, 0.5f,
+	list.push_back(new ObjectPlane(0.0f, 0.0f, 1.0f,
 									90.0f, 0.0f, 0.0f,
-									1.0f, 1.0f, 1.0f,
+									2.0f, 2.0f, 2.0f,
 									1.0f, 1.0f, 1.0f)); 
 	//right wall
-	list.push_back(new ObjectPlane(-0.5f, 0.0f, 0.0f,
+	list.push_back(new ObjectPlane(-1.0f, 0.0f, 0.0f,
 									90.0f, 0.0f, 90.0f,
-									1.0f, 1.0f, 1.0f,
+									2.0f, 2.0f, 2.0f,
 									1.0f, 1.0f, 1.0f));
 	//floor
-	list.push_back(new ObjectPlane(0.0f, -0.5f, 0.0f,
+	list.push_back(new ObjectPlane(0.0f, -1.0f, 0.0f,
 									0.0f, 0.0f, 0.0f,
-									1.0f, 1.0f, 1.0f,
+									2.0f, 2.0f, 2.0f,
 									1.0f, 1.0f, 1.0f));
 	//left wall
-	list.push_back(new ObjectPlane(0.5f, 0.0f, 0.0f,
+	list.push_back(new ObjectPlane(1.0f, 0.0f, 0.0f,
 									90.0f, 0.0f, -90.0f,
-									1.0f, 1.0f, 1.0f,
+									2.0f, 2.0f, 2.0f,
 									1.0f, 1.0f, 1.0f));
 	//roof
-	list.push_back(new ObjectPlane(0.0f, 0.5f, 0.0f,
+	list.push_back(new ObjectPlane(0.0f, 1.0f, 0.0f,
 									180.0f, 180.0f, 0.0f,
-									1.0f, 1.0f, 1.0f,
+									2.0f, 2.0f, 2.0f,
 									1.0f, 1.0f, 1.0f));
 	
 }
@@ -209,5 +209,5 @@ void ScenePerPixelLight::Update()
 	if (lightAngle >= (Matrix3D::myPi + Matrix3D::myPi))
 		lightAngle = 0.0f;
 
-	list[0]->SetPosition(cos(lightAngle) * 0.4f, sin(lightAngle) * 0.4f, sin(lightAngle) * 0.4f);
+	list[0]->SetPosition(cos(lightAngle) * 0.8f, sin(lightAngle) * 0.8f, sin(lightAngle) * 0.8f);
 }

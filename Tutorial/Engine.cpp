@@ -99,7 +99,8 @@ void Engine::Keyboard(unsigned char c, int x, int y)
 void Engine::Resize(int width, int height)
 {
 	float aspectRatio = (float)width / (float)height;
-	Matrix3D::BuildPerspectiveMatrix(65, aspectRatio, 1.0, 1000.0, Engine::perspective);
+	//Matrix3D::BuildPerspectiveMatrix(65, aspectRatio, 1.0, 1000.0, Engine::perspective);
+	Matrix3D::BuildPerspectiveMatrix(45, aspectRatio, 1.0, 1000.0, Engine::perspective);
 	
 	glViewport(0, 0, width, height);
 }

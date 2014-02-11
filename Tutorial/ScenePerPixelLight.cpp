@@ -38,12 +38,12 @@ void ScenePerPixelLight::Init()
 
 	/*** room objects shader ***/
 	//creating VS program
-	pixelLightVS.CreateProgram("vertex_vertexLight.cg", "VS_vertexLight");
+	pixelLightVS.CreateProgram("vertex_pixelLight.cg", "VS_pixelLight");
 	rendererGL.LoadProgram(pixelLightVS.GetProgram());
 	pixelLightVS.LinkParameters();
 
 	//creating FS program
-	pixelLightFS.CreateProgram("fragment_vertexLight.cg", "FS_vertexLight");
+	pixelLightFS.CreateProgram("fragment_pixelLight.cg", "FS_pixelLight");
 	rendererGL.LoadProgram(pixelLightFS.GetProgram());
 	pixelLightFS.LinkParameters();
 

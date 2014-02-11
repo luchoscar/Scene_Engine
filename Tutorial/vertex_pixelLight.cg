@@ -1,12 +1,12 @@
 //vertext output
 struct Vertex_Output
 {
-	float4 position : POSITION;
-	float4 color	: COLOR;
-	float2 texCoord : TEXCOORD0;
-	float3x3 TBN	: TEXCOORD1;
-	float3 lightDir : TEXCOORD2;
-	float3 cameraDir : TEXCOORD2;
+	float4 position  : POSITION;
+	float4 color	 : COLOR;
+	float2 texCoord  : TEXCOORD0;
+	float3 lightDir	 : TEXCOORD1;
+	float3 camDir	 : TEXCOORD2;
+	float3x3 TBN	 : TEXCOORD3;
 };
 
 //vertex shader
@@ -35,10 +35,9 @@ Vertex_Output VS_pixelLight(float4 position : POSITION,
 	OUT.position = mul(matrixViewProj, float4(vertexPosWorld, 1));
 	OUT.color = color;
 	OUT.texCoord = texCoord;
+	OUT.lightDir = (lightPosition - vertexPosWorld);
+	OUT.camDir = normalize(cameraPosition - vertexPosWorld);
 	OUT.TBN = transpose(float3x3(T, B, N));
-	//OUT.lightDir = normalize(lightPosition - vertexPosWorld);
-	OUT.lightDir = normalize(lightPosition);
-	OUT.cameraDir = normalize(cameraPosition - vertexPosWorld);
 
 	return OUT;
 }

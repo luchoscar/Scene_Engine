@@ -1,8 +1,8 @@
 void FS_pixelLight(float3 color	: COLOR,
-						float2 texCoord	: TEXCOORD0,
-						float3 TBN		: TEXCOORD1,
-						float3 lightDir	: TEXCOORD2,
-						float3 camDir	: TEXCOORD3,
+						float2 texCoord		: TEXCOORD0,
+						float3 lightDir		: TEXCOORD1,
+						float3 camDir		: TEXCOORD2,
+						float3x3 TBN		: TEXCOORD3,
 
 						out float4 outColor : COLOR,
 
@@ -10,25 +10,29 @@ void FS_pixelLight(float3 color	: COLOR,
 						uniform sampler2D normalMap,
 						uniform float3	  lightColor)
 {
-	//calculate normal
-	float3 normal = normalize(tex2D(_BumpMap, texCoord).xyz *2.0 - 1.0);]
+	float fallOff = max(1 / length(lightDir), 0.01);
+	lightDir = normalize(lightDir);
 
+	//calculate normal
+	float3 normal = tex2D(normalMap, texCoord).xyz;
+	normal = normalize(normal *2.0 - 1.0);
 	normal = normalize(mul(TBN, normal));
 
 	//calculate diffuse vertex light intensity 
 	float diffInt = saturate(dot(normal, lightDir));
-	
+	diffInt = diffInt * fallOff;
+
 	//calculate spec light
-	float3 H = normalize(light + camDir);
-	float specInt = pow(saturate(dot(H, normal)), 2.0);
+	float3 H = normalize(lightDir + camDir);
+	float specInt = pow(saturate(dot(H, normal)), 100.0);
 
 	float3 decalColor = tex2D(decalMap, texCoord).xyz;
 
-	floar3 diffuseLight = diffInt * decalColor;
+	float3 diffuseLight = diffInt * decalColor;
 
 	float3 specLight = specInt * decalColor;
 
-	float3 lightColor = (diffuseLight + specLight);
+	lightColor = (diffuseLight + specLight) * lightColor;
 
-	outColor = float4((lightColor * decalColor), 1.0);
+	outColor = float4((lightColor), 1.0);
 }

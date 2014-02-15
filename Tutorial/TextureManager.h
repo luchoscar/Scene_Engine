@@ -25,7 +25,7 @@ public:
 
 private:
 	int textureCount;
-	std::map<const char*, GLuint> textureDic;
+	std::map<const char*, GLuint> textureDic;	//Map/Hash Table with key = file name and value = texture Id
 
 	int totalTextures;
 	GLuint* texturesIds;

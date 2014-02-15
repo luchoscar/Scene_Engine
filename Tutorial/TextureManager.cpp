@@ -15,6 +15,7 @@ TextureManager::TextureManager(int In_totalTextures)
 	Init(In_totalTextures);
 }
 
+//Initialize all texturesIds for scene
 void TextureManager::Init(int In_textures)
 {
 	FreeMemory();
@@ -33,6 +34,7 @@ TextureManager::~TextureManager()
 	FreeMemory();
 }
 
+//Delete textureId pointers
 void TextureManager::FreeMemory()
 {
 	textureDic.clear();
@@ -41,6 +43,7 @@ void TextureManager::FreeMemory()
 		delete(texturesIds);
 }
 
+//Retriee textureId from map / hash table
 GLuint TextureManager::getTextureId(const char* texturePath)
 {
 	if (textureDic.find(texturePath) == textureDic.end())
@@ -50,6 +53,7 @@ GLuint TextureManager::getTextureId(const char* texturePath)
 	return textId;
 }
 
+//Set bitmap to textireId if file is not already in textureId map / hash table
 void TextureManager::setBmpTextureinMap(char* texturePath)
 {
 	if (textureDic.find(texturePath) == textureDic.end())

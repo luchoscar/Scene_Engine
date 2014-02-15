@@ -6,6 +6,7 @@
 
 #include "Matrix3D.h"
 #include "SceneBase.h"
+//#include <vector>
 
 class Engine
 {
@@ -26,5 +27,7 @@ public:
 	static Matrix3D perspective;
 
 private:
+	//static SceneBase* scene;
 	static float previousTime;	//time for previous frame
+	//vector<SceneBase*> scenesList;
 };

@@ -1,7 +1,4 @@
 #include "StdAfx.h"
-//#include <GL/glew.h>
-//#include <GL/wglew.h>
-//#include <GL\glut.h>
 #include <CG\cg.h>
 #include "Engine.h"
 #include <iostream>
@@ -14,15 +11,19 @@
 Matrix3D Engine::perspective;
 float Engine::deltaTime;
 float Engine::previousTime;
-
+//SceneBase* Engine::scene;
 SceneBase* scene;
 
 Engine::Engine()
 {
-	//scene = new SceneTextureColor();
-	//scene = new SceneVertexLight();
-	//scene = new SceneBuffers();
-	scene = new ScenePerPixelLight();
+	/*scenesList.push_back(new SceneTextureColor());
+	scenesList.push_back(new SceneVertexLight());
+	scenesList.push_back(new SceneBuffers());
+	scenesList.push_back(new ScenePerPixelLight());*/
+
+	//unsigned int sceneToLoad = scenesList.size() - 1;
+	//Engine::scene = new  ScenePerPixelLight();
+	scene = new  ScenePerPixelLight();
 
 	previousTime = 0.0;
 }
@@ -30,14 +31,20 @@ Engine::Engine()
 Engine::~Engine()
 {
 	delete scene;
+
+	/*for (unsigned int i = 0; i < scenesList.size(); i++)
+	{
+		delete scenesList[i];
+	}
+
+	scenesList.clear();*/
 }
 
 void Engine::Init(int argc, char* argv[])
 {
 	//Set up window
 	glutInitWindowSize(450, 350);
-	glutInitDisplayMode(GLUT_RGB | GLUT_DOUBLE | GLUT_DEPTH);
-	glEnable(GL_DEPTH_TEST); 
+	glutInitDisplayMode(GLUT_RGB | GLUT_DOUBLE | GLUT_DEPTH); 
 
 	glutInit(&argc, argv);
 	glutCreateWindow("Scene Engine");
@@ -54,10 +61,7 @@ void Engine::Init(int argc, char* argv[])
 		exit(1);
 	}
 
-	glEnable(GL_CULL_FACE);
-	glFrontFace(GL_CW);
-	glCullFace(GL_FRONT);
-
+	//Engine::scene->Init();
 	scene->Init();
 }
 
@@ -68,7 +72,9 @@ void Engine::Run()
 
 void Engine::Display()
 {
+	//Engine::scene->Draw();
 	scene->Draw();
+
 	glutSwapBuffers();
 }
 
@@ -84,6 +90,7 @@ void Engine::Update()
 	std::cout << "Engine fps = " << fps << std::endl;
 	
 	//run scene update
+	//Engine::scene->Update();
 	scene->Update();
 
 	//update draw buffers

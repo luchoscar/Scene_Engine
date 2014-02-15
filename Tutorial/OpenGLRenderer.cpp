@@ -19,6 +19,7 @@ OpenGLRenderer::~OpenGLRenderer()
 {
 }
 
+// Initializing OpenGL context, seting OpenGL flags and flag to only allow for one context
 void OpenGLRenderer::InitContext()
 {
 	if (OpenGLRenderer::contextInitialized) return;
@@ -29,11 +30,15 @@ void OpenGLRenderer::InitContext()
 	cgSetParameterSettingMode(myCgContext, CG_DEFERRED_PARAMETER_SETTING);
 
 	glEnable(GL_DEPTH_TEST); 
-	//glEnable(GL_CULL_FACE);
+
+	glEnable(GL_CULL_FACE);
+	glFrontFace(GL_CW);
+	glCullFace(GL_FRONT);
 
 	OpenGLRenderer::contextInitialized = true;
 }
 
+//Initialize vertex profile and setting flag to only one profile
 void OpenGLRenderer::InitVertexProfile()
 {
 	if (vertexProfileInitialized) return;
@@ -45,6 +50,7 @@ void OpenGLRenderer::InitVertexProfile()
 	vertexProfileInitialized = true;
 }
 
+//Initialize fragment profile and setting flag to only one profile
 void OpenGLRenderer::InitFragmentProfile()
 {
 	if (fragmentProfileInitialized) return;
@@ -62,6 +68,7 @@ void OpenGLRenderer::LoadProgram(CGprogram program)
 	checkForCgError("Loading program");
 }
 
+//Clear depth and color buffers
 void OpenGLRenderer::ClearGLFlags()
 {
 	glClearColor(0.6, 0.3, 0.25, 0.0); 
@@ -91,6 +98,7 @@ void OpenGLRenderer::EnableTexture(CGparameter texture)
 	OpenGLRenderer::checkForCgError("enable texture");
 }
 
+//Capture compiler error and displays it on screen
 void OpenGLRenderer::checkForCgError(const char *situation)
 {
 	CGerror error;

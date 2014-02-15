@@ -49,12 +49,16 @@ void ScenePerPixelLight::Init()
 
 	//initializig light variables
 	cameraPosAngle = 0.0f;
-	cameraPosRadMov = 2.5f;
+	cameraPosRadMov = 1.5f;
 	cameraPosAngleDelta = 8.75 * Matrix3D::myPi / 180.0f;
 
 	cameraPosition[0] = cos(cameraPosAngle) * cameraPosRadMov;
 	cameraPosition[1] = 0.0;
 	cameraPosition[2] = sin(cameraPosAngle) * cameraPosRadMov;
+
+	cameraLookAt[0] = 0.0f;
+	cameraLookAt[1] = 0.0f;
+	cameraLookAt[2] = 0.0f;
 
 	lightAngle = 0.0f;
 	lightRadMov = 1.2f;
@@ -183,7 +187,7 @@ void ScenePerPixelLight::Draw()
 
 	//calculate ViewProjection matrix
 	Matrix3D::BuildLookAtMatrix(cameraPosition[0], cameraPosition[1], cameraPosition[2],
-								0.0, 0.0, 0.0,	//point that camera looks at
+								cameraLookAt[0], cameraLookAt[1], cameraLookAt[2],	//point that camera looks at
 								0.0, 1.0, 0.0,	//camera up vector
 								viewMatrix);
 	
@@ -213,7 +217,7 @@ void ScenePerPixelLight::Draw()
 
 	list[0]->Draw();
 
-	//disable Vertex CGprofile
+	//disable CGprofiles
 	rendererGL.DisableProfile(rendererGL.GetVertexProfile());
 	rendererGL.DisableProfile(rendererGL.GetFragmentProfile());
 
@@ -262,7 +266,6 @@ void ScenePerPixelLight::Draw()
 
 		//update light parameters
 		pixelLightVS.UpdateLightPosition(list[0]->GetPosition());
-		//pixelLightVS.UpdateCameraPosition(cameraPosition);
 		pixelLightFS.UpdateLightColor(list[0]->GetColor());
 		pixelLightFS.UpdateLightFallOffExp(lightFallOffExp);
 
@@ -287,6 +290,7 @@ void ScenePerPixelLight::Draw()
 
 void ScenePerPixelLight::Update()
 {
+	//rotate light around origing on xyz coordinates
 	lightAngle += lightAngleDelta * Engine::deltaTime;
 
 	if (lightAngle > (Matrix3D::myPi + Matrix3D::myPi))
@@ -294,6 +298,7 @@ void ScenePerPixelLight::Update()
 
 	list[0]->SetPosition(cos(lightAngle) * lightRadMov, sin(lightAngle) * lightRadMov, sin(lightAngle) * lightRadMov);
 
+	//rotate camera on xz coordinates and look up and down
 	cameraPosAngle += cameraPosAngleDelta * Engine::deltaTime;
 
 	if (cameraPosAngle > (Matrix3D::myPi + Matrix3D::myPi))
@@ -301,4 +306,6 @@ void ScenePerPixelLight::Update()
 
 	cameraPosition[0] = cos(cameraPosAngle) * cameraPosRadMov;
 	cameraPosition[2] = sin(cameraPosAngle) * cameraPosRadMov;
+
+	cameraLookAt[1] = cos(cameraPosAngle);
 }

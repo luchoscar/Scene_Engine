@@ -33,4 +33,5 @@ private:
 	float cameraPosAngle;
 	float cameraPosAngleDelta;
 	float cameraPosRadMov;
+	float cameraLookAt[3];
 };

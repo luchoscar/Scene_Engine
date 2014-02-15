@@ -15,7 +15,7 @@ Vertex_Output VS_pixelLight(float4 position : POSITION,
 							float4 color	: COLOR,
 							float2 texCoord : TEXCOORD0,
 							
-							uniform float3	 tangent,
+							uniform float3	 tangent,	
 							uniform float3	 bitangent,
 							uniform float3	 lightPosition,
 							uniform float3	 cameraPosition,
@@ -31,11 +31,11 @@ Vertex_Output VS_pixelLight(float4 position : POSITION,
 	cameraPosition = mul(matrixWorldInverse, float4(cameraPosition, 1));
 
 	float3 vertexPosWorld = mul(matrixModelWorld, position).xyz;
-	
-	float3 T = float3(1, 0, 0);
-	float3 B = float3(0, 0, 1);
-	float3 N = float3(0, 1, 0);
 
+	float3 T = normalize(tangent);
+	float3 B = normalize(bitangent);
+	float3 N = normalize(normal);
+	
 	OUT.position = mul(matrixViewProj, float4(vertexPosWorld, 1));
 	OUT.color = color;
 	OUT.texCoord = texCoord;

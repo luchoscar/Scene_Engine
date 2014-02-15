@@ -34,13 +34,13 @@ void PerPixelLightVS::LinkParameters()
 
 void PerPixelLightVS::UpdateTangent(float* tan)
 {
-	cgGLSetParameter3fv(lightPosition, tan);
+	cgGLSetParameter3fv(tangent, tan);
 	OpenGLRenderer::checkForCgError("setting tangent");
 }
 
 void PerPixelLightVS::UpdateBitangent(float* bitan)
 {
-	cgGLSetParameter3fv(lightPosition, bitan);
+	cgGLSetParameter3fv(bitangent, bitan);
 	OpenGLRenderer::checkForCgError("setting bitangent");
 }
 

@@ -102,10 +102,13 @@ void ObjectPlane::Draw()
 		glNormal3fv(nb);
 		glTexCoord2f(0.0, 0.0);
 		glVertex3f(vb[0], vb[1], vb[2]);
+		glNormal3fv(nb);
 		glTexCoord2f(1.0, 0.0);
 		glVertex3f(vb[3], vb[4], vb[5]);
+		glNormal3fv(nb); 
 		glTexCoord2f(1.0, 1.0);
 		glVertex3f(vb[6], vb[7], vb[8]);
+		glNormal3fv(nb); 
 		glTexCoord2f(0.0, 1.0);
 		glVertex3f(vb[9], vb[10], vb[11]);
 	glEnd();

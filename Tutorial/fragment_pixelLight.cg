@@ -8,14 +8,16 @@ void FS_pixelLight(float3 color	: COLOR,
 
 						uniform sampler2D decalMap,
 						uniform sampler2D normalMap,
-						uniform float3	  lightColor)
+						uniform float3	  lightColor,
+						uniform float lightFallOffExp)
 {
-	float fallOff = max(1 / length(lightDir), 0.01);
+	float fallOff = saturate(1 / exp(length(lightDir) * lightFallOffExp));
+
 	lightDir = normalize(lightDir);
 
 	//calculate normal
 	float3 normal = tex2D(normalMap, texCoord).xyz;
-	normal = normalize(normal *2.0 - 1.0);
+	normal = normalize(normal * 2.0 - 1.0);
 	normal = normalize(mul(TBN, normal));
 
 	//calculate diffuse vertex light intensity 
@@ -30,7 +32,7 @@ void FS_pixelLight(float3 color	: COLOR,
 
 	float3 diffuseLight = diffInt * decalColor;
 
-	float3 specLight = specInt * decalColor;
+	float3 specLight = specInt * decalColor * diffInt;
 
 	lightColor = (diffuseLight + specLight) * lightColor;
 

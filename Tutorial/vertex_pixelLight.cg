@@ -24,19 +24,23 @@ Vertex_Output VS_pixelLight(float4 position : POSITION,
 {
 	Vertex_Output OUT;
 
-	cameraPosition = float3(0.0, 0.0, -1.5);
+	//setting variables to calculating light on object space
+	float4x4 matrixWorldInverse = inverse(matrixModelWorld);
+
+	lightPosition = mul(matrixWorldInverse, float4(lightPosition, 1));
+	cameraPosition = mul(matrixWorldInverse, float4(cameraPosition, 1));
 
 	float3 vertexPosWorld = mul(matrixModelWorld, position).xyz;
 	
-	float3 T = mul(matrixModelWorld, float4(tangent, 1)).xyz;
-	float3 B = mul(matrixModelWorld, float4(bitangent, 1)).xyz;
-	float3 N = mul(matrixModelWorld, float4(normal, 1)).xyz;
+	float3 T = float3(1, 0, 0);
+	float3 B = float3(0, 0, 1);
+	float3 N = float3(0, 1, 0);
 
 	OUT.position = mul(matrixViewProj, float4(vertexPosWorld, 1));
 	OUT.color = color;
 	OUT.texCoord = texCoord;
-	OUT.lightDir = (lightPosition - vertexPosWorld);
-	OUT.camDir = normalize(cameraPosition - vertexPosWorld);
+	OUT.lightDir = (lightPosition - position.xyz);
+	OUT.camDir = normalize(cameraPosition - position.xyz);
 	OUT.TBN = transpose(float3x3(T, B, N));
 
 	return OUT;

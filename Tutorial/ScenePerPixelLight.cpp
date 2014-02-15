@@ -48,14 +48,20 @@ void ScenePerPixelLight::Init()
 	pixelLightFS.LinkParameters();
 
 	//initializig light variables
-	cameraPosition[0] = 0.0;
+	cameraPosAngle = 0.0f;
+	cameraPosRadMov = 2.5f;
+	cameraPosAngleDelta = 8.75 * Matrix3D::myPi / 180.0f;
+
+	cameraPosition[0] = cos(cameraPosAngle) * cameraPosRadMov;
 	cameraPosition[1] = 0.0;
-	cameraPosition[2] = -3.5;
+	cameraPosition[2] = sin(cameraPosAngle) * cameraPosRadMov;
 
 	lightAngle = 0.0f;
-	lightAngleDelta = 10.0f * Matrix3D::myPi / 180.0f;
+	lightRadMov = 1.2f;
+	lightFallOffExp = 0.75f;
+	lightAngleDelta = 35.0f * Matrix3D::myPi / 180.0f;
 
-	list.push_back(new ObjectCube(0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.025f, 0.025f, 0.025f, 1.0f, 1.0f, 1.0f));
+	list.push_back(new ObjectCube(0.0f, 0.75f, 0.0f, 0.0f, 0.0f, 0.0f, 0.025f, 0.025f, 0.025f, 1.0f, 1.0f, 1.0f));
 
 	//loading textures
 	textureManager.Init(2);
@@ -64,31 +70,107 @@ void ScenePerPixelLight::Init()
 
 	//loading room
 	//back wall
-	list.push_back(new ObjectPlane(0.0f, 0.0f, 1.0f,
+	list.push_back(new ObjectPlane(1.0f, 1.0f, 2.0f,
 									90.0f, 0.0f, 0.0f,
-									2.0f, 2.0f, 2.0f,
+									2.0f, 2.0, 2.0f,
 									1.0f, 1.0f, 1.0f)); 
+	list.push_back(new ObjectPlane(-1.0f, 1.0f, 2.0f,
+									90.0f, 0.0f, 0.0f,
+									2.0f, 2.0, 2.0f,
+									1.0f, 1.0f, 1.0f));
+	list.push_back(new ObjectPlane(1.0f, -1.0f, 2.0f,
+									90.0f, 180.0f, 0.0f,
+									2.0f, 2.0, 2.0f,
+									1.0f, 1.0f, 1.0f));
+	list.push_back(new ObjectPlane(-1.0f, -1.0f, 2.0f,
+									90.0f, 180.0f, 0.0f,
+									2.0f, 2.0, 2.0f,
+									1.0f, 1.0f, 1.0f));
 	//right wall
-	list.push_back(new ObjectPlane(-1.0f, 0.0f, 0.0f,
+	list.push_back(new ObjectPlane(-2.0f, 1.0f, 1.0f,
 									90.0f, 0.0f, 90.0f,
-									2.0f, 2.0f, 2.0f,
+									2.0f, 2.0, 2.0f,
+									1.0f, 1.0f, 1.0f));
+	list.push_back(new ObjectPlane(-2.0f, 1.0f, -1.0f,
+									90.0f, 0.0f, 90.0f,
+									2.0f, 2.0, 2.0f,
+									1.0f, 1.0f, 1.0f));
+	list.push_back(new ObjectPlane(-2.0f, -1.0f, 1.0f,
+									270.0f, 0.0f, 90.0f,
+									2.0f, 2.0, 2.0f,
+									1.0f, 1.0f, 1.0f));
+	list.push_back(new ObjectPlane(-2.0f, -1.0f, -1.0f,
+									270.0f, 0.0f, 90.0f,
+									2.0f, 2.0, 2.0f,
 									1.0f, 1.0f, 1.0f));
 	//floor
-	list.push_back(new ObjectPlane(0.0f, -1.0f, 0.0f,
+	list.push_back(new ObjectPlane(1.0f, -2.0f, 1.0f,
 									0.0f, 0.0f, 0.0f,
-									2.0f, 2.0f, 2.0f,
+									2.0f, 2.0, 2.0f,
+									1.0f, 1.0f, 1.0f));
+	list.push_back(new ObjectPlane(-1.0f, -2.0f, 1.0f,
+									0.0f, 0.0f, 0.0f,
+									2.0f, 2.0, 2.0f,
+									1.0f, 1.0f, 1.0f));
+	list.push_back(new ObjectPlane(1.0f, -2.0f, -1.0f,
+									0.0f, 180.0f, 0.0f,
+									2.0f, 2.0, 2.0f,
+									1.0f, 1.0f, 1.0f));
+	list.push_back(new ObjectPlane(-1.0f, -2.0f, -1.0f,
+									0.0f, 180.0f, 0.0f,
+									2.0f, 2.0, 2.0f,
 									1.0f, 1.0f, 1.0f));
 	//left wall
-	list.push_back(new ObjectPlane(1.0f, 0.0f, 0.0f,
+	list.push_back(new ObjectPlane(2.0f, 1.0f, 1.0f,
 									90.0f, 0.0f, -90.0f,
-									2.0f, 2.0f, 2.0f,
+									2.0f, 2.0, 2.0f,
+									1.0f, 1.0f, 1.0f));
+	list.push_back(new ObjectPlane(2.0f, 1.0f, -1.0f,
+									90.0f, 0.0f, -90.0f,
+									2.0f, 2.0, 2.0f,
+									1.0f, 1.0f, 1.0f));
+	list.push_back(new ObjectPlane(2.0f, -1.0f, 1.0f,
+									270.0f, 0.0f, -90.0f,
+									2.0f, 2.0, 2.0f,
+									1.0f, 1.0f, 1.0f));
+	list.push_back(new ObjectPlane(2.0f, -1.0f, -1.0f,
+									270.0f, 0.0f, -90.0f,
+									2.0f, 2.0, 2.0f,
 									1.0f, 1.0f, 1.0f));
 	//roof
-	list.push_back(new ObjectPlane(0.0f, 1.0f, 0.0f,
+	list.push_back(new ObjectPlane(1.0f, 2.00f, 1.0f,
 									180.0f, 180.0f, 0.0f,
-									2.0f, 2.0f, 2.0f,
+									2.0f, 2.0, 2.0f,
 									1.0f, 1.0f, 1.0f));
-	
+	list.push_back(new ObjectPlane(-1.0f, 2.00f, 1.0f,
+									180.0f, 180.0f, 0.0f,
+									2.0f, 2.0, 2.0f,
+									1.0f, 1.0f, 1.0f));
+	list.push_back(new ObjectPlane(1.0f, 2.00f, -1.0f,
+									180.0f, 0.0f, 0.0f,
+									2.0f, 2.0, 2.0f,
+									1.0f, 1.0f, 1.0f));
+	list.push_back(new ObjectPlane(-1.0f, 2.00f, -1.0f,
+									180.0f, 0.0f, 0.0f,
+									2.0f, 2.0, 2.0f,
+									1.0f, 1.0f, 1.0f));
+	//front wall
+	list.push_back(new ObjectPlane(1.0f, 1.0f, -2.0f,
+									-90.0f, 180.0f, 0.0f,
+									2.0f, 2.0, 2.0f,
+									1.0f, 1.0f, 1.0f));
+	list.push_back(new ObjectPlane(-1.0f, 1.0f, -2.0f,
+									-90.0f, 180.0f, 0.0f,
+									2.0f, 2.0, 2.0f,
+									1.0f, 1.0f, 1.0f));
+	list.push_back(new ObjectPlane(1.0f, -1.0f, -2.0f,
+									-90.0f, 0.0f, 0.0f,
+									2.0f, 2.0, 2.0f,
+									1.0f, 1.0f, 1.0f));
+	list.push_back(new ObjectPlane(-1.0f, -1.0f, -2.0f,
+									-90.0f, 0.0f, 0.0f,
+									2.0f, 2.0, 2.0f,
+									1.0f, 1.0f, 1.0f));
 }
 
 void ScenePerPixelLight::Draw()
@@ -182,6 +264,7 @@ void ScenePerPixelLight::Draw()
 		pixelLightVS.UpdateLightPosition(list[0]->GetPosition());
 		//pixelLightVS.UpdateCameraPosition(cameraPosition);
 		pixelLightFS.UpdateLightColor(list[0]->GetColor());
+		pixelLightFS.UpdateLightFallOffExp(lightFallOffExp);
 
 		//update textures parameters
 		pixelLightFS.SetDecalMap(textureManager.getTextureId("../Images/bricks_diffuse.bmp"));
@@ -206,8 +289,16 @@ void ScenePerPixelLight::Update()
 {
 	lightAngle += lightAngleDelta * Engine::deltaTime;
 
-	if (lightAngle >= (Matrix3D::myPi + Matrix3D::myPi))
-		lightAngle = 0.0f;
+	if (lightAngle > (Matrix3D::myPi + Matrix3D::myPi))
+		lightAngle -= (Matrix3D::myPi + Matrix3D::myPi);
 
-	list[0]->SetPosition(cos(lightAngle) * 0.8f, sin(lightAngle) * 0.8f, sin(lightAngle) * 0.8f);
+	list[0]->SetPosition(cos(lightAngle) * lightRadMov, sin(lightAngle) * lightRadMov, sin(lightAngle) * lightRadMov);
+
+	cameraPosAngle += cameraPosAngleDelta * Engine::deltaTime;
+
+	if (cameraPosAngle > (Matrix3D::myPi + Matrix3D::myPi))
+		cameraPosAngle -= (Matrix3D::myPi + Matrix3D::myPi);
+
+	cameraPosition[0] = cos(cameraPosAngle) * cameraPosRadMov;
+	cameraPosition[2] = sin(cameraPosAngle) * cameraPosRadMov;
 }

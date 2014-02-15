@@ -27,5 +27,10 @@ private:
 	float lightColor[3];
 	float lightAngle;
 	float lightAngleDelta;
+	float lightRadMov;
+	float lightFallOffExp;
 	float cameraPosition[3];
+	float cameraPosAngle;
+	float cameraPosAngleDelta;
+	float cameraPosRadMov;
 };

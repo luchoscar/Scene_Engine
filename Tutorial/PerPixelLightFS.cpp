@@ -21,6 +21,9 @@ void PerPixelLightFS::LinkParameters()
 
 	lightColor = cgGetNamedParameter(fragmentProgram, "lightColor");
 	OpenGLRenderer::checkForCgError("could not get lightColor parameter");
+
+	lightFallOffExp = cgGetNamedParameter(fragmentProgram, "lightFallOffExp");
+	OpenGLRenderer::checkForCgError("could not get light falloff exponent");
 }
 
 
@@ -42,4 +45,10 @@ void PerPixelLightFS::UpdateLightColor(float* lightCol)
 {
 	cgGLSetParameter3fv(lightColor, lightCol);
 	OpenGLRenderer::checkForCgError("setting light color");
+}
+
+void PerPixelLightFS::UpdateLightFallOffExp(float fallOffExp)
+{
+	cgGLSetParameter1f(lightFallOffExp, fallOffExp);
+	OpenGLRenderer::checkForCgError("setting light fall off exponent");
 }

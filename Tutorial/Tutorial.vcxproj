@@ -92,6 +92,7 @@
     <ClInclude Include="Engine.h" />
     <ClInclude Include="FragmentObject.h" />
     <ClInclude Include="Matrix3D.h" />
+    <ClInclude Include="ObjectCamera.h" />
     <ClInclude Include="ObjectCube.h" />
     <ClInclude Include="ObjectPlane.h" />
     <ClInclude Include="ObjectTriangle.h" />
@@ -119,6 +120,7 @@
     <ClCompile Include="Engine.cpp" />
     <ClCompile Include="FragmentObject.cpp" />
     <ClCompile Include="Matrix3D.cpp" />
+    <ClCompile Include="ObjectCamera.cpp" />
     <ClCompile Include="ObjectCube.cpp" />
     <ClCompile Include="ObjectPlane.cpp" />
     <ClCompile Include="ObjectTriangle.cpp" />

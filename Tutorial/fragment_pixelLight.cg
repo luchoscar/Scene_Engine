@@ -20,18 +20,27 @@ void FS_pixelLight(float3 color	: COLOR,
 	normal = normalize(normal * 2.0 - 1.0);
 	normal = normalize(mul(TBN, normal));
 
+	float diffInt = 0.0;
+	float specInt = 0.0;
+
 	//calculate diffuse vertex light intensity 
-	float diffInt = saturate(dot(normal, lightDir));
-	diffInt = diffInt * fallOff;
+	diffInt = dot(normal, lightDir);
 
 	//calculate spec light
-	float3 H = normalize(lightDir + camDir);
-	float specInt = pow(saturate(dot(H, normal)), 100.0);
+	if (diffInt > 0.001)
+	{
+		float3 H = normalize(lightDir + camDir);
+		specInt = pow(saturate(dot(H, normal)), 100.0);
+	}
+	
+	diffInt = max(diffInt, 0.001);
+	diffInt = diffInt * fallOff;
 
 	float3 decalColor = tex2D(decalMap, texCoord).xyz;
 
 	float3 diffuseLight = diffInt * decalColor;
 
+	//make specular a percentage value of diffuse light
 	float3 specLight = specInt * decalColor * diffInt;
 
 	lightColor = (diffuseLight + specLight) * lightColor;

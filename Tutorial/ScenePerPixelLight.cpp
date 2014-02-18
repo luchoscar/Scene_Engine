@@ -46,24 +46,21 @@ void ScenePerPixelLight::Init()
 	pixelLightFS.CreateProgram("fragment_pixelLight.cg", "FS_pixelLight");
 	rendererGL.LoadProgram(pixelLightFS.GetProgram());
 	pixelLightFS.LinkParameters();
-
-	//initializig light variables
 	cameraPosAngle = 0.0f;
 	cameraPosRadMov = 1.5f;
 	cameraPosAngleDelta = 8.75 * Matrix3D::myPi / 180.0f;
 
-	cameraPosition[0] = cos(cameraPosAngle) * cameraPosRadMov;
-	cameraPosition[1] = 0.0;
-	cameraPosition[2] = sin(cameraPosAngle) * cameraPosRadMov;
+	//initializing camera variables
+	cameraObject = new ObjectCamera(cos(cameraPosAngle) * cameraPosRadMov, 0.0f, sin(cameraPosAngle) * cameraPosRadMov,
+									0.0f, 1.0f, 0.0,
+									0.0f, 0.0f, 0.0f);
+	cameraObject->Init();
 
-	cameraLookAt[0] = 0.0f;
-	cameraLookAt[1] = 0.0f;
-	cameraLookAt[2] = 0.0f;
-
+	//initializig light variables
 	lightAngle = 0.0f;
 	lightRadMov = 1.2f;
-	lightFallOffExp = 0.75f;
-	lightAngleDelta = 35.0f * Matrix3D::myPi / 180.0f;
+	lightFallOffExp = 1.0f;
+	lightAngleDelta = 25.0f * Matrix3D::myPi / 180.0f;
 
 	list.push_back(new ObjectCube(0.0f, 0.75f, 0.0f, 0.0f, 0.0f, 0.0f, 0.025f, 0.025f, 0.025f, 1.0f, 1.0f, 1.0f));
 
@@ -185,12 +182,9 @@ void ScenePerPixelLight::Draw()
 				rotationMatrix, rotationMatrixX, rotationMatrixY, rotationMatrixZ,
 				modelToWorld, viewProjection;
 
-	//calculate ViewProjection matrix
-	Matrix3D::BuildLookAtMatrix(cameraPosition[0], cameraPosition[1], cameraPosition[2],
-								cameraLookAt[0], cameraLookAt[1], cameraLookAt[2],	//point that camera looks at
-								0.0, 1.0, 0.0,	//camera up vector
-								viewMatrix);
-	
+	cameraObject->CalculateViewMatrix();
+	viewMatrix = cameraObject->GetViewMatrix();
+
 	Matrix3D::MultMatrix(viewProjection, Engine::perspective, viewMatrix);	//model - view - projection matrix
 	float* tempSpace;
 
@@ -304,8 +298,14 @@ void ScenePerPixelLight::Update()
 	if (cameraPosAngle > (Matrix3D::myPi + Matrix3D::myPi))
 		cameraPosAngle -= (Matrix3D::myPi + Matrix3D::myPi);
 
-	cameraPosition[0] = cos(cameraPosAngle) * cameraPosRadMov;
-	cameraPosition[2] = sin(cameraPosAngle) * cameraPosRadMov;
-
-	cameraLookAt[1] = cos(cameraPosAngle);
+	float* cameraUpdate = new float[3];
+	//update for position
+	cameraUpdate[0] = cos(cameraPosAngle) * cameraPosRadMov;
+	cameraUpdate[1] = sin(cameraPosAngle) * cameraPosRadMov;
+	
+	//update for look at
+	cameraUpdate[2] = cos(cameraPosAngle);
+	
+	cameraObject->SetPosition(cameraUpdate[0], cameraObject->GetPosition()[1], cameraUpdate[1]);
+	cameraObject->SetLookAtVector(cameraObject->GetLookAtVector()[0], cameraUpdate[2], cameraObject->GetLookAtVector()[2]);
 }

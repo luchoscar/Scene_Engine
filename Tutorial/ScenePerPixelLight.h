@@ -4,6 +4,7 @@
 #include "PerPixelLightFS.h"
 #include "SimpleVS.h"
 #include "SimpleFS.h"
+#include "ObjectCamera.h"
 
 class ScenePerPixelLight :
 	public SceneBase
@@ -29,9 +30,10 @@ private:
 	float lightAngleDelta;
 	float lightRadMov;
 	float lightFallOffExp;
-	float cameraPosition[3];
+
+	//camera variables
+	ObjectCamera* cameraObject;
 	float cameraPosAngle;
 	float cameraPosAngleDelta;
 	float cameraPosRadMov;
-	float cameraLookAt[3];
 };

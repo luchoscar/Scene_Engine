@@ -15,7 +15,7 @@ public:
 	float* GetScale();
 	float* GetColor();
 
-	void SetPosition(float xPos, float yPos, float zPos);
+	virtual void SetPosition(float xPos, float yPos, float zPos);
 	void SetRotation(float xRot, float yRot, float zRot);
 	void SetScale(float xScale, float yScale, float zScale);
 	void SetColor(float rColor, float gColor, float bColor);

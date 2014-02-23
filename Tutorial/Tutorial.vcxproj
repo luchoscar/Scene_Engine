@@ -78,9 +78,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <None Include="fragment_multPixelLights.cg" />
     <None Include="fragment_pixelLight.cg" />
     <None Include="fragment_shader.cg" />
     <None Include="fragment_vertexLight.cg" />
+    <None Include="vertex_multPixelLights.cg" />
     <None Include="vertex_pixelLight.cg" />
     <None Include="vertex_vertexLight.cg" />
     <None Include="ReadMe.txt" />
@@ -92,6 +94,7 @@
     <ClInclude Include="Engine.h" />
     <ClInclude Include="FragmentObject.h" />
     <ClInclude Include="Matrix3D.h" />
+    <ClInclude Include="MultPerPixelLightVS.h" />
     <ClInclude Include="ObjectCamera.h" />
     <ClInclude Include="ObjectCube.h" />
     <ClInclude Include="ObjectPlane.h" />
@@ -120,6 +123,7 @@
     <ClCompile Include="Engine.cpp" />
     <ClCompile Include="FragmentObject.cpp" />
     <ClCompile Include="Matrix3D.cpp" />
+    <ClCompile Include="MultPerPixelLightVS.cpp" />
     <ClCompile Include="ObjectCamera.cpp" />
     <ClCompile Include="ObjectCube.cpp" />
     <ClCompile Include="ObjectPlane.cpp" />

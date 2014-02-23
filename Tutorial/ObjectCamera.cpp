@@ -22,7 +22,7 @@ ObjectCamera::ObjectCamera(float posX, float posY, float posZ,
 	upVector[1] = upY;
 	upVector[2] = upZ;
 
-	cameraUpdated = true;	//setting to true as camera has to be updated in order to be initialzed
+	cameraUpdated = true;	//setting to true as camera has to be updated in order to be initialized
 }
 
 ObjectCamera::~ObjectCamera()

@@ -43,7 +43,7 @@ void TextureManager::FreeMemory()
 		delete(texturesIds);
 }
 
-//Retriee textureId from map / hash table
+//Retrieve textureId from map / hash table
 GLuint TextureManager::getTextureId(const char* texturePath)
 {
 	if (textureDic.find(texturePath) == textureDic.end())

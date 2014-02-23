@@ -56,13 +56,13 @@ void ScenePerPixelLight::Init()
 									0.0f, 0.0f, 0.0f);
 	cameraObject->Init();
 
-	//initializig light variables
+	//initializing light variables
 	lightAngle = 0.0f;
 	lightRadMov = 1.2f;
-	lightFallOffExp = 1.0f;
+	lightFallOffExp = 1.75f;
 	lightAngleDelta = 25.0f * Matrix3D::myPi / 180.0f;
 
-	list.push_back(new ObjectCube(0.0f, 0.75f, 0.0f, 0.0f, 0.0f, 0.0f, 0.025f, 0.025f, 0.025f, 1.0f, 1.0f, 1.0f));
+	list.push_back(new ObjectCube(0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0125f, 0.0125f, 0.0125f, 0.8f, 0.75f, 0.1f));
 
 	//loading textures
 	textureManager.Init(2);
@@ -215,7 +215,7 @@ void ScenePerPixelLight::Draw()
 	rendererGL.DisableProfile(rendererGL.GetVertexProfile());
 	rendererGL.DisableProfile(rendererGL.GetFragmentProfile());
 
-	/*** room objeects ***/
+	/*** room objects ***/
 	//bind CG program
 	rendererGL.BindProgram(pixelLightVS.GetProgram());
 	rendererGL.BindProgram(pixelLightFS.GetProgram());
@@ -284,7 +284,7 @@ void ScenePerPixelLight::Draw()
 
 void ScenePerPixelLight::Update()
 {
-	//rotate light around origing on xyz coordinates
+	//rotate light around origin on xyz coordinates
 	lightAngle += lightAngleDelta * Engine::deltaTime;
 
 	if (lightAngle > (Matrix3D::myPi + Matrix3D::myPi))

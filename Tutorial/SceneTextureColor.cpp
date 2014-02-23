@@ -1,9 +1,9 @@
 /****************************************************************************
- * Scene to control game logic - evenually to be made into a hierarchy		*
+ * Scene to control game logic - eventually to be made into a hierarchy		*
  * in order to implement a Vector<SceneBase> from Engine.cpp				*
  * Logic to create, enable and disable VS & FS to be moved to its own		*
  * hierarchy system															*
- * Camera to be set as its own derviced class from BaseObject				*
+ * Camera to be set as its own derived class from BaseObject				*
  ****************************************************************************/
 
 #include "StdAfx.h"
@@ -116,11 +116,11 @@ void SceneTextureColor::Draw()
 		Matrix3D::MultMatrix(modelViewMatrix, viewMatrix, modelMatrix);		//model - view matrix
 		Matrix3D::MultMatrix(MVP, Engine::perspective, modelViewMatrix);	//model - view - projection matrix
 		
-		bool oddVal = i % 2;
+		int oddVal = i % 2;
 		//bind CG program
 		rendererGL.BindProgram(simpleVS.GetProgram());
 		
-		if (oddVal)
+		if (oddVal != 0)
 			rendererGL.BindProgram(simpleFS.GetProgram());
 		else
 			rendererGL.BindProgram(textureFS.GetProgram());

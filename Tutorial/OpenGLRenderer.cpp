@@ -19,7 +19,7 @@ OpenGLRenderer::~OpenGLRenderer()
 {
 }
 
-// Initializing OpenGL context, seting OpenGL flags and flag to only allow for one context
+// Initializing OpenGL context, setting OpenGL flags and flag to only allow for one context
 void OpenGLRenderer::InitContext()
 {
 	if (OpenGLRenderer::contextInitialized) return;

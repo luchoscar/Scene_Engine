@@ -94,6 +94,7 @@
     <ClInclude Include="Engine.h" />
     <ClInclude Include="FragmentObject.h" />
     <ClInclude Include="Matrix3D.h" />
+    <ClInclude Include="MultPerPixelLightFS.h" />
     <ClInclude Include="MultPerPixelLightVS.h" />
     <ClInclude Include="ObjectCamera.h" />
     <ClInclude Include="ObjectCube.h" />
@@ -103,6 +104,7 @@
     <ClInclude Include="PerPixelLightVS.h" />
     <ClInclude Include="PerPixelLightFS.h" />
     <ClInclude Include="SceneBuffers.h" />
+    <ClInclude Include="SceneMultPerPixelLight.h" />
     <ClInclude Include="ScenePerPixelLight.h" />
     <ClInclude Include="VertexLightFS.h" />
     <ClInclude Include="SceneVertexLight.h" />
@@ -123,6 +125,7 @@
     <ClCompile Include="Engine.cpp" />
     <ClCompile Include="FragmentObject.cpp" />
     <ClCompile Include="Matrix3D.cpp" />
+    <ClCompile Include="MultPerPixelLightFS.cpp" />
     <ClCompile Include="MultPerPixelLightVS.cpp" />
     <ClCompile Include="ObjectCamera.cpp" />
     <ClCompile Include="ObjectCube.cpp" />
@@ -131,6 +134,7 @@
     <ClCompile Include="OpenGLRenderer.cpp" />
     <ClCompile Include="PerPixelLightVS.cpp" />
     <ClCompile Include="PerPixelLightFS.cpp" />
+    <ClCompile Include="SceneMultPerPixelLight.cpp" />
     <ClCompile Include="ScenePerPixelLight.cpp" />
     <ClCompile Include="VertexLightFS.cpp" />
     <ClCompile Include="SceneBuffers.cpp" />

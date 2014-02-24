@@ -6,6 +6,7 @@
 #include "SceneVertexLight.h"
 #include "SceneBuffers.h"
 #include "ScenePerPixelLight.h"
+#include "SceneMultPerPixelLight.h"
 
 //static variables
 Matrix3D Engine::perspective;
@@ -23,7 +24,8 @@ Engine::Engine()
 
 	//unsigned int sceneToLoad = scenesList.size() - 1;
 	//Engine::scene = new  ScenePerPixelLight();
-	scene = new  ScenePerPixelLight();
+	//scene = new  ScenePerPixelLight();
+	scene = new SceneMultPerPixelLight();
 
 	previousTime = 0.0;
 }

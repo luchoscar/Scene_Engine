@@ -23,14 +23,14 @@ void FS_multPixelLight(float3 color			: COLOR,
 						uniform sampler2D normalMap,
 						uniform Light	  lights[7],
 						uniform int		  maxLights,		//max lights supported = 7
-						uniform int		  isEmmisive,		//0 - not emissive, 
+						uniform int		  isEmissive,		//0 - not emissive, 
 						uniform float	  lightFallOffExp)
 {
 	//final object color
 	float3 finalColor = float3(0.0, 0.0, 0.0);
 
 	//only calculate light for non-emissive objects (non light objects)
-	if (isEmmissive != 0)
+	if (isEmissive != 0)
 	{
 		finalColor = color;
 	}

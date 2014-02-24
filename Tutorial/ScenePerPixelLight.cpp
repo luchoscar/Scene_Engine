@@ -58,11 +58,11 @@ void ScenePerPixelLight::Init()
 
 	//initializing light variables
 	lightAngle = 0.0f;
-	lightRadMov = 1.2f;
-	lightFallOffExp = 1.75f;
-	lightAngleDelta = 25.0f * Matrix3D::myPi / 180.0f;
+	lightRadMov = 1.75f;
+	lightFallOffExp = 0.8f;
+	lightAngleDelta = 15.0f * Matrix3D::myPi / 180.0f;
 
-	list.push_back(new ObjectCube(0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0125f, 0.0125f, 0.0125f, 0.8f, 0.75f, 0.1f));
+	list.push_back(new ObjectCube(0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0125f, 0.0125f, 0.0125f, 1.0f, 1.0f, 1.0f));
 
 	//loading textures
 	textureManager.Init(2);

@@ -13,38 +13,56 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="Shaders">
+    <Filter Include="Header Files\Shader Classes">
+      <UniqueIdentifier>{c9fe53bc-679e-4ca4-a43e-e66182ba361f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shaders Files">
       <UniqueIdentifier>{90ec6870-4966-498d-8c02-78f299e2fd0a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Scene Classes">
+      <UniqueIdentifier>{9e2c4700-e779-4102-885d-3d739f2f65f4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Object Classes">
+      <UniqueIdentifier>{f338140e-aa6e-4d57-8e06-c22a50a04d23}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Shader Classes">
+      <UniqueIdentifier>{d9906097-cee8-427c-8358-c0b9c69a6d9b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Scene Classes">
+      <UniqueIdentifier>{3ff5a6ad-4bde-4795-95a4-fb034983e629}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Object Classes">
+      <UniqueIdentifier>{62dc74f0-1ba5-4f52-aa86-b92a3184f98f}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="ReadMe.txt" />
     <None Include="vertex_shader.cg">
-      <Filter>Shaders</Filter>
+      <Filter>Shaders Files</Filter>
     </None>
     <None Include="fragment_shader.cg">
-      <Filter>Shaders</Filter>
+      <Filter>Shaders Files</Filter>
     </None>
     <None Include="textureFragment.cg">
-      <Filter>Shaders</Filter>
+      <Filter>Shaders Files</Filter>
     </None>
     <None Include="fragment_vertexLight.cg">
-      <Filter>Shaders</Filter>
+      <Filter>Shaders Files</Filter>
     </None>
     <None Include="vertex_vertexLight.cg">
-      <Filter>Shaders</Filter>
+      <Filter>Shaders Files</Filter>
     </None>
     <None Include="fragment_pixelLight.cg">
-      <Filter>Shaders</Filter>
+      <Filter>Shaders Files</Filter>
     </None>
     <None Include="vertex_pixelLight.cg">
-      <Filter>Shaders</Filter>
+      <Filter>Shaders Files</Filter>
     </None>
     <None Include="vertex_multPixelLights.cg">
-      <Filter>Shaders</Filter>
+      <Filter>Shaders Files</Filter>
     </None>
     <None Include="fragment_multPixelLights.cg">
-      <Filter>Shaders</Filter>
+      <Filter>Shaders Files</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
@@ -57,34 +75,10 @@
     <ClInclude Include="Engine.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="BaseObject.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ObjectTriangle.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Matrix3D.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ObjectCube.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="OpenGLRenderer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="VertexObject.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="SimpleVS.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="FragmentObject.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="SimpleFS.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="TextureFS.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="wBitmap.h">
@@ -93,41 +87,65 @@
     <ClInclude Include="TextureManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="SceneBase.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="VertexLightVS.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="VertexLightFS.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="SceneTextureColor.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="SceneVertexLight.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="SceneBuffers.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="MultPerPixelLightVS.h">
+      <Filter>Header Files\Shader Classes</Filter>
     </ClInclude>
     <ClInclude Include="PerPixelLightFS.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Shader Classes</Filter>
     </ClInclude>
     <ClInclude Include="PerPixelLightVS.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Shader Classes</Filter>
     </ClInclude>
-    <ClInclude Include="ObjectPlane.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="SimpleFS.h">
+      <Filter>Header Files\Shader Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="SimpleVS.h">
+      <Filter>Header Files\Shader Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="TextureFS.h">
+      <Filter>Header Files\Shader Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="VertexLightFS.h">
+      <Filter>Header Files\Shader Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="VertexLightVS.h">
+      <Filter>Header Files\Shader Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="VertexObject.h">
+      <Filter>Header Files\Shader Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="FragmentObject.h">
+      <Filter>Header Files\Shader Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneBase.h">
+      <Filter>Header Files\Scene Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneBuffers.h">
+      <Filter>Header Files\Scene Classes</Filter>
     </ClInclude>
     <ClInclude Include="ScenePerPixelLight.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Scene Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneTextureColor.h">
+      <Filter>Header Files\Scene Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneVertexLight.h">
+      <Filter>Header Files\Scene Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="BaseObject.h">
+      <Filter>Header Files\Object Classes</Filter>
     </ClInclude>
     <ClInclude Include="ObjectCamera.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Object Classes</Filter>
     </ClInclude>
-    <ClInclude Include="MultPerPixelLightVS.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="ObjectCube.h">
+      <Filter>Header Files\Object Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="ObjectPlane.h">
+      <Filter>Header Files\Object Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="ObjectTriangle.h">
+      <Filter>Header Files\Object Classes</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -137,77 +155,77 @@
     <ClCompile Include="Engine.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="BaseObject.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ObjectTriangle.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="MainFile.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Matrix3D.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ObjectCube.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="OpenGLRenderer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="VertexObject.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="SimpleVS.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="FragmentObject.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="SimpleFS.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="TextureFS.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="TextureManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="SceneBase.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="SceneTextureColor.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="SceneVertexLight.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="SceneBuffers.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="VertexLightFS.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="VertexLightVS.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="PerPixelLightFS.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="PerPixelLightVS.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ObjectPlane.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ScenePerPixelLight.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ObjectCamera.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="FragmentObject.cpp">
+      <Filter>Source Files\Shader Classes</Filter>
     </ClCompile>
     <ClCompile Include="MultPerPixelLightVS.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Shader Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="PerPixelLightFS.cpp">
+      <Filter>Source Files\Shader Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="PerPixelLightVS.cpp">
+      <Filter>Source Files\Shader Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="SimpleFS.cpp">
+      <Filter>Source Files\Shader Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="SimpleVS.cpp">
+      <Filter>Source Files\Shader Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="TextureFS.cpp">
+      <Filter>Source Files\Shader Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="VertexLightFS.cpp">
+      <Filter>Source Files\Shader Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="VertexLightVS.cpp">
+      <Filter>Source Files\Shader Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="VertexObject.cpp">
+      <Filter>Source Files\Shader Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneBase.cpp">
+      <Filter>Source Files\Scene Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneBuffers.cpp">
+      <Filter>Source Files\Scene Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="ScenePerPixelLight.cpp">
+      <Filter>Source Files\Scene Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneTextureColor.cpp">
+      <Filter>Source Files\Scene Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneVertexLight.cpp">
+      <Filter>Source Files\Scene Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="BaseObject.cpp">
+      <Filter>Source Files\Object Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="ObjectCamera.cpp">
+      <Filter>Source Files\Object Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="ObjectCube.cpp">
+      <Filter>Source Files\Object Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="ObjectPlane.cpp">
+      <Filter>Source Files\Object Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="ObjectTriangle.cpp">
+      <Filter>Source Files\Object Classes</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

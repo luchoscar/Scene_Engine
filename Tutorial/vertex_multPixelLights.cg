@@ -2,47 +2,34 @@
 //vertext output
 struct Vertex_Output
 {
-	float4 position			: POSITION;
-	float4 color			: COLOR;
-	float2 texCoord			: TEXCOORD0;
-	float3 vertPos			: TEXCOORD1;	//passing vertex on object position as light is calculated on object space
-	float3 camDir			: TEXCOORD2;
-	float3x3 TBN			: TEXCOORD3;
-	float4x4 invWorldObj	: TEXCOORD4;	//passing inverse matrix of world to object matrix to convert light position from world to object space
+	float4 position  : POSITION;
+	float4 color	 : COLOR;
+	float3 vertPos	 : TEXCOORD0;
+	float2 texCoord  : TEXCOORD1;
+	float3x3 TBN	 : TEXCOORD2;
 };
 
 //vertex shader
 Vertex_Output VS_multPixelLight(float4 position : POSITION,
-								float3 normal	: NORMAL,
-								float4 color	: COLOR,
-								float2 texCoord : TEXCOORD0,
+							float3 normal	: NORMAL,
+							float4 color	: COLOR,
+							float2 texCoord : TEXCOORD0,
 							
-								uniform float3	 tangent,	
-								uniform float3	 bitangent,
-								uniform float3	 cameraPosition,
-								uniform float4x4 matrixModelWorld,
-								uniform float4x4 matrixViewProj)
+							uniform float3	 tangent,	
+							uniform float3	 bitangent,
+							uniform float4x4 matrixMVP)
 {
 	Vertex_Output OUT;
-
-	//setting variables to calculating light on object space
-	float4x4 matrixWorldInverse = inverse(matrixModelWorld);
-
-	cameraPosition = mul(matrixWorldInverse, float4(cameraPosition, 1));
-
-	float3 vertexPosWorld = mul(matrixModelWorld, position).xyz;
 
 	float3 T = normalize(tangent);
 	float3 B = normalize(bitangent);
 	float3 N = normalize(normal);
-	 
-	OUT.position	= mul(matrixViewProj, float4(vertexPosWorld, 1));
-	OUT.color		= color;
-	OUT.texCoord	= texCoord;
-	OUT.vertPos		= position.xyz;
-	OUT.camDir		= normalize(cameraPosition - position.xyz);
-	OUT.TBN			= transpose(float3x3(T, B, N));
-	OUT.invWorldObj	= matrixWorldInverse;
 	
+	OUT.position = mul(matrixMVP, position);
+	OUT.color = color;
+	OUT.vertPos = position.xyz;
+	OUT.texCoord = texCoord;
+	OUT.TBN = transpose(float3x3(T, B, N));
+
 	return OUT;
 }

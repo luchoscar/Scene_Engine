@@ -87,9 +87,6 @@
     <ClInclude Include="TextureManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="MultPerPixelLightVS.h">
-      <Filter>Header Files\Shader Classes</Filter>
-    </ClInclude>
     <ClInclude Include="PerPixelLightFS.h">
       <Filter>Header Files\Shader Classes</Filter>
     </ClInclude>
@@ -153,6 +150,9 @@
     <ClInclude Include="SceneMultPerPixelLight.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="MultPerPixelLightVS.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -174,9 +174,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="FragmentObject.cpp">
-      <Filter>Source Files\Shader Classes</Filter>
-    </ClCompile>
-    <ClCompile Include="MultPerPixelLightVS.cpp">
       <Filter>Source Files\Shader Classes</Filter>
     </ClCompile>
     <ClCompile Include="PerPixelLightFS.cpp">
@@ -237,6 +234,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="SceneMultPerPixelLight.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MultPerPixelLightVS.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

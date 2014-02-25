@@ -244,6 +244,8 @@ void ScenePerPixelLight::Draw()
 
 		Matrix3D::MultMatrix(modelMatrix, rotationMatrix, modelMatrix);
 		Matrix3D::MultMatrix(modelToWorld, translateMatrix, modelMatrix);
+		
+		pixelLightVS.UpdateCameraPosition(cameraObject->GetPosition());
 
 		pixelLightVS.UpdateMatrixModelWorld(modelToWorld());
 		pixelLightVS.UpdateMatrixViewProj(viewProjection());

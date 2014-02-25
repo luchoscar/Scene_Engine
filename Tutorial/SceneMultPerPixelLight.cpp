@@ -37,34 +37,53 @@ void SceneMultPerPixelLight::Init()
 
 	/*** room objects shader ***/
 	//creating VS program
-	pixelLightVS.CreateProgram("vertex_pixelLight.cg", "VS_pixelLight");
+	pixelLightVS.CreateProgram("vertex_multPixelLights.cg", "VS_multPixelLight");
 	rendererGL.LoadProgram(pixelLightVS.GetProgram());
 	pixelLightVS.LinkParameters();
 
 	//creating FS program
-	pixelLightFS.CreateProgram("fragment_pixelLight.cg", "FS_pixelLight");
+	pixelLightFS.CreateProgram("fragment_multPixelLights.cg", "FS_multPixelLight");
 	rendererGL.LoadProgram(pixelLightFS.GetProgram());
 	pixelLightFS.LinkParameters();
 	
 	//initializing light variables
-	lightAngle = 0.0f;
-	lightRadMov = 1.75f;
-	lightFallOffExp = 0.8f;
-	lightAngleDelta = 5.0f * Matrix3D::myPi / 180.0f;
+	maxLights = 2;
+	
+	lightAngle = new float[maxLights];
+	for (int i = 0; i < maxLights; i++)
+	{
+		lightAngle[i] = 0.0f;
+	}
 
-	list.push_back(new ObjectCube(0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0125f, 0.0125f, 0.0125f, 0.75f, 0.5f, 0.5f));
+	lightRadMov = new float[maxLights];
+	for (int i = 0; i < maxLights; i++)
+	{
+		lightRadMov[i] = 1.75f;
+	}
+
+	lightFallOffExp = 1.5f;
+
+	lightAngleDelta = new float[maxLights];
+	for (int i = 0; i < maxLights; i++)
+	{
+		lightAngleDelta[i] = (30.0f * static_cast <float> (rand()) / static_cast <float> (RAND_MAX) + 5.0) * Matrix3D::myPi / 180.0f;
+
+		if (i % 2) lightAngleDelta[i] *= -1;
+	}
+
+	list.push_back(new ObjectCube(0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.025f, 0.025f, 0.025f, 1.0f, 0.1f, 0.1f));
+	list.push_back(new ObjectCube(0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.025f, 0.025f, 0.025f, 0.1f, 1.0f, 0.1f));
+	//list.push_back(new ObjectCube(0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.025f, 0.025f, 0.025f, 0.1f, 0.1f, 1.0f));
 
 	//initializing camera variables
 	cameraPosAngle = 0.0f;
 	cameraPosRadMov = 1.5f;
 	cameraPosAngleDelta = 8.75 * Matrix3D::myPi / 180.0f;
 
-	//cameraObject = new ObjectCamera(cos(cameraPosAngle) * cameraPosRadMov, 0.0f, sin(cameraPosAngle) * cameraPosRadMov,
-	//	0.0f, 1.0f, 0.0,
-	//	0.0f, 0.0f, 0.0f);
-	cameraObject = new ObjectCamera(0.0f, 0.0f, 0.0f,
+	cameraObject = new ObjectCamera(0.0f, 0.0f, -2.5f,
 									0.0f, 1.0f, 0.0,
-									list[0]->GetPosition()[0], list[0]->GetPosition()[1], list[0]->GetPosition()[2]);
+									0.0f, 0.0f, 0.0);
+
 	cameraObject->Init();
 
 	//loading textures
@@ -200,19 +219,22 @@ void SceneMultPerPixelLight::Draw()
 	rendererGL.EnableProfile(rendererGL.GetVertexProfile());
 	rendererGL.EnableProfile(rendererGL.GetFragmentProfile());
 
-	tempSpace = list[0]->GetScale();
-	Matrix3D::MakeScaleMatrix(tempSpace[0], tempSpace[1], tempSpace[2], modelMatrix);
-	tempSpace = list[0]->GetPosition();
-	Matrix3D::MakeTranslateMatrix(tempSpace[0], tempSpace[1], tempSpace[2], translateMatrix);
-	Matrix3D::MultMatrix(modelToWorld, translateMatrix, modelMatrix);
-	Matrix3D::MultMatrix(MVP, viewProjection, modelToWorld);
+	for (int i = 0; i < maxLights; i++)
+	{
+		tempSpace = list[i]->GetScale();
+		Matrix3D::MakeScaleMatrix(tempSpace[0], tempSpace[1], tempSpace[2], modelMatrix);
+		tempSpace = list[i]->GetPosition();
+		Matrix3D::MakeTranslateMatrix(tempSpace[0], tempSpace[1], tempSpace[2], translateMatrix);
+		Matrix3D::MultMatrix(modelToWorld, translateMatrix, modelMatrix);
+		Matrix3D::MultMatrix(MVP, viewProjection, modelToWorld);
 
-	simpleVS.UpdateModelViewMatrix(MVP());
+		simpleVS.UpdateModelViewMatrix(MVP());
 
-	simpleVS.UpdateParameters();
-	simpleFS.UpdateParameters();
+		simpleVS.UpdateParameters();
+		simpleFS.UpdateParameters();
 
-	list[0]->Draw();
+		list[i]->Draw();
+	}
 
 	//disable CGprofiles
 	rendererGL.DisableProfile(rendererGL.GetVertexProfile());
@@ -228,7 +250,7 @@ void SceneMultPerPixelLight::Draw()
 	rendererGL.EnableProfile(rendererGL.GetFragmentProfile());
 
 	//call each object in the list draw function
-	for (unsigned int i = 1; i < list.size(); i++)
+	for (unsigned int i = maxLights; i < list.size(); i++)
 	{
 		//update matrices parameters
 		tempSpace = list[i]->GetScale();
@@ -247,9 +269,7 @@ void SceneMultPerPixelLight::Draw()
 
 		Matrix3D::MultMatrix(modelMatrix, rotationMatrix, modelMatrix);
 		Matrix3D::MultMatrix(modelToWorld, translateMatrix, modelMatrix);
-
-		pixelLightVS.UpdateMatrixModelWorld(modelToWorld());
-		pixelLightVS.UpdateMatrixViewProj(viewProjection());
+		Matrix3D::MultMatrix(MVP, viewProjection, modelToWorld);
 
 		//update tangent and bitangent parameters
 		float tangent[3] = { 1.0f, 0.0f, 0.0f };
@@ -258,12 +278,17 @@ void SceneMultPerPixelLight::Draw()
 		pixelLightVS.UpdateTangent(tangent);
 		pixelLightVS.UpdateBitangent(bitangent);
 
-		pixelLightVS.UpdateMatrixModelWorld(modelToWorld());
-		pixelLightVS.UpdateMatrixViewProj(viewProjection());
+		pixelLightVS.UpdateMatrixMVP(MVP());
 
+		pixelLightFS.UpdateMatrixModelWorld(modelToWorld());
 		//update light parameters
-		pixelLightVS.UpdateLightPosition(list[0]->GetPosition());
-		pixelLightFS.UpdateLightColor(list[0]->GetColor());
+		for (int c = 0; c < maxLights; c++)
+		{
+			pixelLightFS.UpdateLightPosition(list[c]->GetPosition(), c);
+			pixelLightFS.UpdateLightColor(list[c]->GetColor(), c);
+		}
+
+		pixelLightFS.UpdateCameraPosition(cameraObject->GetPosition());
 		pixelLightFS.UpdateLightFallOffExp(lightFallOffExp);
 
 		//update textures parameters
@@ -288,18 +313,24 @@ void SceneMultPerPixelLight::Draw()
 void SceneMultPerPixelLight::Update()
 {
 	//rotate light around origin on xyz coordinates
-	lightAngle += lightAngleDelta * Engine::deltaTime;
+	for (int i = 0; i < maxLights; i++)
+	{
+		lightAngle[i] += lightAngleDelta[i] * Engine::deltaTime;
 
-	if (lightAngle > (Matrix3D::myPi + Matrix3D::myPi))
-		lightAngle -= (Matrix3D::myPi + Matrix3D::myPi);
+		if (lightAngle[i] >(Matrix3D::myPi + Matrix3D::myPi))
+			lightAngle[i] -= (Matrix3D::myPi + Matrix3D::myPi);
 
-	list[0]->SetPosition(cos(lightAngle) * lightRadMov, sin(lightAngle) * lightRadMov, sin(lightAngle) * lightRadMov);
+		if (i % 2 == 0)
+			list[i]->SetPosition(cos(lightAngle[i]) * lightRadMov[i], sin(lightAngle[i]) * lightRadMov[i], sin(lightAngle[i]) * lightRadMov[i]);
+		else
+			list[i]->SetPosition(-cos(lightAngle[i]) * lightRadMov[i], -sin(lightAngle[i]) * lightRadMov[i], -sin(lightAngle[i]) * lightRadMov[i]);
+	}
 
-	////rotate camera on xz coordinates and look up and down
-	//cameraPosAngle += cameraPosAngleDelta * Engine::deltaTime;
+	//rotate camera on xz coordinates and look up and down
+	cameraPosAngle += cameraPosAngleDelta * Engine::deltaTime;
 
-	//if (cameraPosAngle > (Matrix3D::myPi + Matrix3D::myPi))
-	//	cameraPosAngle -= (Matrix3D::myPi + Matrix3D::myPi);
+	if (cameraPosAngle > (Matrix3D::myPi + Matrix3D::myPi))
+		cameraPosAngle -= (Matrix3D::myPi + Matrix3D::myPi);
 
 	//float* cameraUpdate = new float[3];
 	////update for position
@@ -311,6 +342,6 @@ void SceneMultPerPixelLight::Update()
 
 	//cameraObject->SetPosition(cameraUpdate[0], cameraObject->GetPosition()[1], cameraUpdate[1]);
 	//cameraObject->SetLookAtVector(cameraObject->GetLookAtVector()[0], cameraUpdate[2], cameraObject->GetLookAtVector()[2]);
-
-	cameraObject->SetLookAtVector(cos(lightAngle) * lightRadMov, sin(lightAngle) * lightRadMov, sin(lightAngle) * lightRadMov);
+	//int i = 0;
+	//cameraObject->SetLookAtVector(list[i]->GetPosition()[0], list[i]->GetPosition()[1], list[i]->GetPosition()[2]);
 }

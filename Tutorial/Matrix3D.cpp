@@ -190,7 +190,7 @@ void Matrix3D::InvertMatrix(Matrix3D* out, Matrix3D* m)
   if (fabs(r2[0])>fabs(r1[0])) SWAP_ROWS(r2, r1);
   if (fabs(r1[0])>fabs(r0[0])) SWAP_ROWS(r1, r0);
   if (0.0 == r0[0]) {
-    //assert(!"could not invert matrix");
+	//assert(!"could not invert matrix");
   }
 
   /* Eliminate first variable. */
@@ -211,7 +211,7 @@ void Matrix3D::InvertMatrix(Matrix3D* out, Matrix3D* m)
   if (fabs(r3[1])>fabs(r2[1])) SWAP_ROWS(r3, r2);
   if (fabs(r2[1])>fabs(r1[1])) SWAP_ROWS(r2, r1);
   if (0.0 == r1[1]) {
-    //assert(!"could not invert matrix");
+	//assert(!"could not invert matrix");
   }
 
   /* Eliminate second variable. */
@@ -226,7 +226,7 @@ void Matrix3D::InvertMatrix(Matrix3D* out, Matrix3D* m)
   /* Choose myPivot, or die. */
   if (fabs(r3[2])>fabs(r2[2])) SWAP_ROWS(r3, r2);
   if (0.0 == r2[2]) {
-    //assert(!"could not invert matrix");
+	//assert(!"could not invert matrix");
   }
 
   /* Eliminate third variable. */
@@ -237,7 +237,7 @@ void Matrix3D::InvertMatrix(Matrix3D* out, Matrix3D* m)
 
   /* Last check. */
   if (0.0 == r3[3]) {
-    //assert(!"could not invert matrix");
+	//assert(!"could not invert matrix");
   }
 
   s = 1.0/r3[3];              /* Now back substitute row 3. */

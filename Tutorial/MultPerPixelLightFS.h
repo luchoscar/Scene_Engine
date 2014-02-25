@@ -10,23 +10,24 @@ public:
 	~MultPerPixelLightFS();
 
 	virtual void LinkParameters();
+
 	void SetDecalMap(GLuint textureParam);
 	void SetNormalMap(GLuint textureParam);
+	void UpdateCameraPosition(float* camPos);
+	void UpdateLightPosition(float* lightPos, int lightId); 
 	void UpdateLightColor(float* lightCol, int lightId);
-	void UpdateLightPosition(float* lightPos, int lightId);
-	void UpdateIsEmissive(int emisive);
 	void UpdateLightFallOffExp(float fallOffExp);
+	void UpdateMatrixModelWorld(float* matModWorld);
+
 	CGparameter GetDecalMap() { return decalMap; }
 	CGparameter GetNormalMap() { return normalMap; }
 
 private:
 	CGparameter decalMap,
 				normalMap,
-				lightColor[2],
+				cameraPosition,
 				lightPossition[2],
-				maxLights,
-				isEmissive,
-				lightFallOffExp;
-
-	void BindSceneLisghtsNumber(int maxLights);
+				lightColor[2],
+				lightFallOffExp,
+				matrixModelWorld;
 };

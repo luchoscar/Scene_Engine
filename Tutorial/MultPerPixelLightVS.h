@@ -10,17 +10,13 @@ public:
 
 	void UpdateTangent(float* tan);
 	void UpdateBitangent(float* bitan);
-	void UpdateMatrixModelWorld(float* World);
-	void UpdateMatrixViewProj(float* ViewProj);
-	void UpdateCameraPosition(float* camPos);
+	void UpdateMatrixMVP(float* MWVP);
 
 	virtual void LinkParameters();
 
 protected:
 	CGparameter tangent,
 				bitangent,
-				cameraPosition,
-				matrixModelWorld,
-				matrixViewProj;
+				matrixMVP;
 };
 

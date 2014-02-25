@@ -27,8 +27,8 @@ Vertex_Output VS_pixelLight(float4 position : POSITION,
 	//setting variables to calculating light on object space
 	float4x4 matrixWorldInverse = inverse(matrixModelWorld);
 
-	lightPosition = mul(matrixWorldInverse, float4(lightPosition, 1));
-	cameraPosition = mul(matrixWorldInverse, float4(cameraPosition, 1));
+	lightPosition = mul(matrixWorldInverse, float4(lightPosition, 1)).xyz;
+	cameraPosition = mul(matrixWorldInverse, float4(cameraPosition, 1)).xyz;
 
 	float3 vertexPosWorld = mul(matrixModelWorld, position).xyz;
 

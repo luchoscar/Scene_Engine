@@ -1,8 +1,8 @@
 #pragma once
 #include "SceneBase.h"
 #include "ObjectCamera.h"
-#include "PerPixelLightVS.h"
-#include "PerPixelLightFS.h"
+#include "MultPerPixelLightVS.h"
+#include "MultPerPixelLightFS.h"
 #include "SimpleVS.h"
 #include "SimpleFS.h"
 
@@ -18,15 +18,16 @@ public:
 	virtual void Update();
 
 private:
-	PerPixelLightVS pixelLightVS;
-	PerPixelLightFS pixelLightFS;
+	MultPerPixelLightVS pixelLightVS;
+	MultPerPixelLightFS pixelLightFS;
 	SimpleFS simpleFS;
 	SimpleVS simpleVS;
 
 	//light variables
-	float lightAngle;
-	float lightAngleDelta;
-	float lightRadMov;
+	int maxLights;
+	float* lightAngle;
+	float* lightAngleDelta;
+	float* lightRadMov;
 	float lightFallOffExp;
 
 	//camera variables

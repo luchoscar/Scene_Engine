@@ -6,82 +6,72 @@ struct Light
 };
 
 void FS_multPixelLight(float3 color			: COLOR,
-						//float2 texCoord		: TEXCOORD0,
-						//float3 lightDir		: TEXCOORD1,
-						//float3 camDir		: TEXCOORD2,
-						//float3x3 TBN		: TEXCOORD3,
 
-						float2 texCoord			: TEXCOORD0;
-						float3 vertPos			: TEXCOORD1;
-						float3 camDir			: TEXCOORD2;
-						float3x3 TBN			: TEXCOORD3;
-						float4x4 invWorldObj	: TEXCOORD4;
+						float3 vertPos		: TEXCOORD0,
+						float2 texCoord		: TEXCOORD1,
+						float3x3 TBN		: TEXCOORD2,
 
 						out float4 outColor : COLOR,
 
 						uniform sampler2D decalMap,
 						uniform sampler2D normalMap,
+						uniform float3	  cameraPosition,
 						uniform Light	  lights[7],
-						uniform int		  maxLights,		//max lights supported = 7
-						uniform int		  isEmissive,		//0 - not emissive, 
-						uniform float	  lightFallOffExp)
+						uniform float	  lightFallOffExp,
+						uniform float4x4  matrixModelWorld)
 {
 	//final object color
 	float3 finalColor = float3(0.0, 0.0, 0.0);
-
-	//only calculate light for non-emissive objects (non light objects)
-	if (isEmissive != 0)
-	{
-		finalColor = color;
-	}
-	else
-	{
-		//truncate light between 0 to 7
-		if (maxLights > 7) maxLights = 7;
-		else if (maxLights < 0) maxLights = 0;
-
-		//sample normal from texture
-		float3 normal = tex2D(normalMap, texCoord).xyz;
-		normal = normalize(normal * 2.0 - 1.0);
-		normal = normalize(mul(TBN, normal));
-
-		//initialize light color common variables
-		float diffInt = 0.0;
-		float specInt = 0.0;
-
-		//loop through each light and add them up for a final color
-		for (int i = 0; i < maxLights; i++)
-		{
-			float3 lightPos = mul(invWorldObj, float4(lights[i].position, 1)).xyz;
-
-			float fallOff = saturate(1 / exp(length(lightDir) * lightFallOffExp));
-
-			lightDir = normalize(lightDir);
-
-			//calculate diffuse vertex light intensity 
-			diffInt = dot(normal, lightDir);
-
-			//calculate spec light
-			if (diffInt > 0.001)
-			{
-				float3 H = normalize(lightDir + camDir);
-				specInt = pow(saturate(dot(H, normal)), 100.0);
-			}
 	
-			diffInt = max(diffInt, 0.001);
-			diffInt = diffInt * fallOff;
+	float4x4 invWorldObj = inverse(matrixModelWorld);
+	cameraPosition = mul(invWorldObj, float4(cameraPosition, 1)).xyz;
+	float3 camDir = normalize(cameraPosition - vertPos);
 
-			float3 decalColor = tex2D(decalMap, texCoord).xyz;
+	//sample normal from texture
+	float3 normal = tex2D(normalMap, texCoord).xyz;
+	normal = normalize(normal * 2.0 - 1.0);
+	normal = normalize(mul(TBN, normal));
 
-			float3 diffuseLight = diffInt * decalColor;
+	//initialize light color common variables
+	float diffInt = 0.0;
+	float specInt = 0.0;
 
-			//make specular a percentage value of diffuse light
-			float3 specLight = specInt * decalColor * diffInt;
+	//loop through each light and add them up for a final color
+	for (int i = 0; i < 7; i++)
+	{
+		float3 lightPos = mul(invWorldObj, float4(lights[i].position, 1)).xyz;
+		float3 lightDir = lightPos - vertPos;
+		float fallOff = saturate(1 / exp(length(lightDir) * lightFallOffExp));
 
-			float3 currentLightColorInfluence = (diffuseLight + specLight) * lights[i].color;
-			finalColor += currentLightColorInfluence;
+		lightDir = normalize(lightDir);
+
+		//calculate diffuse vertex light intensity 
+		diffInt = dot(normal, lightDir);
+
+		//calculate spec light
+		if (diffInt > 0.001)
+		{
+			float3 H = normalize(lightDir + camDir);
+			specInt = pow(saturate(dot(H, normal)), 100.0);
 		}
+	
+		diffInt = max(diffInt, 0.001);
+		diffInt = diffInt * fallOff;
+
+		float3 decalColor = tex2D(decalMap, texCoord).xyz;
+
+		float3 diffuseLight = diffInt * decalColor;
+
+		//make specular a percentage value of diffuse light
+		float3 specLight = specInt * decalColor * diffInt;
+
+		float3 currentLightColorInfluence = (diffuseLight + specLight) * lights[i].color;
+		finalColor += currentLightColorInfluence;
 	}
+
+	finalColor.x = saturate(finalColor.x);
+	finalColor.y = saturate(finalColor.y);
+	finalColor.z = saturate(finalColor.z);
 
 	outColor = float4((finalColor), 1.0);
 }

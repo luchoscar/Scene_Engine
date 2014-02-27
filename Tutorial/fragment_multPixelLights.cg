@@ -5,9 +5,7 @@ struct Light
 	float3 color;
 };
 
-void FS_multPixelLight(float3 color			: COLOR,
-
-						float3 vertPos		: TEXCOORD0,
+void FS_multPixelLight(float3 vertPos		: TEXCOORD0,
 						float2 texCoord		: TEXCOORD1,
 						float3x3 TBN		: TEXCOORD2,
 
@@ -18,60 +16,49 @@ void FS_multPixelLight(float3 color			: COLOR,
 						uniform float3	  cameraPosition,
 						uniform Light	  lights[7],
 						uniform float	  lightFallOffExp,
-						uniform float4x4  matrixModelWorld)
+						uniform float4x4  matrixModelWorld,
+						uniform float	  specularPower)
 {
-	//final object color
-	float3 finalColor = float3(0.0, 0.0, 0.0);
-	
 	float4x4 invWorldObj = inverse(matrixModelWorld);
 	cameraPosition = mul(invWorldObj, float4(cameraPosition, 1)).xyz;
-	float3 camDir = normalize(cameraPosition - vertPos);
-
+	
 	//sample normal from texture
 	float3 normal = tex2D(normalMap, texCoord).xyz;
 	normal = normalize(normal * 2.0 - 1.0);
-	normal = normalize(mul(TBN, normal));
+	normal = normalize(mul(TBN, normal).xyz);
 
-	//initialize light color common variables
-	float diffInt = 0.0;
-	float specInt = 0.0;
+	//initialize light color variables
+	float3 diffuseSum = float3(0.0, 0.0, 0.0);
+	float3 specularSum = float3(0.0, 0.0, 0.0);
 
 	//loop through each light and add them up for a final color
 	for (int i = 0; i < 7; i++)
 	{
-		float3 lightPos = mul(invWorldObj, float4(lights[i].position, 1)).xyz;
-		float3 lightDir = lightPos - vertPos;
+		lights[i].position = mul(invWorldObj, float4(lights[i].position, 1)).xyz;
+
+		float3 lightDir = lights[i].position - vertPos;
 		float fallOff = saturate(1 / exp(length(lightDir) * lightFallOffExp));
 
-		lightDir = normalize(lightDir);
+		// Compute the diffuse lighting
+		float3 L = normalize(lightDir);
+		float diffuseLight = max(dot(normal, L), 0) * fallOff;
+		float3 diffuseResult = lights[i].color * diffuseLight;
 
-		//calculate diffuse vertex light intensity 
-		diffInt = dot(normal, lightDir);
+		// Compute the specular lighting
+		float3 V = normalize(cameraPosition - vertPos);
+		float3 H = normalize(L + V);
+		float specularLight = pow(max(dot(normal, H), 0), specularPower) * fallOff;
 
-		//calculate spec light
-		if (diffInt > 0.001)
-		{
-			float3 H = normalize(lightDir + camDir);
-			specInt = pow(saturate(dot(H, normal)), 100.0);
-		}
-	
-		diffInt = max(diffInt, 0.001);
-		diffInt = diffInt * fallOff;
+		if (diffuseLight <= 0.01) 
+			specularLight = 0.01;
 
-		float3 decalColor = tex2D(decalMap, texCoord).xyz;
+		float3 specularResult = lights[i].color * specularLight;
 
-		float3 diffuseLight = diffInt * decalColor;
-
-		//make specular a percentage value of diffuse light
-		float3 specLight = specInt * decalColor * diffInt;
-
-		float3 currentLightColorInfluence = (diffuseLight + specLight) * lights[i].color;
-		finalColor += currentLightColorInfluence;
+		diffuseSum += diffuseResult;
+		specularSum += specularResult;
 	}
 
-	finalColor.x = saturate(finalColor.x);
-	finalColor.y = saturate(finalColor.y);
-	finalColor.z = saturate(finalColor.z);
-
-	outColor = float4((finalColor), 1.0);
+	float3 objectColor = tex2D(decalMap, texCoord).xyz;
+	
+	outColor = float4((diffuseSum + specularSum) * objectColor, 1.0);
 }

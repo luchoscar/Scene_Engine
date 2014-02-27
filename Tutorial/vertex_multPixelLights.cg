@@ -3,7 +3,7 @@
 struct Vertex_Output
 {
 	float4 position  : POSITION;
-	float4 color	 : COLOR;
+
 	float3 vertPos	 : TEXCOORD0;
 	float2 texCoord  : TEXCOORD1;
 	float3x3 TBN	 : TEXCOORD2;
@@ -12,7 +12,6 @@ struct Vertex_Output
 //vertex shader
 Vertex_Output VS_multPixelLight(float4 position : POSITION,
 							float3 normal	: NORMAL,
-							float4 color	: COLOR,
 							float2 texCoord : TEXCOORD0,
 							
 							uniform float3	 tangent,	
@@ -26,7 +25,6 @@ Vertex_Output VS_multPixelLight(float4 position : POSITION,
 	float3 N = normalize(normal);
 	
 	OUT.position = mul(matrixMVP, position);
-	OUT.color = color;
 	OUT.vertPos = position.xyz;
 	OUT.texCoord = texCoord;
 	OUT.TBN = transpose(float3x3(T, B, N));

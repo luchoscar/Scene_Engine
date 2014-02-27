@@ -18,6 +18,7 @@ public:
 	void UpdateLightColor(float* lightCol, int lightId);
 	void UpdateLightFallOffExp(float fallOffExp);
 	void UpdateMatrixModelWorld(float* matModWorld);
+	void UpdateSpeculatPower(float specPower);
 
 	CGparameter GetDecalMap() { return decalMap; }
 	CGparameter GetNormalMap() { return normalMap; }
@@ -26,8 +27,9 @@ private:
 	CGparameter decalMap,
 				normalMap,
 				cameraPosition,
-				lightPossition[2],
-				lightColor[2],
+				lightPossition[7],
+				lightColor[7],
 				lightFallOffExp,
-				matrixModelWorld;
+				matrixModelWorld,
+				specularPower;
 };

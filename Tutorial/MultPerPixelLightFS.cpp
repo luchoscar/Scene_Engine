@@ -28,17 +28,50 @@ void MultPerPixelLightFS::LinkParameters()
 	lightPossition[1] = cgGetNamedParameter(fragmentProgram, "lights[1].position");
 	OpenGLRenderer::checkForCgError("could not get light position [1] parameter"); 
 
+	lightPossition[2] = cgGetNamedParameter(fragmentProgram, "lights[2].position");
+	OpenGLRenderer::checkForCgError("could not get light position [2] parameter");
+
+	lightPossition[3] = cgGetNamedParameter(fragmentProgram, "lights[3].position");
+	OpenGLRenderer::checkForCgError("could not get light position [3] parameter");
+
+	lightPossition[4] = cgGetNamedParameter(fragmentProgram, "lights[4].position");
+	OpenGLRenderer::checkForCgError("could not get light position [4] parameter");
+
+	lightPossition[5] = cgGetNamedParameter(fragmentProgram, "lights[5].position");
+	OpenGLRenderer::checkForCgError("could not get light position [5] parameter");
+
+	lightPossition[6] = cgGetNamedParameter(fragmentProgram, "lights[6].position");
+	OpenGLRenderer::checkForCgError("could not get light position [6] parameter");
+
 	lightColor[0] = cgGetNamedParameter(fragmentProgram, "lights[0].color");
 	OpenGLRenderer::checkForCgError("could not get light color [0] parameter");
 
 	lightColor[1] = cgGetNamedParameter(fragmentProgram, "lights[1].color");
 	OpenGLRenderer::checkForCgError("could not get light color [1] parameter");
 	
+	lightColor[2] = cgGetNamedParameter(fragmentProgram, "lights[2].color");
+	OpenGLRenderer::checkForCgError("could not get light color [2] parameter");
+
+	lightColor[3] = cgGetNamedParameter(fragmentProgram, "lights[3].color");
+	OpenGLRenderer::checkForCgError("could not get light color [3] parameter");
+
+	lightColor[4] = cgGetNamedParameter(fragmentProgram, "lights[4].color");
+	OpenGLRenderer::checkForCgError("could not get light color [4] parameter");
+
+	lightColor[5] = cgGetNamedParameter(fragmentProgram, "lights[5].color");
+	OpenGLRenderer::checkForCgError("could not get light color [5] parameter");
+
+	lightColor[6] = cgGetNamedParameter(fragmentProgram, "lights[6].color");
+	OpenGLRenderer::checkForCgError("could not get light color [6] parameter");
+
 	lightFallOffExp = cgGetNamedParameter(fragmentProgram, "lightFallOffExp");
 	OpenGLRenderer::checkForCgError("could not get light falloff exponent");
 
 	matrixModelWorld = cgGetNamedParameter(fragmentProgram, "matrixModelWorld");
 	OpenGLRenderer::checkForCgError("could not get matrixModelWorld parameter");
+
+	specularPower = cgGetNamedParameter(fragmentProgram, "specularPower");
+	OpenGLRenderer::checkForCgError("could not get specularPower parameter");
 }
 
 
@@ -84,4 +117,10 @@ void MultPerPixelLightFS::UpdateMatrixModelWorld(float* matModWorld)
 {
 	cgSetMatrixParameterfr(matrixModelWorld, matModWorld);
 	OpenGLRenderer::checkForCgError("setting invWorldObj matrix");
+}
+
+void MultPerPixelLightFS::UpdateSpeculatPower(float specPower)
+{
+	cgGLSetParameter1f(specularPower, specPower);
+	OpenGLRenderer::checkForCgError("setting light specularPower");
 }

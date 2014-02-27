@@ -47,21 +47,21 @@ void SceneMultPerPixelLight::Init()
 	pixelLightFS.LinkParameters();
 	
 	//initializing light variables
-	maxLights = 2;
+	maxLights = 7;
 	
 	lightAngle = new float[maxLights];
 	for (int i = 0; i < maxLights; i++)
-	{
 		lightAngle[i] = 0.0f;
-	}
 
 	lightRadMov = new float[maxLights];
 	for (int i = 0; i < maxLights; i++)
-	{
-		lightRadMov[i] = 1.75f;
-	}
+		lightRadMov[i] = 1.8f;
 
-	lightFallOffExp = 1.5f;
+	lightFallOffExp = 1.75f;
+	pixelLightFS.UpdateLightFallOffExp(lightFallOffExp);
+
+	specularPower = 100.0f;
+	pixelLightFS.UpdateSpeculatPower(specularPower);
 
 	lightAngleDelta = new float[maxLights];
 	for (int i = 0; i < maxLights; i++)
@@ -69,11 +69,14 @@ void SceneMultPerPixelLight::Init()
 		lightAngleDelta[i] = (30.0f * static_cast <float> (rand()) / static_cast <float> (RAND_MAX) + 5.0) * Matrix3D::myPi / 180.0f;
 
 		if (i % 2) lightAngleDelta[i] *= -1;
-	}
 
-	list.push_back(new ObjectCube(0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.025f, 0.025f, 0.025f, 1.0f, 0.1f, 0.1f));
-	list.push_back(new ObjectCube(0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.025f, 0.025f, 0.025f, 0.1f, 1.0f, 0.1f));
-	//list.push_back(new ObjectCube(0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.025f, 0.025f, 0.025f, 0.1f, 0.1f, 1.0f));
+		float color[3];
+
+		for (int c = 0; c < 3; c++)
+			color[c] = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
+
+		list.push_back(new ObjectCube(0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.025f, 0.025f, 0.025f, color[0], color[1], color[2]));
+	}
 
 	//initializing camera variables
 	cameraPosAngle = 0.0f;
@@ -281,6 +284,7 @@ void SceneMultPerPixelLight::Draw()
 		pixelLightVS.UpdateMatrixMVP(MVP());
 
 		pixelLightFS.UpdateMatrixModelWorld(modelToWorld());
+		
 		//update light parameters
 		for (int c = 0; c < maxLights; c++)
 		{
@@ -289,7 +293,6 @@ void SceneMultPerPixelLight::Draw()
 		}
 
 		pixelLightFS.UpdateCameraPosition(cameraObject->GetPosition());
-		pixelLightFS.UpdateLightFallOffExp(lightFallOffExp);
 
 		//update textures parameters
 		pixelLightFS.SetDecalMap(textureManager.getTextureId("../Images/bricks_diffuse.bmp"));
@@ -317,20 +320,24 @@ void SceneMultPerPixelLight::Update()
 	{
 		lightAngle[i] += lightAngleDelta[i] * Engine::deltaTime;
 
-		if (lightAngle[i] >(Matrix3D::myPi + Matrix3D::myPi))
+		if (lightAngle[i] > (Matrix3D::myPi + Matrix3D::myPi))
 			lightAngle[i] -= (Matrix3D::myPi + Matrix3D::myPi);
+		else if (lightAngle[i] < -(Matrix3D::myPi + Matrix3D::myPi))
+			lightAngle[i] += (Matrix3D::myPi + Matrix3D::myPi);
+
+		float lightRadDelta = lightRadMov[i];
 
 		if (i % 2 == 0)
-			list[i]->SetPosition(cos(lightAngle[i]) * lightRadMov[i], sin(lightAngle[i]) * lightRadMov[i], sin(lightAngle[i]) * lightRadMov[i]);
+			list[i]->SetPosition(cos(lightAngle[i]) * lightRadDelta, cos(lightAngle[i]) * lightRadDelta, sin(lightAngle[i]) * lightRadDelta);
 		else
-			list[i]->SetPosition(-cos(lightAngle[i]) * lightRadMov[i], -sin(lightAngle[i]) * lightRadMov[i], -sin(lightAngle[i]) * lightRadMov[i]);
+			list[i]->SetPosition(cos(lightAngle[i]) * lightRadDelta, sin(lightAngle[i]) * lightRadDelta, sin(lightAngle[i]) * lightRadDelta);
 	}
 
-	//rotate camera on xz coordinates and look up and down
-	cameraPosAngle += cameraPosAngleDelta * Engine::deltaTime;
+	////rotate camera on xz coordinates and look up and down
+	//cameraPosAngle += cameraPosAngleDelta * Engine::deltaTime;
 
-	if (cameraPosAngle > (Matrix3D::myPi + Matrix3D::myPi))
-		cameraPosAngle -= (Matrix3D::myPi + Matrix3D::myPi);
+	//if (cameraPosAngle > (Matrix3D::myPi + Matrix3D::myPi))
+	//	cameraPosAngle -= (Matrix3D::myPi + Matrix3D::myPi);
 
 	//float* cameraUpdate = new float[3];
 	////update for position
@@ -342,6 +349,4 @@ void SceneMultPerPixelLight::Update()
 
 	//cameraObject->SetPosition(cameraUpdate[0], cameraObject->GetPosition()[1], cameraUpdate[1]);
 	//cameraObject->SetLookAtVector(cameraObject->GetLookAtVector()[0], cameraUpdate[2], cameraObject->GetLookAtVector()[2]);
-	//int i = 0;
-	//cameraObject->SetLookAtVector(list[i]->GetPosition()[0], list[i]->GetPosition()[1], list[i]->GetPosition()[2]);
 }

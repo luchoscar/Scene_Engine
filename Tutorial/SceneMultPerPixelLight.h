@@ -29,6 +29,7 @@ private:
 	float* lightAngleDelta;
 	float* lightRadMov;
 	float lightFallOffExp;
+	float specularPower;
 
 	//camera variables
 	ObjectCamera* cameraObject;

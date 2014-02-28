@@ -98,6 +98,42 @@ void OpenGLRenderer::EnableTexture(CGparameter texture)
 	OpenGLRenderer::checkForCgError("enable texture");
 }
 
+CGparameter OpenGLRenderer::BindCgParameter(CGprogram program, const char* paramName)
+{
+	CGparameter parameter = cgGetNamedParameter(program, paramName);
+	OpenGLRenderer::checkForCgError("could not get parameter", paramName);
+
+	return parameter;
+}
+
+void OpenGLRenderer::UpdateFloatParameter(CGparameter& parameter, float value, const char* paramName)
+{
+	cgGLSetParameter1f(parameter, value);
+	OpenGLRenderer::checkForCgError("setting float parameter", paramName);
+}
+
+void OpenGLRenderer::UpdateMatrixParameter(CGparameter& parameter, float* value, const char* paramName)
+{
+	cgSetMatrixParameterfr(parameter, value);
+	OpenGLRenderer::checkForCgError("setting matrix parameter", paramName);
+}
+
+void OpenGLRenderer::UpdateVector3dParameter(CGparameter& parameter, float* value, const char* paramName)
+{
+	cgGLSetParameter3fv(parameter, value);
+	OpenGLRenderer::checkForCgError("setting vector 3D parameter", paramName);
+}
+
+void OpenGLRenderer::UpdateVectorTexture2dParameter(CGparameter& parameter, GLuint textureParam, const char* paramName)
+{
+	glBindTexture(GL_TEXTURE_2D, textureParam);
+	cgGLSetTextureParameter(parameter, textureParam);
+	OpenGLRenderer::checkForCgError("setting texture 2D parameter", paramName);
+
+	OpenGLRenderer::EnableTexture(parameter);
+	OpenGLRenderer::checkForCgError("enabling texture 2D parameter", paramName);
+}
+
 //Capture compiler error and displays it on screen
 void OpenGLRenderer::checkForCgError(const char *situation)
 {
@@ -109,6 +145,27 @@ void OpenGLRenderer::checkForCgError(const char *situation)
 		printf("%s: %s: %s\n",
 			"OpenGLVer2", situation, string);
 		if (error == CG_COMPILER_ERROR) 
+		{
+			printf("%s\n", cgGetLastListing(myCgContext));
+		}
+
+		char x;
+		x << std::cin.get();
+
+		exit(1);
+	}
+}
+
+void OpenGLRenderer::checkForCgError(const char *situation, const char *parameter)
+{
+	CGerror error;
+	const char *string = cgGetLastErrorString(&error);
+
+	if (error != CG_NO_ERROR)
+	{
+		printf("%s: %s: %s: %s\n",
+			"OpenGLVer2", situation, string, parameter);
+		if (error == CG_COMPILER_ERROR)
 		{
 			printf("%s\n", cgGetLastListing(myCgContext));
 		}

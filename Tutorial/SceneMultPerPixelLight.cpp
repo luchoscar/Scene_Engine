@@ -298,8 +298,8 @@ void SceneMultPerPixelLight::Draw()
 		pixelLightFS.SetDecalMap(textureManager.getTextureId("../Images/bricks_diffuse.bmp"));
 		pixelLightFS.SetNormalMap(textureManager.getTextureId("../Images/bricks_normal.bmp"));
 
-		OpenGLRenderer::EnableTexture(pixelLightFS.GetDecalMap());
-		OpenGLRenderer::EnableTexture(pixelLightFS.GetNormalMap());
+		//OpenGLRenderer::EnableTexture(pixelLightFS.GetDecalMap());
+		//OpenGLRenderer::EnableTexture(pixelLightFS.GetNormalMap());
 
 		//update shaders
 		pixelLightVS.UpdateParameters();

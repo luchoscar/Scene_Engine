@@ -8,6 +8,7 @@
 class OpenGLRenderer
 {
 public:
+
 	OpenGLRenderer();
 	virtual ~OpenGLRenderer();
 
@@ -22,9 +23,16 @@ public:
 	static void BindProgram(CGprogram _program);
 	static void EnableProfile(CGprofile _profile);
 	static void DisableProfile(CGprofile _profile);
-	static void checkForCgError(const char *situation);
 	static void EnableTexture(CGparameter texture);
 
+	static CGparameter BindCgParameter(CGprogram program, const char* paramName);
+	static void UpdateFloatParameter(CGparameter& parameter, float value, const char* paramName);
+	static void UpdateMatrixParameter(CGparameter& parameter, float* value, const char* paramName);
+	static void UpdateVector3dParameter(CGparameter& parameter, float* value, const char* paramName);
+	static void UpdateVectorTexture2dParameter(CGparameter& parameter, GLuint textureParam, const char* paramName);
+
+	static void checkForCgError(const char *situation);
+	static void checkForCgError(const char *situation, const char *parameter);
 protected:
 	static CGcontext myCgContext;
 	static CGprofile vertexProfile,

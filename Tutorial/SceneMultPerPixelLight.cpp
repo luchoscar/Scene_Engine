@@ -47,7 +47,7 @@ void SceneMultPerPixelLight::Init()
 	pixelLightFS.LinkParameters();
 	
 	//initializing light variables
-	maxLights = 7;
+	maxLights = 10;
 	
 	lightAngle = new float[maxLights];
 	for (int i = 0; i < maxLights; i++)
@@ -64,16 +64,32 @@ void SceneMultPerPixelLight::Init()
 	pixelLightFS.UpdateSpeculatPower(specularPower);
 
 	lightAngleDelta = new float[maxLights];
+	float low = 20.0f, high = 45.0f;
 	for (int i = 0; i < maxLights; i++)
 	{
-		lightAngleDelta[i] = (30.0f * static_cast <float> (rand()) / static_cast <float> (RAND_MAX) + 5.0) * Matrix3D::myPi / 180.0f;
+		lightAngleDelta[i] = (low + static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / (high - low)))) * Matrix3D::myPi / 180.0f;
 
 		if (i % 2) lightAngleDelta[i] *= -1;
 
-		float color[3];
+		float color[3] = { 0.1f, 0.1f, 0.1f };
 
-		for (int c = 0; c < 3; c++)
-			color[c] = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
+		if (i < 6)
+		{
+			int idx = i % 3;
+			color[idx] = 1.0f;
+		}
+		else
+		{
+			for (int c = 0; c < 3; c++)
+				color[c] = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
+
+			if (i % 2)
+			{
+				float clr = color[1];
+				color[1] = color[2];
+				color[2] = clr;
+			}
+		}
 
 		list.push_back(new ObjectCube(0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.025f, 0.025f, 0.025f, color[0], color[1], color[2]));
 	}

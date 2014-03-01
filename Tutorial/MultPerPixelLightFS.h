@@ -27,8 +27,8 @@ private:
 	CGparameter decalMap,
 				normalMap,
 				cameraPosition,
-				lightPossition[7],
-				lightColor[7],
+				lightPossition[12],
+				lightColor[12],
 				lightFallOffExp,
 				matrixModelWorld,
 				specularPower;

@@ -14,7 +14,7 @@ void FS_multPixelLight(float3 vertPos		: TEXCOORD0,
 						uniform sampler2D decalMap,
 						uniform sampler2D normalMap,
 						uniform float3	  cameraPosition,
-						uniform Light	  lights[7],
+						uniform Light	  lights[12],
 						uniform float	  lightFallOffExp,
 						uniform float4x4  matrixModelWorld,
 						uniform float	  specularPower)
@@ -32,7 +32,7 @@ void FS_multPixelLight(float3 vertPos		: TEXCOORD0,
 	float3 specularSum = float3(0.0, 0.0, 0.0);
 
 	//loop through each light and add them up for a final color
-	for (int i = 0; i < 7; i++)
+	for (int i = 0; i < 12; i++)
 	{
 		lights[i].position = mul(invWorldObj, float4(lights[i].position, 1)).xyz;
 

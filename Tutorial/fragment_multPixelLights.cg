@@ -45,12 +45,17 @@ void FS_multPixelLight(float3 vertPos		: TEXCOORD0,
 		float3 diffuseResult = lights[i].color * diffuseLight;
 
 		// Compute the specular lighting
-		float3 V = normalize(cameraPosition - vertPos);
-		float3 H = normalize(L + V);
-		float specularLight = pow(max(dot(normal, H), 0), specularPower) * fallOff;
-
-		if (diffuseLight <= 0.01) 
-			specularLight = 0.01;
+		float specularLight;
+		if (diffuseLight <= 0.00) 
+		{
+			float3 V = normalize(cameraPosition - vertPos);
+			float3 H = normalize(L + V);
+			specularLight = pow(max(dot(normal, H), 0), specularPower) * fallOff;
+		}
+		else
+		{
+			specularLight = 0.0;
+		}
 
 		float3 specularResult = lights[i].color * specularLight;
 

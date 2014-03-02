@@ -144,14 +144,14 @@
     <ClInclude Include="ObjectTriangle.h">
       <Filter>Header Files\Object Classes</Filter>
     </ClInclude>
-    <ClInclude Include="MultPerPixelLightFS.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="SceneMultPerPixelLight.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="MultPerPixelLightFS.h">
+      <Filter>Header Files\Shader Classes</Filter>
+    </ClInclude>
     <ClInclude Include="MultPerPixelLightVS.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Shader Classes</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -230,14 +230,14 @@
     <ClCompile Include="ObjectTriangle.cpp">
       <Filter>Source Files\Object Classes</Filter>
     </ClCompile>
-    <ClCompile Include="MultPerPixelLightFS.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="SceneMultPerPixelLight.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="MultPerPixelLightFS.cpp">
+      <Filter>Source Files\Shader Classes</Filter>
+    </ClCompile>
     <ClCompile Include="MultPerPixelLightVS.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Shader Classes</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

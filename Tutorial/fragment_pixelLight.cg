@@ -1,4 +1,4 @@
-void FS_pixelLight(float3 color	: COLOR,
+void FS_pixelLight(float4 color	: COLOR,
 						float2 texCoord		: TEXCOORD0,
 						float3 lightDir		: TEXCOORD1,
 						float3 camDir		: TEXCOORD2,
@@ -45,5 +45,5 @@ void FS_pixelLight(float3 color	: COLOR,
 
 	lightColor = (diffuseLight + specLight) * lightColor;
 
-	outColor = float4((lightColor), 1.0);
+	outColor = float4((lightColor * color.rgb), 0.5);
 }

@@ -2,6 +2,7 @@
 #include "SceneMultPerPixelLight.h"
 #include "ObjectPlane.h"
 #include "ObjectCube.h"
+#include "Engine.h"
 
 SceneMultPerPixelLight::SceneMultPerPixelLight()
 {

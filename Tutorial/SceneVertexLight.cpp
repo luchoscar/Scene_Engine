@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "SceneVertexLight.h"
 #include "ObjectCube.h"
+#include "Engine.h"
 
 SceneVertexLight::SceneVertexLight()
 {

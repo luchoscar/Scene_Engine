@@ -4,6 +4,7 @@ void FS_program(float4 color	: COLOR,
 
 					out float4 outColor : COLOR)
 {
+	color.a = 0.25;
 	outColor = color;
 }
 

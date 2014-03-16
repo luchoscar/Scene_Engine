@@ -10,6 +10,7 @@
 #include "SceneTextureColor.h"
 #include "ObjectTriangle.h"
 #include "ObjectCube.h"
+#include "Engine.h"
 
 //SOIL Image library - SOIL commands to be moved to OpenGLRenderer class
 #include "..\Simple OpenGL Image Library\src\SOIL.h"

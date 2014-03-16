@@ -24,6 +24,12 @@ public:
 	static void EnableProfile(CGprofile _profile);
 	static void DisableProfile(CGprofile _profile);
 	static void EnableTexture(CGparameter texture);
+	static void EnableAlphaBlending();
+	static void DisableAlphaBlending();
+	static void EnableFaceCulling();
+	static void DisableFaceCulling();
+	static void EnableDepthTest();
+	static void DisableDepthTest();
 
 	static CGparameter BindCgParameter(CGprogram program, const char* paramName);
 	static void UpdateFloatParameter(CGparameter& parameter, float value, const char* paramName);

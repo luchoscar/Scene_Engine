@@ -2,6 +2,7 @@
 #include "ScenePerPixelLight.h"
 #include "ObjectPlane.h"
 #include "ObjectCube.h"
+#include "Engine.h"
 
 ScenePerPixelLight::ScenePerPixelLight()
 {
@@ -47,12 +48,12 @@ void ScenePerPixelLight::Init()
 	rendererGL.LoadProgram(pixelLightFS.GetProgram());
 	pixelLightFS.LinkParameters();
 	cameraPosAngle = 0.0f;
-	cameraPosRadMov = 1.5f;
+	cameraPosRadMov = 2.75f;
 	cameraPosAngleDelta = 8.75 * Matrix3D::myPi / 180.0f;
 
 	//initializing camera variables
 	cameraObject = new ObjectCamera(cos(cameraPosAngle) * cameraPosRadMov, 0.0f, sin(cameraPosAngle) * cameraPosRadMov,
-									0.0f, 1.0f, 0.0,
+									0.0f, 0.5f, 0.0,
 									0.0f, 0.0f, 0.0f);
 	cameraObject->Init();
 
@@ -224,64 +225,104 @@ void ScenePerPixelLight::Draw()
 	rendererGL.EnableProfile(rendererGL.GetVertexProfile());
 	rendererGL.EnableProfile(rendererGL.GetFragmentProfile());
 	
-	//call each object in the list draw function
-	for (unsigned int i = 1; i < list.size(); i++)
+	for (int c = 0; c < 2; c++)
 	{
-		//update matrices parameters
-		tempSpace = list[i]->GetScale();
-		Matrix3D::MakeScaleMatrix(tempSpace[0], tempSpace[1], tempSpace[2], modelMatrix);
+		if (c == 1)
+		{
+			OpenGLRenderer::EnableAlphaBlending();
+			OpenGLRenderer::DisableFaceCulling();
+		}
 
-		tempSpace = list[i]->GetPosition();
-		Matrix3D::MakeTranslateMatrix(tempSpace[0], tempSpace[1], tempSpace[2], translateMatrix);
+		//call each object in the list draw function
+		for (unsigned int i = 1; i < list.size(); i++)
+		{
+			//update matrices parameters
+			
+			float *tempColor = new float[3];
+			tempColor[0] = list[i]->GetColor()[0];
+			tempColor[1] = list[i]->GetColor()[1];
+			tempColor[2] = list[i]->GetColor()[2];
 
-		//calculate rotation on all 3 axis
-		tempSpace = list[i]->GetRotation();
-		Matrix3D::MakeRotateMatrix(tempSpace[0], 1.0, 0.0, 0.0, rotationMatrixX);
-		Matrix3D::MakeRotateMatrix(tempSpace[1], 0.0, 1.0, 0.0, rotationMatrixY);
-		Matrix3D::MakeRotateMatrix(tempSpace[2], 0.0, 0.0, 1.0, rotationMatrixZ);
-		Matrix3D::MultMatrix(rotationMatrix, rotationMatrixX, rotationMatrixY);
-		Matrix3D::MultMatrix(rotationMatrix, rotationMatrix, rotationMatrixZ);
+			if (c == 1)
+			{
+				list[i]->SetColor(5.0f, 0.1f, 0.1f);
+				tempSpace = new float[3];
+				tempSpace[0] = 1.0f;
+				tempSpace[1] = 1.0f;
+				tempSpace[2] = 1.0f;
+			}
+			else
+				tempSpace = list[i]->GetScale();
 
-		Matrix3D::MultMatrix(modelMatrix, rotationMatrix, modelMatrix);
-		Matrix3D::MultMatrix(modelToWorld, translateMatrix, modelMatrix);
-		
-		pixelLightVS.UpdateCameraPosition(cameraObject->GetPosition());
+			Matrix3D::MakeScaleMatrix(tempSpace[0], tempSpace[1], tempSpace[2], modelMatrix);
 
-		pixelLightVS.UpdateMatrixModelWorld(modelToWorld());
-		pixelLightVS.UpdateMatrixViewProj(viewProjection());
+			
+			if (c == 1)
+			{
+				//
+				tempSpace = new float[3];
+				tempSpace[0] = 0.0f;
+				tempSpace[1] = 0.0f;
+				tempSpace[2] = 0.0f;
+			}
+			else
+				tempSpace = list[i]->GetPosition();
 
-		//update tangent and bitangent parameters
-		float tangent[3] = { 1.0f, 0.0f, 0.0f };
-		float bitangent[3] = { 0.0f, 0.0f, 1.0f };
+			Matrix3D::MakeTranslateMatrix(tempSpace[0], tempSpace[1], tempSpace[2], translateMatrix);
 
-		pixelLightVS.UpdateTangent(tangent);
-		pixelLightVS.UpdateBitangent(bitangent);
+			//calculate rotation on all 3 axis
+			tempSpace = list[i]->GetRotation();
+			Matrix3D::MakeRotateMatrix(tempSpace[0], 1.0, 0.0, 0.0, rotationMatrixX);
+			Matrix3D::MakeRotateMatrix(tempSpace[1], 0.0, 1.0, 0.0, rotationMatrixY);
+			Matrix3D::MakeRotateMatrix(tempSpace[2], 0.0, 0.0, 1.0, rotationMatrixZ);
+			Matrix3D::MultMatrix(rotationMatrix, rotationMatrixX, rotationMatrixY);
+			Matrix3D::MultMatrix(rotationMatrix, rotationMatrix, rotationMatrixZ);
 
-		pixelLightVS.UpdateMatrixModelWorld(modelToWorld());
-		pixelLightVS.UpdateMatrixViewProj(viewProjection());
+			Matrix3D::MultMatrix(modelMatrix, rotationMatrix, modelMatrix);
+			Matrix3D::MultMatrix(modelToWorld, translateMatrix, modelMatrix);
 
-		//update light parameters
-		pixelLightVS.UpdateLightPosition(list[0]->GetPosition());
-		pixelLightFS.UpdateLightColor(list[0]->GetColor());
-		pixelLightFS.UpdateLightFallOffExp(lightFallOffExp);
+			pixelLightVS.UpdateCameraPosition(cameraObject->GetPosition());
 
-		//update textures parameters
-		pixelLightFS.SetDecalMap(textureManager.getTextureId("../Images/bricks_diffuse.bmp"));
-		pixelLightFS.SetNormalMap(textureManager.getTextureId("../Images/bricks_normal.bmp"));
-		
-		OpenGLRenderer::EnableTexture(pixelLightFS.GetDecalMap());
-		OpenGLRenderer::EnableTexture(pixelLightFS.GetNormalMap());
+			pixelLightVS.UpdateMatrixModelWorld(modelToWorld());
+			pixelLightVS.UpdateMatrixViewProj(viewProjection());
 
-		//update shaders
-		pixelLightVS.UpdateParameters();
-		pixelLightFS.UpdateParameters();
+			//update tangent and bitangent parameters
+			float tangent[3] = { 1.0f, 0.0f, 0.0f };
+			float bitangent[3] = { 0.0f, 0.0f, 1.0f };
 
-		list[i]->Draw();
+			pixelLightVS.UpdateTangent(tangent);
+			pixelLightVS.UpdateBitangent(bitangent);
+
+			pixelLightVS.UpdateMatrixModelWorld(modelToWorld());
+			pixelLightVS.UpdateMatrixViewProj(viewProjection());
+
+			//update light parameters
+			pixelLightVS.UpdateLightPosition(list[0]->GetPosition());
+			pixelLightFS.UpdateLightColor(list[0]->GetColor());
+			pixelLightFS.UpdateLightFallOffExp(lightFallOffExp);
+
+			//update textures parameters
+			pixelLightFS.SetDecalMap(textureManager.getTextureId("../Images/bricks_diffuse.bmp"));
+			pixelLightFS.SetNormalMap(textureManager.getTextureId("../Images/bricks_normal.bmp"));
+
+			OpenGLRenderer::EnableTexture(pixelLightFS.GetDecalMap());
+			OpenGLRenderer::EnableTexture(pixelLightFS.GetNormalMap());
+
+			//update shaders
+			pixelLightVS.UpdateParameters();
+			pixelLightFS.UpdateParameters();
+
+			list[i]->Draw();
+
+			list[i]->SetColor(tempColor[0], tempColor[1], tempColor[2]);
+		}
+
+		if (c == 1)
+		{
+			OpenGLRenderer::DisableAlphaBlending();
+			OpenGLRenderer::EnableFaceCulling();
+		}
 	}
-
-	//disable Vertex CGprofile
-	rendererGL.DisableProfile(rendererGL.GetVertexProfile());
-	rendererGL.DisableProfile(rendererGL.GetFragmentProfile());
 }
 
 void ScenePerPixelLight::Update()
@@ -292,22 +333,22 @@ void ScenePerPixelLight::Update()
 	if (lightAngle > (Matrix3D::myPi + Matrix3D::myPi))
 		lightAngle -= (Matrix3D::myPi + Matrix3D::myPi);
 
-	list[0]->SetPosition(cos(lightAngle) * lightRadMov, sin(lightAngle) * lightRadMov, sin(lightAngle) * lightRadMov);
+	list[0]->SetPosition(cos(lightAngle) * lightRadMov, 0.0f, sin(lightAngle) * lightRadMov);
 
-	//rotate camera on xz coordinates and look up and down
-	cameraPosAngle += cameraPosAngleDelta * Engine::deltaTime;
+	////rotate camera on xz coordinates and look up and down
+	//cameraPosAngle += cameraPosAngleDelta * Engine::deltaTime;
 
-	if (cameraPosAngle > (Matrix3D::myPi + Matrix3D::myPi))
-		cameraPosAngle -= (Matrix3D::myPi + Matrix3D::myPi);
+	//if (cameraPosAngle > (Matrix3D::myPi + Matrix3D::myPi))
+	//	cameraPosAngle -= (Matrix3D::myPi + Matrix3D::myPi);
 
-	float* cameraUpdate = new float[3];
-	//update for position
-	cameraUpdate[0] = cos(cameraPosAngle) * cameraPosRadMov;
-	cameraUpdate[1] = sin(cameraPosAngle) * cameraPosRadMov;
-	
-	//update for look at
-	cameraUpdate[2] = cos(cameraPosAngle);
-	
-	cameraObject->SetPosition(cameraUpdate[0], cameraObject->GetPosition()[1], cameraUpdate[1]);
-	cameraObject->SetLookAtVector(cameraObject->GetLookAtVector()[0], cameraUpdate[2], cameraObject->GetLookAtVector()[2]);
+	//float* cameraUpdate = new float[3];
+	////update for position
+	//cameraUpdate[0] = cos(cameraPosAngle) * cameraPosRadMov;
+	//cameraUpdate[1] = sin(cameraPosAngle) * cameraPosRadMov;
+	//
+	////update for look at
+	//cameraUpdate[2] = cos(cameraPosAngle);
+	//
+	//cameraObject->SetPosition(cameraUpdate[0], cameraObject->GetPosition()[1], cameraUpdate[1]);
+	//cameraObject->SetLookAtVector(cameraObject->GetLookAtVector()[0], cameraUpdate[2], cameraObject->GetLookAtVector()[2]);
 }

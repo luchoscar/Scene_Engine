@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "SceneBuffers.h"
 #include "ObjectCube.h"
+#include "Engine.h"
 
 SceneBuffers::SceneBuffers()
 {

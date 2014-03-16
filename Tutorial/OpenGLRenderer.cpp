@@ -31,9 +31,7 @@ void OpenGLRenderer::InitContext()
 
 	glEnable(GL_DEPTH_TEST); 
 
-	glEnable(GL_CULL_FACE);
-	glFrontFace(GL_CW);
-	glCullFace(GL_FRONT);
+	EnableFaceCulling();
 
 	OpenGLRenderer::contextInitialized = true;
 }
@@ -96,6 +94,39 @@ void OpenGLRenderer::EnableTexture(CGparameter texture)
 {
 	cgGLEnableTextureParameter(texture);
 	OpenGLRenderer::checkForCgError("enable texture");
+}
+
+void OpenGLRenderer::EnableAlphaBlending()
+{
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+}
+
+void OpenGLRenderer::DisableAlphaBlending()
+{
+	glDisable(GL_BLEND);
+}
+
+void OpenGLRenderer::EnableFaceCulling()
+{
+	glEnable(GL_CULL_FACE);
+	glFrontFace(GL_CW);
+	glCullFace(GL_FRONT);
+}
+
+void OpenGLRenderer::DisableFaceCulling()
+{
+	glDisable(GL_CULL_FACE);
+}
+
+void OpenGLRenderer::EnableDepthTest()
+{
+	glEnable(GL_DEPTH_TEST);
+}
+
+void OpenGLRenderer::DisableDepthTest()
+{
+	glDisable(GL_DEPTH_TEST);
 }
 
 CGparameter OpenGLRenderer::BindCgParameter(CGprogram program, const char* paramName)

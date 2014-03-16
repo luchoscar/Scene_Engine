@@ -12,20 +12,19 @@
 Matrix3D Engine::perspective;
 float Engine::deltaTime;
 float Engine::previousTime;
-SceneBase* scene;
-//SceneBase* Engine::scene;
+//SceneBase* scene;
+SceneBase* Engine::scene;
 
 Engine::Engine()
 {
-	//scenesList.push_back(new SceneTextureColor());
-	//scenesList.push_back(new SceneVertexLight());
-	//scenesList.push_back(new SceneBuffers());
-	//scenesList.push_back(new ScenePerPixelLight());
+	scenesList.push_back(new SceneTextureColor());
+	scenesList.push_back(new SceneVertexLight());
+	scenesList.push_back(new SceneBuffers());
+	scenesList.push_back(new ScenePerPixelLight());
+	scenesList.push_back(new SceneMultPerPixelLight());
 
-	//unsigned int sceneToLoad = scenesList.size() - 1;
-	//Engine::scene = new  ScenePerPixelLight();
-	//scene = new  ScenePerPixelLight();
-	scene = new SceneMultPerPixelLight();
+	unsigned int sceneToLoad = scenesList.size() - 1;
+	Engine::scene = scenesList[sceneToLoad];
 
 	previousTime = 0.0;
 }
@@ -34,12 +33,12 @@ Engine::~Engine()
 {
 	delete scene;
 
-	//for (unsigned int i = 0; i < scenesList.size(); i++)
-	//{
-	//	delete scenesList[i];
-	//}
+	for (unsigned int i = 0; i < scenesList.size(); i++)
+	{
+		delete scenesList[i];
+	}
 
-	//scenesList.clear();
+	scenesList.clear();
 }
 
 void Engine::Init(int argc, char* argv[])

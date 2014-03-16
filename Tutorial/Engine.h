@@ -27,7 +27,7 @@ public:
 	static Matrix3D perspective;
 
 private:
-	//static SceneBase *scene;
+	static SceneBase *scene;
 	static float previousTime;	
-	//vector<SceneBase*> scenesList;
+	vector<SceneBase*> scenesList;
 };

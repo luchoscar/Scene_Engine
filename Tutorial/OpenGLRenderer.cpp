@@ -5,10 +5,12 @@
 bool OpenGLRenderer::contextInitialized = false;
 bool OpenGLRenderer::vertexProfileInitialized = false;
 bool OpenGLRenderer::fragmentProfileInitialized = false;
+bool OpenGLRenderer::geometryProfileInitialized = false;
 
 CGcontext OpenGLRenderer::myCgContext;
 CGprofile OpenGLRenderer::vertexProfile;
 CGprofile OpenGLRenderer::fragmentProfile;
+CGprofile OpenGLRenderer::geometryProfile;
 
 OpenGLRenderer::OpenGLRenderer()
 {
@@ -58,6 +60,17 @@ void OpenGLRenderer::InitFragmentProfile()
 	checkForCgError("selecting fragment profile");
 
 	fragmentProfileInitialized = true;
+}
+
+void OpenGLRenderer::InitGeometryProfile()
+{
+	if (geometryProfileInitialized) return;
+
+	geometryProfile = cgGLGetLatestProfile(CG_GL_GEOMETRY);
+	cgGLSetOptimalOptions(geometryProfile);
+	checkForCgError("selecting geometry profile");
+
+	geometryProfileInitialized = true;
 }
 
 void OpenGLRenderer::LoadProgram(CGprogram program)

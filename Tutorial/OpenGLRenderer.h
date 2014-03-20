@@ -16,9 +16,13 @@ public:
 	static void InitContext();
 	static void InitVertexProfile();
 	static void InitFragmentProfile();
+	static void InitGeometryProfile();
+
 	static CGcontext GetContext() { return myCgContext; };
 	static CGprofile GetVertexProfile() { return vertexProfile; };
 	static CGprofile GetFragmentProfile() { return fragmentProfile; };
+	static CGprofile GetGeometryProfile() { return geometryProfile; };
+
 	static void ClearGLFlags();
 	static void BindProgram(CGprogram _program);
 	static void EnableProfile(CGprofile _profile);
@@ -42,10 +46,12 @@ public:
 protected:
 	static CGcontext myCgContext;
 	static CGprofile vertexProfile,
-					fragmentProfile;
+						fragmentProfile,
+						geometryProfile;
 private:
 	static bool contextInitialized;
 	static bool vertexProfileInitialized;
 	static bool fragmentProfileInitialized;
+	static bool geometryProfileInitialized;
 };
 

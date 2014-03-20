@@ -7,6 +7,7 @@
 #include "SceneBuffers.h"
 #include "ScenePerPixelLight.h"
 #include "SceneMultPerPixelLight.h"
+#include "SceneParticleEffect.h"
 
 //static variables
 Matrix3D Engine::perspective;
@@ -22,6 +23,7 @@ Engine::Engine()
 	scenesList.push_back(new SceneBuffers());
 	scenesList.push_back(new ScenePerPixelLight());
 	scenesList.push_back(new SceneMultPerPixelLight());
+	scenesList.push_back(new SceneParticleEffect());
 
 	unsigned int sceneToLoad = scenesList.size() - 1;
 	Engine::scene = scenesList[sceneToLoad];
@@ -57,12 +59,11 @@ void Engine::Init(int argc, char* argv[])
 	glutKeyboardFunc(Keyboard);
 
 	/* Initialize OpenGL entry points. */
-	if (glewInit()!=GLEW_OK || !GLEW_VERSION_1_3 || !GLEW_EXT_texture_compression_s3tc) {
+	if (glewInit() != GLEW_OK || !GLEW_VERSION_1_3 || !GLEW_EXT_texture_compression_s3tc) {
 		fprintf(stderr, "%s: failed to initialize GLEW, OpenGL 1.3 and GL_EXT_texture_compression_s3tc required.\n", "Scene Engine");
 		exit(1);
 	}
 
-	//Engine::scene->Init();
 	scene->Init();
 }
 
@@ -73,7 +74,6 @@ void Engine::Run()
 
 void Engine::Display()
 {
-	//Engine::scene->Draw();
 	scene->Draw();
 
 	glutSwapBuffers();
@@ -91,7 +91,6 @@ void Engine::Update()
 	std::cout << "Engine fps = " << fps << std::endl;
 	
 	//run scene update
-	//Engine::scene->Update();
 	scene->Update();
 
 	//update draw buffers

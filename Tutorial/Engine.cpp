@@ -25,7 +25,7 @@ Engine::Engine()
 	scenesList.push_back(new SceneMultPerPixelLight());
 	scenesList.push_back(new SceneParticleEffect());
 
-	unsigned int sceneToLoad = scenesList.size() - 1;
+	unsigned int sceneToLoad = scenesList.size() - 2;
 	Engine::scene = scenesList[sceneToLoad];
 
 	previousTime = 0.0;

@@ -34,35 +34,38 @@
     <Filter Include="Source Files\Object Classes">
       <UniqueIdentifier>{62dc74f0-1ba5-4f52-aa86-b92a3184f98f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Shaders Files\Cg">
+      <UniqueIdentifier>{9232a3b3-e65c-4f0d-9d79-1fd56f9120b8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="ReadMe.txt" />
-    <None Include="vertex_shader.cg">
-      <Filter>Shaders Files</Filter>
-    </None>
-    <None Include="fragment_shader.cg">
-      <Filter>Shaders Files</Filter>
-    </None>
-    <None Include="textureFragment.cg">
-      <Filter>Shaders Files</Filter>
-    </None>
-    <None Include="fragment_vertexLight.cg">
-      <Filter>Shaders Files</Filter>
-    </None>
-    <None Include="vertex_vertexLight.cg">
-      <Filter>Shaders Files</Filter>
+    <None Include="fragment_multPixelLights.cg">
+      <Filter>Shaders Files\Cg</Filter>
     </None>
     <None Include="fragment_pixelLight.cg">
-      <Filter>Shaders Files</Filter>
+      <Filter>Shaders Files\Cg</Filter>
     </None>
-    <None Include="vertex_pixelLight.cg">
-      <Filter>Shaders Files</Filter>
+    <None Include="fragment_shader.cg">
+      <Filter>Shaders Files\Cg</Filter>
+    </None>
+    <None Include="fragment_vertexLight.cg">
+      <Filter>Shaders Files\Cg</Filter>
+    </None>
+    <None Include="textureFragment.cg">
+      <Filter>Shaders Files\Cg</Filter>
     </None>
     <None Include="vertex_multPixelLights.cg">
-      <Filter>Shaders Files</Filter>
+      <Filter>Shaders Files\Cg</Filter>
     </None>
-    <None Include="fragment_multPixelLights.cg">
-      <Filter>Shaders Files</Filter>
+    <None Include="vertex_pixelLight.cg">
+      <Filter>Shaders Files\Cg</Filter>
+    </None>
+    <None Include="vertex_shader.cg">
+      <Filter>Shaders Files\Cg</Filter>
+    </None>
+    <None Include="vertex_vertexLight.cg">
+      <Filter>Shaders Files\Cg</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>

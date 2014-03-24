@@ -58,7 +58,7 @@ void SceneMultPerPixelLight::Init()
 	for (int i = 0; i < maxLights; i++)
 		lightRadMov[i] = 1.8f;
 
-	lightFallOffExp = 3.0;
+	lightFallOffExp = 1.5;
 	pixelLightFS.UpdateLightFallOffExp(lightFallOffExp);
 
 	specularPower = 100.0f;

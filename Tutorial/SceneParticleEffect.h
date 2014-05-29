@@ -6,6 +6,7 @@
 #include "MultPerPixelLightFS.h"
 #include "SimpleVS.h"
 #include "SimpleFS.h"
+#include "BillboardGS.h"
 
 class SceneParticleEffect :
 	public SceneBase
@@ -23,6 +24,7 @@ private:
 	MultPerPixelLightFS pixelLightFS;
 	SimpleFS simpleFS;
 	SimpleVS simpleVS;
+	BillboardGS billboardsGS;
 
 	//light variables
 	int maxLights;

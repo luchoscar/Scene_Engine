@@ -67,6 +67,18 @@ void OpenGLRenderer::InitGeometryProfile()
 	if (geometryProfileInitialized) return;
 
 	geometryProfile = cgGLGetLatestProfile(CG_GL_GEOMETRY);
+
+	if (geometryProfile == CG_PROFILE_UNKNOWN) 
+	{
+		if (cgGLIsProfileSupported(CG_PROFILE_GLSLG))
+			geometryProfile = CG_PROFILE_GLSLG;
+		else 
+		{
+			fprintf(stderr, "%s: geometry profile is not available.\n", geometryProfile);
+			exit(0);
+		}
+	}
+
 	cgGLSetOptimalOptions(geometryProfile);
 	checkForCgError("selecting geometry profile");
 
@@ -186,8 +198,8 @@ void OpenGLRenderer::checkForCgError(const char *situation)
 
 	if (error != CG_NO_ERROR) 
 	{
-		printf("%s: %s: %s\n",
-			"OpenGLVer2", situation, string);
+		printf("%s %s: %s: %s\n",
+			"OpenGLVer", glGetString(GL_VERSION), situation, string);
 		if (error == CG_COMPILER_ERROR) 
 		{
 			printf("%s\n", cgGetLastListing(myCgContext));

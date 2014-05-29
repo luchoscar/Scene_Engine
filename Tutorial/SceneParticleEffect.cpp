@@ -24,6 +24,9 @@ void SceneParticleEffect::Init()
 	//creating FS profile
 	rendererGL.InitFragmentProfile();
 
+	// creating GS profile
+	rendererGL.InitGeometryProfile();
+
 	/*** light object shader ***/
 	//creating VS program
 	simpleVS.CreateProgram("vertex_shader.cg", "VS_program");
@@ -46,10 +49,23 @@ void SceneParticleEffect::Init()
 	rendererGL.LoadProgram(pixelLightFS.GetProgram());
 	pixelLightFS.LinkParameters();
 
+	/*** particle shader ***/
+	//creating GS program
+	billboardsGS.CreateProgram("geometry_billboard.cg", "GS_billboard");
+	rendererGL.LoadProgram(billboardsGS.GetProgram());
+	billboardsGS.LinkParameters();
+	billboardsGS.UpdateBillboardSize(10.0f);
+
+	//loading textures
+	textureManager.Init(2);
+	textureManager.setBmpTextureinMap("../Images/bricks_diffuse.bmp");
+	textureManager.setBmpTextureinMap("../Images/bricks_normal.bmp");
+	
+	//light objects
 	//initializing light variables
 	maxLights = 1;
 
-	lightFallOffExp = 0.5;
+	lightFallOffExp = 1.0;
 	pixelLightFS.UpdateLightFallOffExp(lightFallOffExp);
 
 	specularPower = 100.0f;
@@ -57,19 +73,16 @@ void SceneParticleEffect::Init()
 
 	for (int i = 0; i < maxLights; i++)
 	{
-		list.push_back(new ObjectCube(0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.025f, 0.025f, 0.025f, 1.0f, 1.0f, 1.01f));
+		//list.push_back(new ObjectCube(0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.025f, 0.025f, 0.025f, 1.0f, 1.0f, 1.01f));
+		list.push_back(new ObjectCube(0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.01f));
 	}
 
+	//camera object
 	cameraObject = new ObjectCamera(0.0f, 0.0f, -2.5f,
 		0.0f, 1.0f, 0.0,
 		0.0f, 0.0f, 0.0);
 
 	cameraObject->Init();
-
-	//loading textures
-	textureManager.Init(2);
-	textureManager.setBmpTextureinMap("../Images/bricks_diffuse.bmp");
-	textureManager.setBmpTextureinMap("../Images/bricks_normal.bmp");
 
 	//loading room
 	//back wall
@@ -194,13 +207,24 @@ void SceneParticleEffect::Draw()
 	//bind CG program
 	rendererGL.BindProgram(simpleVS.GetProgram());
 	rendererGL.BindProgram(simpleFS.GetProgram());
+	rendererGL.BindProgram(billboardsGS.GetProgram());
 
 	//Enable VS & FS profiles
 	rendererGL.EnableProfile(rendererGL.GetVertexProfile());
 	rendererGL.EnableProfile(rendererGL.GetFragmentProfile());
+	rendererGL.EnableProfile(rendererGL.GetGeometryProfile());
 
-	for (int i = 0; i < maxLights; i++)
+	billboardsGS.UpdateCameraPosition(cameraObject->GetPosition());
+	billboardsGS.UpdateMatrixMVP(MVP());
+	
+	//for (int i = 0; i < maxLights; i++)
+	for (int i = 0; i < 1; i++)
 	{
+		float* position = new float[3];
+		position[0] = 0 + 2 * i;
+		position[1] = 0;
+		position[2] = 0;
+
 		tempSpace = list[i]->GetScale();
 		Matrix3D::MakeScaleMatrix(tempSpace[0], tempSpace[1], tempSpace[2], modelMatrix);
 		tempSpace = list[i]->GetPosition();
@@ -212,6 +236,7 @@ void SceneParticleEffect::Draw()
 
 		simpleVS.UpdateParameters();
 		simpleFS.UpdateParameters();
+		billboardsGS.UpdateParameters();
 
 		list[i]->Draw();
 	}
@@ -219,6 +244,7 @@ void SceneParticleEffect::Draw()
 	//disable CGprofiles
 	rendererGL.DisableProfile(rendererGL.GetVertexProfile());
 	rendererGL.DisableProfile(rendererGL.GetFragmentProfile());
+	rendererGL.DisableProfile(rendererGL.GetGeometryProfile());
 
 	/*** room objects ***/
 	//bind CG program
@@ -278,7 +304,7 @@ void SceneParticleEffect::Draw()
 		//update shaders
 		pixelLightVS.UpdateParameters();
 		pixelLightFS.UpdateParameters();
-
+		
 		list[i]->Draw();
 	}
 

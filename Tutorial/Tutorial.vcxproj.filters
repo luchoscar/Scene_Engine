@@ -67,6 +67,9 @@
     <None Include="vertex_vertexLight.cg">
       <Filter>Shaders Files\Cg</Filter>
     </None>
+    <None Include="geometry_billboard.cg">
+      <Filter>Shaders Files\Cg</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -162,6 +165,9 @@
     <ClInclude Include="GeometryObject.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="BillboardGS.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -252,6 +258,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="GeometryObject.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="BillboardGS.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

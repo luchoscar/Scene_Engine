@@ -1,0 +1,16 @@
+// Geometry pass-through program for colored triangles
+TRIANGLE
+void GS_billboard(AttribArray<float4> position : POSITION, 
+						AttribArray<float4> color	: COLOR,
+						
+						uniform float3		cameraPosition,
+						uniform float		billboardSize,
+						uniform float4x4	matrixMVP)
+{
+	for (int i = 0; i < 3; i++) 
+	{
+		emitVertex(position[i] : POSITION, color[i] : COLOR);
+	}
+	
+	EndPrimitive();
+}

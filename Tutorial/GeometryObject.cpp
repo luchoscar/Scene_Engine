@@ -17,11 +17,11 @@ void GeometryObject::CreateProgram(const char* fileName, const char* functionNam
 		OpenGLRenderer::GetContext(),
 		CG_SOURCE,
 		fileName, //File name of shader program
-		OpenGLRenderer::GetVertexProfile(),
+		OpenGLRenderer::GetGeometryProfile(),
 		functionName, //Entry function
 		NULL);
 
-	OpenGLRenderer::checkForCgError("Creating vertex program from file");
+	OpenGLRenderer::checkForCgError("Creating geometry program from file");
 }
 
 CGprogram GeometryObject::GetProgram()

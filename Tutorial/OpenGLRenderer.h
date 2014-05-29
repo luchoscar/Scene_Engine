@@ -43,6 +43,7 @@ public:
 
 	static void checkForCgError(const char *situation);
 	static void checkForCgError(const char *situation, const char *parameter);
+	//static void 
 protected:
 	static CGcontext myCgContext;
 	static CGprofile vertexProfile,

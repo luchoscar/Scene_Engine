@@ -25,7 +25,7 @@ Engine::Engine()
 	scenesList.push_back(new SceneMultPerPixelLight());
 	scenesList.push_back(new SceneParticleEffect());
 
-	unsigned int sceneToLoad = scenesList.size() - 2;
+	unsigned int sceneToLoad = scenesList.size() - 1;
 	Engine::scene = scenesList[sceneToLoad];
 
 	previousTime = 0.0;
@@ -63,7 +63,7 @@ void Engine::Init(int argc, char* argv[])
 		fprintf(stderr, "%s: failed to initialize GLEW, OpenGL 1.3 and GL_EXT_texture_compression_s3tc required.\n", "Scene Engine");
 		exit(1);
 	}
-
+	
 	scene->Init();
 }
 
@@ -87,7 +87,7 @@ void Engine::Update()
 	Engine::previousTime = currentTime;
 	float fps = 1 / (Engine::deltaTime);
 	
-	std::cout << "Fame Time (delta Time = " << Engine::deltaTime << " seconds " << std::endl;
+	std::cout << "Frame Time (delta Time) = " << Engine::deltaTime << " seconds " << std::endl;
 	std::cout << "Engine fps = " << fps << std::endl;
 	
 	//run scene update
